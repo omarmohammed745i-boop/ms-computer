@@ -1,10 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-// ✅ في Production، مش محتاج dotenv
-if (process.env.NODE_ENV !== 'production') {
-    require("dotenv").config();
-}
+
 
 
 const productRoutes = require("./routes/products");
