@@ -1,0 +1,19 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/html/ms.html" },
+    { "source": "/products", "destination": "/html/products.html" },
+    { "source": "/cart", "destination": "/html/cart.html" },
+    { "source": "/login", "destination": "/html/login.html" },
+    { "source": "/signup", "destination": "/html/signup.html" },
+    { "source": "/account", "destination": "/html/account.html" },
+    { "source": "/checkout", "destination": "/html/checkout.html" },
+    { "source": "/wishlist", "destination": "/html/wishlist.html" },
+    { "source": "/about", "destination": "/html/about.html" },
+    { "source": "/contact", "destination": "/html/contact.html" },
+    { "source": "/services", "destination": "/html/services.html" },
+    { "source": "/search", "destination": "/html/search.html" },
+    { "source": "/product", "destination": "/html/product.html" },
+    { "source": "/admin", "destination": "/html/admin.html" },
+    { "source": "/(.*)", "destination": "/html/$1" }
+  ]
+}
