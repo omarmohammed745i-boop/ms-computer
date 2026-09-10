@@ -1,6 +1,13 @@
 console.log("MS JS WORKING");
 
 // =====================================
+// API BASE URL
+// =====================================
+const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
+
+// =====================================
 // GET USER ID
 // =====================================
 function getUserId() {
@@ -121,7 +128,7 @@ function updateUserUI() {
         if (navUser) navUser.style.display = "none";
         if (userMenu) userMenu.style.display = "block";
         if (userImage) {
-            userImage.src = loggedInUser.image || "photos/default-avatar.png";
+            userImage.src = loggedInUser.image || "/photos/default-avatar.png";
         }
     } else {
         if (navUser) navUser.style.display = "block";
@@ -168,9 +175,7 @@ let searchProducts = [];
 
 async function loadSearchProducts() {
     try {
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
+        const response = await fetch(`${API_BASE_URL}/products`);
         if (response.ok) {
             const data = await response.json();
             if (data && data.length > 0) {
@@ -454,14 +459,14 @@ function renderFeaturedProducts(products, container) {
     container.innerHTML = products.map(product => {
         const inStock = product.stock > 0;
         const productId = product._id || product.id;
-        const image = (product.images && product.images.length > 0) ? product.images[0] : (product.image || 'photos/default-product.png');
+        const image = (product.images && product.images.length > 0) ? product.images[0] : (product.image || '/photos/default-product.png');
         
         return `
         <div class="card hidden" onclick="window.location.href='product.html?id=${productId}'" style="cursor:pointer;">
             ${product.sale ? `<span class="sale-badge">🔥 ${saleText}</span>` : ''}
             ${!inStock ? `<span class="stock-badge out-stock">${outOfStockText}</span>` : ''}
             ${product.oldPrice ? `<span class="discount-badge">${Math.round((1 - product.price / product.oldPrice) * 100)}%</span>` : ''}
-            <img src="${image}" alt="${product.name}" loading="lazy" onerror="this.src='photos/default-product.png'">
+            <img src="${image}" alt="${product.name}" loading="lazy" onerror="this.src='/photos/default-product.png'">
             <h3>${product.name}</h3>
             <div class="price">
                 <span class="new-price">${product.price.toLocaleString()} ${egpText}</span>
@@ -494,9 +499,7 @@ async function loadFeaturedProducts() {
     }
 
     try {
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
+        const response = await fetch(`${API_BASE_URL}/products`);
         let products = [];
 
         if (response.ok) {
@@ -538,7 +541,7 @@ async function loadFeaturedProducts() {
 // =====================================
 async function addToCart(productId) {
     try {
-        const response = await fetch('http://localhost:5000/api/products');
+        const response = await fetch(`${API_BASE_URL}/products`);
         if (!response.ok) throw new Error('Failed to fetch products');
         const products = await response.json();
         
@@ -560,7 +563,7 @@ async function addToCart(productId) {
         if (existing) {
             existing.quantity += 1;
         } else {
-            const image = (product.images && product.images.length > 0) ? product.images[0] : (product.image || 'photos/default-product.png');
+            const image = (product.images && product.images.length > 0) ? product.images[0] : (product.image || '/photos/default-product.png');
             cart.push({
                 id: product._id || product.id,
                 name: product.name,
