@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Product | MS Computer</title>
+
+<link rel="stylesheet" href="../css/admin.css">
+<link rel="stylesheet" href="../css/add-product.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+        <h2>
+            MS Admin
+        </h2>
+
+
+        <ul>
+
+
+            <li>
+                <a href="dashboard.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Dashboard
+                </a>
+            </li>
+
+
+
+            <li class="active">
+
+                <a href="add-product.html">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Product
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <li>
+
+                <a href="editing.html">
+
+                    <i class="fa-solid fa-pen-to-square"></i>
+
+                    Edit Products
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <li>
+
+                <a href="deleting.html">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                    Delete Products
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <li>
+
+                <a href="orders.html">
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    Orders
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <li>
+
+                <a href="users.html">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Users
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <li>
+
+                <a href="settings.html">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    Settings
+
+                </a>
+
+            </li>
+
+
+        </ul>
+
+
+    </aside>
+
+
+
+
+
+    <!-- CONTENT -->
+
+
+    <main class="admin-content">
+
+
+
+        <div class="admin-container">
+
+
+            <h1>
+                Add New Product
+            </h1>
+
+
+
+
+
+            <form id="add-product-form">
+
+
+
+                <div class="form-grid">
+
+
+
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Product Name
+                        </label>
+
+
+                        <input
+                        type="text"
+                        id="name"
+                        placeholder="Product Name"
+                        required>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Brand
+                        </label>
+
+
+                        <input
+                        type="text"
+                        id="brand"
+                        placeholder="Brand">
+
+
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Category
+                        </label>
+
+
+                        <select id="category" required>
+
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+
+                            <option value="Keyboards">
+                                Keyboards
+                            </option>
+
+
+                            <option value="Mouse">
+                                Mouse
+                            </option>
+
+
+                            <option value="Mouse Pad">
+                                Mouse Pad
+                            </option>
+
+
+                            <option value="Headsets">
+                                Headsets
+                            </option>
+
+
+                            <option value="Microphones">
+                                Microphones
+                            </option>
+
+
+                            <option value="Webcams">
+                                Webcams
+                            </option>
+
+
+                            <option value="Accessories">
+                                Accessories
+                            </option>
+
+
+                        </select>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Selling Price
+                        </label>
+
+
+                        <input
+                        type="number"
+                        id="price"
+                        placeholder="0"
+                        required>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Old Price
+                        </label>
+
+
+                        <input
+                        type="number"
+                        id="oldPrice"
+                        placeholder="0">
+
+
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Purchase Price
+                        </label>
+
+
+                        <input
+                        type="number"
+                        id="purchasePrice"
+                        placeholder="0">
+
+
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Stock
+                        </label>
+
+
+                        <input
+                        type="number"
+                        id="stock"
+                        placeholder="0"
+                        required>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+
+
+                        <label>
+                            Product Images
+                        </label>
+
+
+                        <input
+                        type="file"
+                        id="product-images"
+                        accept="image/*"
+                        multiple>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="form-group full">
+
+
+                        <label>
+                            Description
+                        </label>
+
+
+                        <textarea
+                        id="description"
+                        rows="6"
+                        placeholder="Product Description"></textarea>
+
+
+                    </div>
+
+
+
+
+
+
+                    <div class="form-group full">
+
+
+                        <img
+                        id="preview-image"
+                        src=""
+                        style="
+                        display:none;
+                        max-width:250px;
+                        border-radius:15px;
+                        ">
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <div class="form-group full">
+
+
+                        <label>
+                            Product Details
+                        </label>
+
+
+                        <div id="details-container">
+
+                        </div>
+
+
+
+
+                        <button
+                        type="button"
+                        id="add-detail-btn"
+                        class="add-detail-btn">
+
+
+                            + Add Details Section
+
+
+                        </button>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <div class="form-group full">
+
+
+                        <button
+                        type="submit"
+                        class="save-btn">
+
+
+                            Add Product
+
+
+                        </button>
+
+
+
+                    </div>
+
+
+
+
+
+                </div>
+
+
+
+            </form>
+
+
+
+        </div>
+
+
+
+    </main>
+
+
+
+</div>
+
+
+
+
+
+
+<script src="../js/details-builder.js"></script>
+
+<script src="../js/add-product.js"></script>
+
+
+
+</body>
+
+</html>

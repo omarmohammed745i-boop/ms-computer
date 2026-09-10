@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - MS Computer</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/ms.css">
+
+    <!-- Account CSS -->
+    <link rel="stylesheet" href="../css/account.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="ms.html" class="logo">
+            <img src="../photos/logo.png" alt="MS Computer">
+        </a>
+
+        <div class="top-info" data-lang="freeShipping">🚚 Free Shipping Over 2000 EGP</div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="ms.html" data-lang="home">Home</a></li>
+            <li><a href="products.html" data-lang="products">Products</a></li>
+            <li><a href="services.html" data-lang="services">Services</a></li>
+            <li><a href="about.html" data-lang="about">About</a></li>
+            <li><a href="contact.html" data-lang="contact">Contact</a></li>
+        </ul>
+
+        <div class="right-side">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-box" placeholder="Search Products..." autocomplete="off" data-lang="searchPlaceholder">
+                </div>
+                <div id="search-suggestions"></div>
+            </div>
+
+            <div class="language-selector">
+                <button id="language-btn">
+                    🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div data-lang="en">🇺🇸 English</div>
+                    <div data-lang="ar">🇪🇬 العربية</div>
+                    <div data-lang="fr">🇫🇷 Français</div>
+                    <div data-lang="de">🇩🇪 Deutsch</div>
+                    <div data-lang="es">🇪🇸 Español</div>
+                    <div data-lang="it">🇮🇹 Italiano</div>
+                    <div data-lang="tr">🇹🇷 Türkçe</div>
+                    <div data-lang="ru">🇷🇺 Русский</div>
+                    <div data-lang="zh">🇨🇳 中文</div>
+                    <div data-lang="ja">🇯🇵 日本語</div>
+                </div>
+            </div>
+
+            <div class="wishlist-icon">
+                <a href="wishlist.html">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="wishlist-count">0</span>
+                </a>
+            </div>
+
+            <div class="nav-icons">
+                <a href="cart.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="account-area">
+                <div id="nav-user">
+                    <a href="login.html" data-lang="login">Login</a>
+                </div>
+                <div class="user-menu" id="user-menu" style="display:none;">
+                    <div class="user-btn" id="user-btn">
+                        <img id="user-image" src="photos/default-avatar.png" alt="User">
+                        <span>▼</span>
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <a href="account.html" class="active" data-lang="myAccount">👤 My Account</a>
+                        <a href="#" id="dark-mode" data-lang="nightMode">🌙 Night Mode</a>
+                        <a href="#" id="light-mode" data-lang="lightMode">☀️ Light Mode</a>
+                        <a href="#" id="logout-btn" data-lang="logout">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu" id="menuBtn">☰</div>
+        </div>
+    </nav>
+
+    <!-- ========================================= -->
+    <!-- ACCOUNT PAGE CONTENT -->
+    <!-- ========================================= -->
+
+    <section class="account-page">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 data-lang="account">👤 My Account</h1>
+            <p data-lang="manageProfile">Manage your profile, orders, and preferences</p>
+        </div>
+
+        <!-- Account Grid -->
+        <div class="account-grid">
+
+            <!-- Sidebar -->
+            <div class="account-sidebar">
+                <div class="user-profile">
+                    <div class="profile-image-container" id="profileImageContainer">
+                        <img id="profile-avatar" src="https://ui-avatars.com/api/?name=User&background=00d4b4&color=fff&size=128" alt="Profile">
+                        <div class="profile-image-overlay">
+                            <i class="fa-solid fa-camera"></i>
+                            <span data-lang="changePhoto">Change Photo</span>
+                        </div>
+                        <div class="loading-spinner" id="imageLoadingSpinner">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                        </div>
+                        <input type="file" id="profile-image-input" accept="image/*" style="display:none;">
+                    </div>
+                    <h3 id="profile-name" data-lang="loading">Loading...</h3>
+                    <p id="profile-email" data-lang="loading">Loading...</p>
+                </div>
+
+                <nav class="account-nav">
+                    <a href="#" class="active" data-tab="overview">
+                        <i class="fa-solid fa-gauge-high"></i> <span data-lang="overview">Overview</span>
+                    </a>
+                    <a href="#" data-tab="orders">
+                        <i class="fa-solid fa-box"></i> <span data-lang="myOrders">My Orders</span>
+                    </a>
+                    <a href="#" data-tab="wishlist">
+                        <i class="fa-solid fa-heart"></i> <span data-lang="wishlist">Wishlist</span>
+                    </a>
+                    <a href="#" data-tab="profile">
+                        <i class="fa-solid fa-user"></i> <span data-lang="profileSettings">Profile Settings</span>
+                    </a>
+                    <a href="#" data-tab="addresses">
+                        <i class="fa-solid fa-location-dot"></i> <span data-lang="addresses">Addresses</span>
+                    </a>
+                    <a href="#" id="account-logout">
+                        <i class="fa-solid fa-sign-out-alt"></i> <span data-lang="logout">Logout</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            <div class="account-content">
+
+                <!-- Overview Tab -->
+                <div class="tab-content active" id="tab-overview">
+                    <h2 data-lang="overview">📊 Overview</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fa-solid fa-box"></i>
+                            <div>
+                                <span class="stat-number" id="order-count">0</span>
+                                <span class="stat-label" data-lang="totalOrders">Total Orders</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fa-solid fa-heart"></i>
+                            <div>
+                                <span class="stat-number" id="wishlist-count-stat">0</span>
+                                <span class="stat-label" data-lang="wishlistItems">Wishlist Items</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <div>
+                                <span class="stat-number" id="cart-count-stat">0</span>
+                                <span class="stat-label" data-lang="cartItems">Cart Items</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-orders">
+                        <h3 data-lang="recentOrders">📦 Recent Orders</h3>
+                        <div id="recent-orders-list">
+                            <p style="color:var(--text2);" data-lang="noOrders">No orders yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Tab -->
+                <div class="tab-content" id="tab-orders">
+                    <h2 data-lang="myOrders">📦 My Orders</h2>
+                    <div id="orders-list">
+                        <p style="color:var(--text2);" data-lang="noOrdersPlaced">No orders placed yet.</p>
+                    </div>
+                </div>
+
+                <!-- Wishlist Tab -->
+                <div class="tab-content" id="tab-wishlist">
+                    <h2 data-lang="wishlist">❤️ My Wishlist</h2>
+                    <div id="wishlist-list">
+                        <p style="color:var(--text2);" data-lang="noWishlist">No items in wishlist.</p>
+                    </div>
+                </div>
+
+                <!-- Profile Tab -->
+                <div class="tab-content" id="tab-profile">
+                    <h2 data-lang="profileSettings">✏️ Profile Settings</h2>
+                    <form id="profile-form" onsubmit="updateProfile(event)">
+                        <div class="form-group">
+                            <label for="profile-full-name" data-lang="fullName">Full Name</label>
+                            <input type="text" id="profile-full-name" placeholder="Enter your full name" data-lang="fullNamePlaceholder">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-email-input" data-lang="emailAddress">Email Address</label>
+                            <input type="email" id="profile-email-input" placeholder="Enter your email" data-lang="emailPlaceholder">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-phone-input" data-lang="phoneNumber">Phone Number</label>
+                            <input type="tel" id="profile-phone-input" placeholder="Enter your phone number" data-lang="phonePlaceholder">
+                        </div>
+
+                        <button type="submit" class="save-btn" data-lang="saveChanges">💾 Save Changes</button>
+                    </form>
+                </div>
+
+                <!-- Addresses Tab -->
+                <div class="tab-content" id="tab-addresses">
+                    <h2 data-lang="addresses">📍 Saved Addresses</h2>
+                    <div id="addresses-list">
+                        <p style="color:var(--text2);" data-lang="noAddresses">No saved addresses.</p>
+                    </div>
+                    <button class="add-address-btn" onclick="addAddress()" data-lang="addNewAddress">
+                        <i class="fa-solid fa-plus"></i> Add New Address
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-box">
+                <h2 data-lang="brandName">MS Computer</h2>
+                <p data-lang="footerDescription">A store specialized in selling computer products and gaming accessories at the best prices.</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="quickLinks">Quick Links</h3>
+                <a href="ms.html" data-lang="home">Home</a>
+                <a href="products.html" data-lang="products">Products</a>
+                <a href="services.html" data-lang="services">Services</a>
+                <a href="contact.html" data-lang="contact">Contact</a>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="customerService">Customer Service</h3>
+                <p>📞 01021451009</p>
+                <p>📧 ms.computer355@gmail.com</p>
+                <p data-lang="location">📍 Alexandria, Egypt</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="followUs">Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61590888077261&locale=ar_AR"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/ms.computer355/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ms.computer355"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@MSComputer-b2p"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright" data-lang="copyright">© 2026 MS Computer. All Rights Reserved.</div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-text" data-lang="addedToCart">Product Added Successfully</span>
+    </div>
+
+    <!-- ===== MOBILE DOCK ===== -->
+    <nav class="mobile-dock">
+        <a href="ms.html"><i class="fa-solid fa-house"></i></a>
+        <a href="products.html"><i class="fa-solid fa-box"></i></a>
+        <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="account.html" class="active"><i class="fa-solid fa-user"></i></a>
+    </nav>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== WHATSAPP ===== -->
+    <a href="https://wa.me/201021451009" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/ms.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/account.js"></script>
+</body>
+
+</html>

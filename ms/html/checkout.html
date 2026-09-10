@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - MS Computer</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/ms.css">
+
+    <!-- Checkout CSS -->
+    <link rel="stylesheet" href="../css/checkout.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="ms.html" class="logo">
+            <img src="../photos/logo.png" alt="MS Computer">
+        </a>
+
+        <div class="top-info" data-lang="freeShipping">🚚 Free Shipping Over 2000 EGP</div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="ms.html" data-lang="home">Home</a></li>
+            <li><a href="products.html" data-lang="products">Products</a></li>
+            <li><a href="services.html" data-lang="services">Services</a></li>
+            <li><a href="about.html" data-lang="about">About</a></li>
+            <li><a href="contact.html" data-lang="contact">Contact</a></li>
+        </ul>
+
+        <div class="right-side">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-box" placeholder="Search Products..." autocomplete="off" data-lang="searchPlaceholder">
+                </div>
+                <div id="search-suggestions"></div>
+            </div>
+
+            <div class="language-selector">
+                <button id="language-btn">
+                    🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div data-lang="en">🇺🇸 English</div>
+                    <div data-lang="ar">🇪🇬 العربية</div>
+                    <div data-lang="fr">🇫🇷 Français</div>
+                    <div data-lang="de">🇩🇪 Deutsch</div>
+                    <div data-lang="es">🇪🇸 Español</div>
+                    <div data-lang="it">🇮🇹 Italiano</div>
+                    <div data-lang="tr">🇹🇷 Türkçe</div>
+                    <div data-lang="ru">🇷🇺 Русский</div>
+                    <div data-lang="zh">🇨🇳 中文</div>
+                    <div data-lang="ja">🇯🇵 日本語</div>
+                </div>
+            </div>
+
+            <div class="wishlist-icon">
+                <a href="wishlist.html">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="wishlist-count">0</span>
+                </a>
+            </div>
+
+            <div class="nav-icons">
+                <a href="cart.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="account-area">
+                <div id="nav-user">
+                    <a href="login.html" data-lang="login">Login</a>
+                </div>
+                <div class="user-menu" id="user-menu" style="display:none;">
+                    <div class="user-btn" id="user-btn">
+                        <img id="user-image" src="photos/default-avatar.png" alt="User">
+                        <span>▼</span>
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <a href="account.html" data-lang="myAccount">👤 My Account</a>
+                        <a href="#" id="dark-mode" data-lang="nightMode">🌙 Night Mode</a>
+                        <a href="#" id="light-mode" data-lang="lightMode">☀️ Light Mode</a>
+                        <a href="#" id="logout-btn" data-lang="logout">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu" id="menuBtn">☰</div>
+        </div>
+    </nav>
+
+    <!-- ========================================= -->
+    <!-- CHECKOUT PAGE CONTENT -->
+    <!-- ========================================= -->
+
+    <section class="checkout-page">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 data-lang="checkout">💳 Checkout</h1>
+            <p data-lang="checkoutSubtitle">Complete your order with confidence</p>
+        </div>
+
+        <!-- Checkout Grid -->
+        <div class="checkout-grid">
+
+            <!-- Billing Details -->
+            <div class="billing-details">
+                <h2 data-lang="billingDetails">📋 Billing Details</h2>
+                <form id="checkout-form" onsubmit="handleCheckout(event)">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="full-name" data-lang="fullName">Full Name *</label>
+                            <input type="text" id="full-name" placeholder="Enter your full name" data-lang="fullNamePlaceholder" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" data-lang="phoneNumber">Phone Number *</label>
+                            <input type="tel" id="phone" placeholder="01012345678" data-lang="phonePlaceholder" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" data-lang="emailAddress">Email Address *</label>
+                        <input type="email" id="email" placeholder="you@example.com" data-lang="emailPlaceholder" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address" data-lang="streetAddress">Street Address *</label>
+                        <input type="text" id="address" placeholder="123 Main Street, Building, Apartment" data-lang="addressPlaceholder" required>
+                    </div>
+
+                    <div class="form-row">
+    <div class="form-group">
+        <label for="city" data-lang="city">City *</label>
+        <input type="text" id="city" placeholder="Alexandria" data-lang="cityPlaceholder" required>
+    </div>
+    <div class="form-group">
+        <label for="governorate" data-lang="governorate">Governorate *</label>
+        <select id="governorate" required>
+    <option value="" data-lang="selectGovernorate">اختر المحافظة</option>
+    <option value="Alexandria" data-lang="govAlexandria">الإسكندرية</option>
+    <option value="Cairo" data-lang="govCairo">القاهرة</option>
+    <option value="Giza" data-lang="govGiza">الجيزة</option>
+    <option value="Port Said" data-lang="govPortSaid">بورسعيد</option>
+    <option value="Suez" data-lang="govSuez">السويس</option>
+    <option value="Dakahlia" data-lang="govDakahlia">الدقهلية</option>
+    <option value="Beheira" data-lang="govBeheira">البحيرة</option>
+    <option value="Gharbia" data-lang="govGharbia">الغربية</option>
+    <option value="Menoufia" data-lang="govMenoufia">المنوفية</option>
+    <option value="Sharqia" data-lang="govSharqia">الشرقية</option>
+    <option value="Kafr El Sheikh" data-lang="govKafrElSheikh">كفر الشيخ</option>
+    <option value="Qalyubia" data-lang="govQalyubia">القليوبية</option>
+    <option value="Damietta" data-lang="govDamietta">دمياط</option>
+    <option value="Ismailia" data-lang="govIsmailia">الإسماعيلية</option>
+    <option value="North Sinai" data-lang="govNorthSinai">شمال سيناء</option>
+    <option value="South Sinai" data-lang="govSouthSinai">جنوب سيناء</option>
+    <option value="Sohag" data-lang="govSohag">سوهاج</option>
+    <option value="Qena" data-lang="govQena">قنا</option>
+    <option value="Luxor" data-lang="govLuxor">الأقصر</option>
+    <option value="Aswan" data-lang="govAswan">أسوان</option>
+    <option value="Red Sea" data-lang="govRedSea">البحر الأحمر</option>
+    <option value="Matrouh" data-lang="govMatrouh">مطروح</option>
+    <option value="New Valley" data-lang="govNewValley">الوادي الجديد</option>
+    <option value="Beni Suef" data-lang="govBeniSuef">بني سويف</option>
+    <option value="Faiyum" data-lang="govFaiyum">الفيوم</option>
+    <option value="Minya" data-lang="govMinya">المنيا</option>
+    <option value="Asyut" data-lang="govAsyut">أسيوط</option>
+</select>
+    </div>
+</div>
+
+                    <div class="form-group">
+                        <label for="notes" data-lang="orderNotes">Order Notes (Optional)</label>
+                        <textarea id="notes" rows="3" placeholder="Any special delivery instructions..." data-lang="notesPlaceholder"></textarea>
+                    </div>
+
+<!-- Payment Method -->
+<div class="payment-methods">
+    <h3 data-lang="paymentMethod">💳 Payment Method</h3>
+    <div class="payment-options">
+        <label class="payment-option">
+            <input type="radio" name="payment" value="cash" checked onclick="showPaymentDetails('cash')">
+            <span data-lang="cashOnDelivery">💵 Cash on Delivery</span>
+        </label>
+        <label class="payment-option">
+            <input type="radio" name="payment" value="vodafone" onclick="showPaymentDetails('vodafone')">
+            <span data-lang="vodafoneCash">📱 Vodafone Cash</span>
+        </label>
+        <label class="payment-option">
+            <input type="radio" name="payment" value="instapay" onclick="showPaymentDetails('instapay')">
+            <span data-lang="instapay">🏦 InstaPay</span>
+        </label>
+    </div>
+
+    <!-- Payment Details -->
+    <div id="payment-details" style="display:none; margin-top: 20px; padding: 24px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border);">
+        <div id="payment-info"></div>
+
+        <!-- ✅ حقل رفع الصورة (يظهر فقط لـ فودافون كاش وإنستا باي) -->
+        <div id="screenshot-upload" style="display:none; margin-top: 16px;">
+            <div class="form-group">
+                <label for="transfer-screenshot" data-lang="uploadScreenshot">Upload Transfer Screenshot</label>
+                <input type="file" id="transfer-screenshot" accept="image/*">
+                <small style="color:var(--text3); display:block; margin-top:4px;" data-lang="uploadScreenshotHint">Please upload a screenshot of the transfer confirmation</small>
+            </div>
+            <div id="screenshot-preview" style="display:none; margin-top:12px;">
+                <img id="screenshot-preview-img" src="#" alt="Screenshot Preview" style="max-width:150px; max-height:150px; border-radius:8px; border:1px solid var(--border);">
+            </div>
+        </div>
+    </div>
+</div>
+                    <button type="submit" class="place-order-btn" data-lang="placeOrder">
+                        <i class="fa-solid fa-check"></i> Place Order
+                    </button>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h2 data-lang="yourOrder">📦 Your Order</h2>
+
+                <div class="order-items" id="order-items">
+                    <!-- Items will be loaded here by JS -->
+                </div>
+
+                <div class="summary-breakdown">
+                    <div class="summary-row">
+                        <span data-lang="subtotal">Subtotal</span>
+                        <span id="checkout-subtotal">0 EGP</span>
+                    </div>
+                    <div class="summary-row">
+                        <span data-lang="shipping">Shipping</span>
+                        <span id="checkout-shipping">0 EGP</span>
+                    </div>
+                    <div class="summary-row discount-row" id="checkout-discount-row" style="display:none;">
+                        <span data-lang="discount">Discount</span>
+                        <span id="checkout-discount">0 EGP</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span data-lang="total">Total</span>
+                        <span id="checkout-total">0 EGP</span>
+                    </div>
+                </div>
+
+                <div class="secure-checkout">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <p data-lang="secureCheckout">🔒 Secure checkout. Your information is safe with us.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-box">
+                <h2 data-lang="brandName">MS Computer</h2>
+                <p data-lang="footerDescription">A store specialized in selling computer products and gaming accessories at the best prices.</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="quickLinks">Quick Links</h3>
+                <a href="ms.html" data-lang="home">Home</a>
+                <a href="products.html" data-lang="products">Products</a>
+                <a href="services.html" data-lang="services">Services</a>
+                <a href="contact.html" data-lang="contact">Contact</a>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="customerService">Customer Service</h3>
+                <p>📞 01021451009</p>
+                <p>📧 ms.computer355@gmail.com</p>
+                <p data-lang="location">📍 Alexandria, Egypt</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="followUs">Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61590888077261&locale=ar_AR"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/ms.computer355/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ms.computer355"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@MSComputer-b2p"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright" data-lang="copyright">© 2026 MS Computer. All Rights Reserved.</div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-text" data-lang="addedToCart">Product Added Successfully</span>
+    </div>
+
+    <!-- ===== MOBILE DOCK ===== -->
+    <nav class="mobile-dock">
+        <a href="ms.html"><i class="fa-solid fa-house"></i></a>
+        <a href="products.html"><i class="fa-solid fa-box"></i></a>
+        <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="account.html"><i class="fa-solid fa-user"></i></a>
+    </nav>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== WHATSAPP ===== -->
+    <a href="https://wa.me/201021451009" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/ms.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/checkout.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - MS Computer</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/ms.css">
+
+    <!-- Cart CSS -->
+    <link rel="stylesheet" href="../css/cart.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="ms.html" class="logo">
+            <img src="../photos/logo.png" alt="MS Computer">
+        </a>
+
+        <div class="top-info" data-lang="freeShipping">🚚 Free Shipping Over 2000 EGP</div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="ms.html" data-lang="home">Home</a></li>
+            <li><a href="products.html" data-lang="products">Products</a></li>
+            <li><a href="services.html" data-lang="services">Services</a></li>
+            <li><a href="about.html" data-lang="about">About</a></li>
+            <li><a href="contact.html" data-lang="contact">Contact</a></li>
+        </ul>
+
+        <div class="right-side">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-box" placeholder="Search Products..." autocomplete="off" data-lang="searchPlaceholder">
+                </div>
+                <div id="search-suggestions"></div>
+            </div>
+
+            <div class="language-selector">
+                <button id="language-btn">
+                    🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div data-lang="en">🇺🇸 English</div>
+                    <div data-lang="ar">🇪🇬 العربية</div>
+                    <div data-lang="fr">🇫🇷 Français</div>
+                    <div data-lang="de">🇩🇪 Deutsch</div>
+                    <div data-lang="es">🇪🇸 Español</div>
+                    <div data-lang="it">🇮🇹 Italiano</div>
+                    <div data-lang="tr">🇹🇷 Türkçe</div>
+                    <div data-lang="ru">🇷🇺 Русский</div>
+                    <div data-lang="zh">🇨🇳 中文</div>
+                    <div data-lang="ja">🇯🇵 日本語</div>
+                </div>
+            </div>
+
+            <div class="wishlist-icon">
+                <a href="wishlist.html">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="wishlist-count">0</span>
+                </a>
+            </div>
+
+            <div class="nav-icons">
+                <a href="cart.html" class="active">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="account-area">
+                <div id="nav-user">
+                    <a href="login.html" data-lang="login">Login</a>
+                </div>
+                <div class="user-menu" id="user-menu" style="display:none;">
+                    <div class="user-btn" id="user-btn">
+                        <img id="user-image" src="photos/default-avatar.png" alt="User">
+                        <span>▼</span>
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <a href="account.html" data-lang="myAccount">👤 My Account</a>
+                        <a href="#" id="dark-mode" data-lang="nightMode">🌙 Night Mode</a>
+                        <a href="#" id="light-mode" data-lang="lightMode">☀️ Light Mode</a>
+                        <a href="#" id="logout-btn" data-lang="logout">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu" id="menuBtn">☰</div>
+        </div>
+    </nav>
+
+    <!-- ========================================= -->
+    <!-- CART PAGE CONTENT -->
+    <!-- ========================================= -->
+
+    <section class="cart-page">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 data-lang="cart">🛒 Your Cart</h1>
+            <p data-lang="cartSubtitle">Review your items and proceed to checkout</p>
+        </div>
+
+        <!-- Cart Content -->
+        <div class="cart-content">
+
+            <!-- Cart Items -->
+            <div class="cart-items" id="cart-items">
+                <!-- Items will be loaded here by JS -->
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="cart-summary" id="cart-summary">
+                <h2 data-lang="orderSummary">Order Summary</h2>
+                <div class="summary-row">
+                    <span data-lang="subtotal">Subtotal</span>
+                    <span id="subtotal">0 EGP</span>
+                </div>
+                <div class="summary-row">
+                    <span data-lang="shipping">Shipping</span>
+                    <span id="shipping">0 EGP</span>
+                </div>
+                <div class="summary-row discount-row" id="discount-row" style="display:none;">
+                    <span data-lang="discount">Discount</span>
+                    <span id="discount">0 EGP</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span data-lang="total">Total</span>
+                    <span id="total">0 EGP</span>
+                </div>
+
+                <div class="promo-code">
+                    <input type="text" id="promo-input" placeholder="Enter promo code" data-lang="promoCode">
+                    <button id="apply-promo" data-lang="apply">Apply</button>
+                </div>
+
+                <a href="checkout.html" class="checkout-btn" id="checkout-btn" data-lang="proceedToCheckout">
+                    Proceed to Checkout <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+                <a href="products.html" class="continue-shopping" data-lang="continueShopping">
+                    <i class="fa-solid fa-arrow-left"></i> Continue Shopping
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Empty Cart -->
+        <div class="empty-cart" id="empty-cart" style="display:none;">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <h2 data-lang="emptyCart">Your Cart is Empty</h2>
+            <p data-lang="emptyCartText">Looks like you haven't added any items to your cart yet.</p>
+            <a href="products.html" class="shop-btn" data-lang="startShopping">Start Shopping</a>
+        </div>
+
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-box">
+                <h2 data-lang="brandName">MS Computer</h2>
+                <p data-lang="footerDescription">A store specialized in selling computer products and gaming accessories at the best prices.</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="quickLinks">Quick Links</h3>
+                <a href="ms.html" data-lang="home">Home</a>
+                <a href="products.html" data-lang="products">Products</a>
+                <a href="services.html" data-lang="services">Services</a>
+                <a href="contact.html" data-lang="contact">Contact</a>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="customerService">Customer Service</h3>
+                <p>📞 01021451009</p>
+                <p>📧 ms.computer355@gmail.com</p>
+                <p data-lang="location">📍 Alexandria, Egypt</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="followUs">Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61590888077261&locale=ar_AR"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/ms.computer355/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ms.computer355"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@MSComputer-b2p"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright" data-lang="copyright">© 2026 MS Computer. All Rights Reserved.</div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-text" data-lang="addedToCart">Product Added Successfully</span>
+    </div>
+
+    <!-- ===== MOBILE DOCK ===== -->
+    <nav class="mobile-dock">
+        <a href="ms.html"><i class="fa-solid fa-house"></i></a>
+        <a href="products.html"><i class="fa-solid fa-box"></i></a>
+        <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="cart.html" class="active"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="account.html"><i class="fa-solid fa-user"></i></a>
+    </nav>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== WHATSAPP ===== -->
+    <a href="https://wa.me/201021451009" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/ms.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/cart.js"></script>
+</body>
+
+</html>

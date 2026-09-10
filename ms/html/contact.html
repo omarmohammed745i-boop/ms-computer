@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - MS Computer</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/ms.css">
+
+    <!-- Contact CSS -->
+    <link rel="stylesheet" href="../css/contact.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="ms.html" class="logo">
+            <img src="../photos/logo.png" alt="MS Computer">
+        </a>
+
+        <div class="top-info" data-lang="freeShipping">🚚 Free Shipping Over 2000 EGP</div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="ms.html" data-lang="home">Home</a></li>
+            <li><a href="products.html" data-lang="products">Products</a></li>
+            <li><a href="services.html" data-lang="services">Services</a></li>
+            <li><a href="about.html" data-lang="about">About</a></li>
+            <li><a href="contact.html" class="active" data-lang="contact">Contact</a></li>
+        </ul>
+
+        <div class="right-side">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-box" placeholder="Search Products..." autocomplete="off" data-lang="searchPlaceholder">
+                </div>
+                <div id="search-suggestions"></div>
+            </div>
+
+            <div class="language-selector">
+                <button id="language-btn">
+                    🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div data-lang="en">🇺🇸 English</div>
+                    <div data-lang="ar">🇪🇬 العربية</div>
+                    <div data-lang="fr">🇫🇷 Français</div>
+                    <div data-lang="de">🇩🇪 Deutsch</div>
+                    <div data-lang="es">🇪🇸 Español</div>
+                    <div data-lang="it">🇮🇹 Italiano</div>
+                    <div data-lang="tr">🇹🇷 Türkçe</div>
+                    <div data-lang="ru">🇷🇺 Русский</div>
+                    <div data-lang="zh">🇨🇳 中文</div>
+                    <div data-lang="ja">🇯🇵 日本語</div>
+                </div>
+            </div>
+
+            <div class="wishlist-icon">
+                <a href="wishlist.html">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="wishlist-count">0</span>
+                </a>
+            </div>
+
+            <div class="nav-icons">
+                <a href="cart.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="account-area">
+                <div id="nav-user">
+                    <a href="login.html" data-lang="login">Login</a>
+                </div>
+                <div class="user-menu" id="user-menu" style="display:none;">
+                    <div class="user-btn" id="user-btn">
+                        <img id="user-image" src="photos/default-avatar.png" alt="User">
+                        <span>▼</span>
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <a href="account.html" data-lang="myAccount">👤 My Account</a>
+                        <a href="#" id="dark-mode" data-lang="nightMode">🌙 Night Mode</a>
+                        <a href="#" id="light-mode" data-lang="lightMode">☀️ Light Mode</a>
+                        <a href="#" id="logout-btn" data-lang="logout">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu" id="menuBtn">☰</div>
+        </div>
+    </nav>
+
+    <!-- ========================================= -->
+    <!-- CONTACT PAGE CONTENT -->
+    <!-- ========================================= -->
+
+    <section class="contact-page">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 data-lang="contact">📞 Contact Us</h1>
+            <p data-lang="contactSubtitle">We'd love to hear from you — get in touch with us today!</p>
+        </div>
+
+        <!-- Contact Grid -->
+        <div class="contact-grid">
+
+            <!-- Contact Info -->
+            <div class="contact-info hidden">
+                <h2 data-lang="getInTouch">Get In Touch</h2>
+                <p data-lang="contactText">Have a question, feedback, or need assistance? We're here to help. Reach out to us through any of the channels below.</p>
+
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h4 data-lang="phone">Phone</h4>
+                            <p>01021451009</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h4 data-lang="email">Email</h4>
+                            <p>ms.computer355@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h4 data-lang="location">Location</h4>
+                            <p data-lang="location">Alexandria, Egypt</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-regular fa-clock"></i>
+                        <div>
+                            <h4 data-lang="workingHours">Working Hours</h4>
+                            <p data-lang="satThu">Sat - Thu: 10:00 AM - 10:00 PM</p>
+                            <p data-lang="friClosed">Friday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="contact-social">
+                    <h3 data-lang="followUs">Follow Us</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=61590888077261&locale=ar_AR" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/ms.computer355/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@ms.computer355" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="https://www.youtube.com/@MSComputer-b2p" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://wa.me/201021451009" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form hidden">
+                <h2 data-lang="sendMessage">Send Us A Message</h2>
+                <form id="contact-form" onsubmit="handleContactForm(event)">
+                    <div class="form-group">
+                        <label for="name" data-lang="yourName">Your Name</label>
+                        <input type="text" id="name" placeholder="Enter your full name" data-lang="namePlaceholder" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-lang="yourEmail">Your Email</label>
+                        <input type="email" id="email" placeholder="Enter your email address" data-lang="emailPlaceholder" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject" data-lang="subject">Subject</label>
+                        <select id="subject" required>
+                            <option value="" data-lang="selectSubject">Select a subject...</option>
+                            <option value="general" data-lang="general">General Inquiry</option>
+                            <option value="orders" data-lang="orderQuestion">Order Question</option>
+                            <option value="products" data-lang="productInfo">Product Information</option>
+                            <option value="services" data-lang="serviceRequest">Service Request</option>
+                            <option value="feedback" data-lang="feedback">Feedback</option>
+                            <option value="other" data-lang="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" data-lang="message">Message</label>
+                        <textarea id="message" rows="5" placeholder="Write your message here..." data-lang="messagePlaceholder" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fa-solid fa-paper-plane"></i> <span data-lang="send">Send Message</span>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-section">
+            <h2 data-lang="findUs">📍 Find Us</h2>
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d109297.31532737655!2d29.88065457963868!3d31.200092217101428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14f5c4a2e7eebd3b%3A0x3d6f8e27a4478d4b!2sAlexandria%2C%20Egypt!5e0!3m2!1sen!2seg!4v1700000000000!5m2!1sen!2seg" 
+                    width="100%" 
+                    height="300" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-box">
+                <h2 data-lang="brandName">MS Computer</h2>
+                <p data-lang="footerDescription">A store specialized in selling computer products and gaming accessories at the best prices.</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="quickLinks">Quick Links</h3>
+                <a href="ms.html" data-lang="home">Home</a>
+                <a href="products.html" data-lang="products">Products</a>
+                <a href="services.html" data-lang="services">Services</a>
+                <a href="contact.html" data-lang="contact">Contact</a>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="customerService">Customer Service</h3>
+                <p>📞 01021451009</p>
+                <p>📧 ms.computer355@gmail.com</p>
+                <p data-lang="location">📍 Alexandria, Egypt</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="followUs">Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61590888077261&locale=ar_AR"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/ms.computer355/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ms.computer355"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@MSComputer-b2p"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright" data-lang="copyright">© 2026 MS Computer. All Rights Reserved.</div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-text" data-lang="addedToCart">Product Added Successfully</span>
+    </div>
+
+    <!-- ===== MOBILE DOCK ===== -->
+    <nav class="mobile-dock">
+        <a href="ms.html"><i class="fa-solid fa-house"></i></a>
+        <a href="products.html"><i class="fa-solid fa-box"></i></a>
+        <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="account.html"><i class="fa-solid fa-user"></i></a>
+    </nav>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== WHATSAPP ===== -->
+    <a href="https://wa.me/201021451009" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/ms.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/contact.js"></script>
+</body>
+
+</html>

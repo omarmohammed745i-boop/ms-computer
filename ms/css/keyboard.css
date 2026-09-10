@@ -1,0 +1,416 @@
+/* =========================
+   KEYBOARD PAGE
+========================= */
+
+
+body{
+
+    background:var(--bg-color);
+
+}
+
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+
+.container{
+
+
+    width:95%;
+
+
+    max-width:1400px;
+
+
+    margin:40px auto;
+
+
+    display:flex;
+
+
+    gap:40px;
+
+
+    background:var(--card-color);
+
+
+    padding:35px;
+
+
+    border-radius:18px;
+
+
+    box-shadow:0 8px 25px rgba(0,0,0,.35);
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+/* =========================
+   IMAGES
+========================= */
+
+
+.product-images{
+
+    flex:1;
+
+}
+
+
+
+#mainImage{
+
+
+    width:100%;
+
+
+    border-radius:15px;
+
+
+    background:#fff;
+
+
+    padding:10px;
+
+
+}
+
+
+
+.gallery{
+
+
+    display:flex;
+
+
+    gap:12px;
+
+
+    margin-top:20px;
+
+
+    flex-wrap:wrap;
+
+
+}
+
+
+
+.gallery img{
+
+
+    width:90px;
+
+
+    height:90px;
+
+
+    object-fit:cover;
+
+
+    border-radius:10px;
+
+
+    cursor:pointer;
+
+
+    border:2px solid transparent;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.gallery img:hover{
+
+
+    border-color:var(--primary);
+
+
+    transform:scale(1.05);
+
+
+}
+
+
+
+
+
+/* =========================
+   PRODUCT INFO
+========================= */
+
+
+.product-info{
+
+    flex:1;
+
+}
+
+
+
+.product-info h1{
+
+
+    color:var(--text-color);
+
+
+    font-size:34px;
+
+
+    margin-bottom:15px;
+
+
+}
+
+
+
+.product-info h2{
+
+
+    color:var(--primary);
+
+
+    font-size:32px;
+
+
+    margin-bottom:20px;
+
+
+}
+
+
+
+.product-info p{
+
+
+    color:var(--second-text);
+
+
+    line-height:1.9;
+
+
+    margin-bottom:25px;
+
+
+}
+
+
+
+
+
+/* =========================
+   LISTS
+========================= */
+
+
+.specs,
+.box{
+
+
+    margin-top:25px;
+
+
+}
+
+
+
+.specs li,
+.box li{
+
+
+    list-style:none;
+
+
+    color:var(--second-text);
+
+
+    padding:14px 0;
+
+
+    border-bottom:1px solid var(--border-color);
+
+
+}
+
+
+
+.specs strong{
+
+
+    color:var(--primary);
+
+
+}
+
+
+
+.product-info h3{
+
+
+    color:var(--text-color);
+
+
+    margin:25px 0 15px;
+
+
+}
+
+
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+
+.product-buttons,
+.buttons{
+
+
+    display:flex;
+
+
+    gap:15px;
+
+
+    margin-top:30px;
+
+
+    flex-wrap:wrap;
+
+
+}
+
+
+
+
+.product-buttons button,
+.buy-btn{
+
+
+    flex:1;
+
+
+    min-width:180px;
+
+
+    padding:15px;
+
+
+    border:none;
+
+
+    border-radius:10px;
+
+
+    cursor:pointer;
+
+
+    font-size:17px;
+
+
+    font-weight:bold;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.product-buttons button:first-child,
+.buy-btn:first-child{
+
+
+    background:var(--primary);
+
+
+    color:white;
+
+
+}
+
+
+
+.product-buttons button:last-child,
+.buy-btn:last-child{
+
+
+    background:var(--input-color);
+
+
+    color:var(--text-color);
+
+
+}
+
+
+
+.product-buttons button:hover,
+.buy-btn:hover{
+
+
+    transform:translateY(-3px);
+
+
+}
+
+
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+
+@media(max-width:900px){
+
+
+    .container{
+
+
+        flex-direction:column;
+
+
+        padding:20px;
+
+
+    }
+
+
+
+    .gallery{
+
+
+        justify-content:center;
+
+
+    }
+
+
+
+    .product-buttons,
+    .buttons{
+
+
+        flex-direction:column;
+
+
+    }
+
+
+}

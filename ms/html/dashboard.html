@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | MS Admin</title>
+
+<link rel="stylesheet" href="../css/admin.css">
+<link rel="stylesheet" href="../css/dashboard.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard">
+
+
+<aside class="sidebar">
+
+<h2>MS Admin</h2>
+
+
+<ul>
+
+<li class="active">
+<a href="dashboard.html">
+
+<i class="fa-solid fa-chart-line"></i>
+
+Dashboard
+
+</a>
+</li>
+
+
+
+<li>
+<a href="add-product.html">
+
+<i class="fa-solid fa-plus"></i>
+
+Add Product
+
+</a>
+</li>
+
+
+
+<li>
+<a href="editing.html">
+
+<i class="fa-solid fa-pen"></i>
+
+Edit Products
+
+</a>
+</li>
+
+
+
+<li>
+<a href="deleting.html">
+
+<i class="fa-solid fa-trash"></i>
+
+Delete Products
+
+</a>
+</li>
+
+
+
+<li>
+<a href="orders.html">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+Orders
+
+</a>
+</li>
+
+
+
+<li>
+<a href="users.html">
+
+<i class="fa-solid fa-users"></i>
+
+Users
+
+</a>
+</li>
+
+
+
+<li>
+<a href="settings.html">
+
+<i class="fa-solid fa-gear"></i>
+
+Settings
+
+</a>
+</li>
+
+
+</ul>
+
+</aside>
+
+
+
+
+
+<main class="admin-content">
+
+
+<h1>
+Dashboard
+</h1>
+
+
+
+<div class="stats">
+
+
+
+<div class="stat-card">
+
+<i class="fa-solid fa-box"></i>
+
+<div>
+
+<h3>
+Products
+</h3>
+
+<span id="products-count">
+0
+</span>
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+<div>
+
+<h3>
+Orders
+</h3>
+
+<span id="orders-count">
+0
+</span>
+
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="stat-card">
+
+<i class="fa-solid fa-users"></i>
+
+<div>
+
+<h3>
+Users
+</h3>
+
+<span id="users-count">
+0
+</span>
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+<div class="stat-card">
+
+<i class="fa-solid fa-money-bill"></i>
+
+<div>
+
+<h3>
+Revenue
+</h3>
+
+<span id="revenue">
+0 EGP
+</span>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<section class="dashboard-section">
+
+
+<h2>
+Latest Products
+</h2>
+
+
+<div class="table-box">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+Image
+</th>
+
+
+<th>
+Name
+</th>
+
+
+<th>
+Category
+</th>
+
+
+<th>
+Price
+</th>
+
+
+</tr>
+
+</thead>
+
+
+<tbody id="latest-products">
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<section class="dashboard-section">
+
+
+<h2>
+Latest Orders
+</h2>
+
+
+
+<div class="table-box">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+ID
+</th>
+
+<th>
+Customer
+</th>
+
+<th>
+Total
+</th>
+
+<th>
+Status
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+<tbody id="latest-orders">
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+
+</div>
+
+
+
+
+
+<script src="../js/dashboard.js"></script>
+
+
+</body>
+
+</html>

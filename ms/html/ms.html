@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS Computer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/ms.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="ms.html" class="logo">
+            <img src="../photos/logo.png" alt="MS Computer">
+        </a>
+
+        <div class="top-info" data-lang="freeShipping">🚚 Free Shipping Over 2000 EGP</div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="ms.html" data-lang="home">Home</a></li>
+            <li><a href="products" data-lang="products">Products</a></li>
+            <li><a href="services.html" data-lang="services">Services</a></li>
+            <li><a href="about.html" data-lang="about">About</a></li>
+            <li><a href="contact.html" data-lang="contact">Contact</a></li>
+        </ul>
+
+        <div class="right-side">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-box" placeholder="Search Products..." autocomplete="off" data-lang="searchPlaceholder">
+                </div>
+                <div id="search-suggestions"></div>
+            </div>
+
+            <div class="language-selector">
+                <button id="language-btn">
+                    🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div data-lang="en">🇺🇸 English</div>
+                    <div data-lang="ar">🇪🇬 العربية</div>
+                    <div data-lang="fr">🇫🇷 Français</div>
+                    <div data-lang="de">🇩🇪 Deutsch</div>
+                    <div data-lang="es">🇪🇸 Español</div>
+                    <div data-lang="it">🇮🇹 Italiano</div>
+                    <div data-lang="tr">🇹🇷 Türkçe</div>
+                    <div data-lang="ru">🇷🇺 Русский</div>
+                    <div data-lang="zh">🇨🇳 中文</div>
+                    <div data-lang="ja">🇯🇵 日本語</div>
+                </div>
+            </div>
+
+            <div class="wishlist-icon">
+                <a href="wishlist.html">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="wishlist-count">0</span>
+                </a>
+            </div>
+
+            <div class="nav-icons">
+                <a href="cart.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="account-area">
+                <div id="nav-user">
+                    <a href="login.html" data-lang="login">Login</a>
+                </div>
+                <div class="user-menu" id="user-menu" style="display:none;">
+                    <div class="user-btn" id="user-btn">
+                        <img id="user-image" src="../photos/default-avatar.png" alt="User">
+                        <span>▼</span>
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <a href="account.html" data-lang="myAccount">👤 My Account</a>
+                        <a href="#" id="dark-mode" data-lang="nightMode">🌙 Night Mode</a>
+                        <a href="#" id="light-mode" data-lang="lightMode">☀️ Light Mode</a>
+                        <a href="#" id="logout-btn" data-lang="logout">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu" id="menuBtn">☰</div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 data-lang="heroTitle">Build Your Dream Gaming Setup</h1>
+            <p data-lang="heroText">Gaming Keyboards • Mouse • Headsets • Accessories</p>
+            <div class="hero-buttons">
+                <a href="products" class="shop-btn" data-lang="shopNow">Shop Now</a>
+                <a href="services.html" class="service-btn" data-lang="ourServices">Our Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CATEGORIES ===== -->
+    <section class="categories">
+        <div class="categories-header">
+            <div>
+                <h2 data-lang="shopByCategory">Shop By Category</h2>
+                <p data-lang="findEverything">Find everything you need for your perfect setup.</p>
+            </div>
+            <button id="discover-categories" class="discover-btn">
+                <span data-lang="discoverMore">Discover More Categories</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="category-container">
+            <!-- ✅ كل الكاتيجوريز بـ products?category= -->
+            <a href="products?category=Keyboards" class="category-card">
+                <div class="category-icon">⌨️</div>
+                <span data-lang="categoryKeyboards">Keyboards</span>
+            </a>
+            <a href="products?category=Mouses" class="category-card">
+                <div class="category-icon">🖱️</div>
+                <span data-lang="categoryMouses">Mouses</span>
+            </a>
+            <a href="products?category=Headsets" class="category-card">
+                <div class="category-icon">🎧</div>
+                <span data-lang="categoryHeadsets">Headsets</span>
+            </a>
+            <a href="products?category=Mouse Pads" class="category-card">
+                <div class="category-icon">🟪</div>
+                <span data-lang="categoryMousePads">Mouse Pads</span>
+            </a>
+            <a href="products?category=Laptops" class="category-card">
+                <div class="category-icon">💻</div>
+                <span data-lang="categoryLaptops">Laptops</span>
+            </a>
+
+            <!-- Hidden Categories -->
+            <a href="products?category=Monitors" class="category-card hidden-category">
+                <div class="category-icon">🖥️</div>
+                <span data-lang="categoryMonitors">Monitors</span>
+            </a>
+            <a href="products?category=PC Parts" class="category-card hidden-category">
+                <div class="category-icon">⚙️</div>
+                <span data-lang="categoryPCParts">PC Parts</span>
+            </a>
+            <a href="products?category=Accessories" class="category-card hidden-category">
+                <div class="category-icon">🎮</div>
+                <span data-lang="categoryAccessories">Accessories</span>
+            </a>
+            <a href="products?category=PC Cases" class="category-card hidden-category">
+                <div class="category-icon">🖥️</div>
+                <span data-lang="categoryPCCases">PC Cases</span>
+            </a>
+            <a href="products?category=Cooling" class="category-card hidden-category">
+                <div class="category-icon">❄️</div>
+                <span data-lang="categoryCooling">Cooling</span>
+            </a>
+            <a href="products?category=Power Supplies" class="category-card hidden-category">
+                <div class="category-icon">🔌</div>
+                <span data-lang="categoryPowerSupplies">Power Supplies</span>
+            </a>
+            <a href="products?category=RAM" class="category-card hidden-category">
+                <div class="category-icon">💾</div>
+                <span data-lang="categoryRAM">RAM</span>
+            </a>
+            <a href="products?category=Processors" class="category-card hidden-category">
+                <div class="category-icon">🧠</div>
+                <span data-lang="categoryProcessors">Processors</span>
+            </a>
+            <a href="products?category=Graphics Cards" class="category-card hidden-category">
+                <div class="category-icon">🎞️</div>
+                <span data-lang="categoryGraphicsCards">Graphics Cards</span>
+            </a>
+            <a href="products?category=Storage" class="category-card hidden-category">
+                <div class="category-icon">💽</div>
+                <span data-lang="categoryStorage">Storage</span>
+            </a>
+            <a href="products?category=Microphones" class="category-card hidden-category">
+                <div class="category-icon">🎙️</div>
+                <span data-lang="categoryMicrophones">Microphones</span>
+            </a>
+            <a href="products?category=Controllers" class="category-card hidden-category">
+                <div class="category-icon">🎮</div>
+                <span data-lang="categoryControllers">Controllers</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FEATURED PRODUCTS ===== -->
+    <section class="products">
+        <h2 class="section-title" data-lang="featuredProducts">Featured Products</h2>
+        <div id="products-container" class="product-container"></div>
+    </section>
+
+    <!-- ===== SPECIAL SECTIONS ===== -->
+    <section class="special-sections">
+        <div class="special-box">
+            <h2 data-lang="hotDeals">🔥 Hot Deals</h2>
+            <p data-lang="hotDealsText">Best deals and discounts on gaming products.</p>
+            <a href="products" data-lang="viewDeals">View Deals</a>
+        </div>
+        <div class="special-box">
+            <h2 data-lang="bestSellers">⭐ Best Sellers</h2>
+            <p data-lang="bestSellersText">Most requested products from our customers.</p>
+            <a href="products" data-lang="viewProducts">View Products</a>
+        </div>
+        <div class="special-box">
+            <h2 data-lang="newArrivals">🆕 New Arrivals</h2>
+            <p data-lang="newArrivalsText">Latest products available at MS Computer.</p>
+            <a href="products" data-lang="exploreNow">Explore Now</a>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="features">
+        <div class="feature">
+            <div class="icon">💰</div>
+            <h3 data-lang="cashPayment">Cash on Delivery</h3>
+            <p data-lang="cashPaymentText">Order now and pay when you receive the product.</p>
+        </div>
+        <div class="feature">
+            <div class="icon">🚚</div>
+            <h3 data-lang="fastDelivery">Fast Delivery</h3>
+            <p data-lang="fastDeliveryText">Fast and secure shipping to all governorates.</p>
+        </div>
+        <div class="feature">
+            <div class="icon">🛡️</div>
+            <h3 data-lang="warranty">Product Warranty</h3>
+            <p data-lang="warrantyText">Original products with warranty against manufacturing defects.</p>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-box">
+                <h2 data-lang="brandName">MS Computer</h2>
+                <p data-lang="footerDescription">A store specialized in selling computer products and gaming accessories at the best prices.</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="quickLinks">Quick Links</h3>
+                <a href="ms.html" data-lang="home">Home</a>
+                <a href="products" data-lang="products">Products</a>
+                <a href="services.html" data-lang="services">Services</a>
+                <a href="contact.html" data-lang="contact">Contact</a>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="customerService">Customer Service</h3>
+                <p>📞 01021451009</p>
+                <p>📧 ms.computer355@gmail.com</p>
+                <p data-lang="location">📍 Alexandria, Egypt</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="followUs">Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61590888077261&locale=ar_AR"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/ms.computer355/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ms.computer355"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@MSComputer-b2p"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright" data-lang="copyright">© 2026 MS Computer. All Rights Reserved.</div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-text" data-lang="addedToCart">Product Added Successfully</span>
+    </div>
+
+    <!-- ===== MOBILE DOCK ===== -->
+    <nav class="mobile-dock">
+        <a href="ms.html" class="active"><i class="fa-solid fa-house"></i></a>
+        <a href="products"><i class="fa-solid fa-box"></i></a>
+        <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="account.html"><i class="fa-solid fa-user"></i></a>
+    </nav>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== WHATSAPP ===== -->
+    <a href="https://wa.me/201021451009" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/language.js"></script>
+    <script src="../js/ms.js"></script>
+</body>
+
+</html>

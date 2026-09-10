@@ -1,0 +1,663 @@
+/* =====================================
+   MS COMPUTER ADMIN DASHBOARD
+===================================== */
+
+
+.admin-content{
+
+    flex:1;
+
+    padding:40px;
+
+    background:#0f0f0f;
+
+    min-height:100vh;
+
+}
+
+
+
+
+.admin-content h1{
+
+    color:#00d4ff;
+
+    font-size:40px;
+
+    margin-bottom:35px;
+
+}
+
+
+
+
+/* =========================
+   STATS CARDS
+========================= */
+
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:25px;
+
+}
+
+
+
+.stat-card{
+
+
+    background:#161616;
+
+    border:1px solid #2b2b2b;
+
+    border-radius:22px;
+
+    padding:25px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    transition:.3s;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.35);
+
+
+}
+
+
+
+
+.stat-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#00d4ff;
+
+    box-shadow:
+    0 15px 35px rgba(0,212,255,.2);
+
+}
+
+
+
+
+
+.stat-card i{
+
+
+    width:65px;
+
+    height:65px;
+
+    border-radius:18px;
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+    background:
+    linear-gradient(
+    135deg,
+    #00d4ff,
+    #008cff
+    );
+
+
+    color:white;
+
+    font-size:28px;
+
+
+}
+
+
+
+
+
+.stat-card h3{
+
+
+    margin:0;
+
+    color:#aaa;
+
+    font-size:16px;
+
+
+}
+
+
+
+
+.stat-card span{
+
+
+    display:block;
+
+    margin-top:8px;
+
+    color:white;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+
+}
+
+
+
+
+
+/* =========================
+ TABLE SECTIONS
+========================= */
+
+
+.dashboard-section{
+
+
+    margin-top:45px;
+
+
+}
+
+
+
+.dashboard-section h2{
+
+
+    color:white;
+
+    font-size:25px;
+
+    margin-bottom:20px;
+
+
+}
+
+
+
+
+.table-box{
+
+
+    background:#161616;
+
+    border:
+
+    1px solid #2b2b2b;
+
+
+    border-radius:22px;
+
+
+    padding:25px;
+
+
+    overflow-x:auto;
+
+
+    box-shadow:
+
+    0 10px 30px rgba(0,0,0,.3);
+
+
+}
+
+
+
+
+
+table{
+
+
+    width:100%;
+
+    border-collapse:collapse;
+
+
+}
+
+
+
+thead{
+
+
+    background:#111;
+
+
+}
+
+
+
+th{
+
+
+    color:#00d4ff;
+
+    padding:18px;
+
+    text-align:left;
+
+    font-size:15px;
+
+
+}
+
+
+
+
+td{
+
+
+    padding:15px;
+
+    color:#ddd;
+
+    border-bottom:
+
+    1px solid #292929;
+
+
+}
+
+
+
+
+
+tr{
+
+
+    transition:.3s;
+
+
+}
+
+
+
+tbody tr:hover{
+
+
+    background:
+
+    rgba(0,212,255,.05);
+
+
+}
+
+
+
+
+
+td img{
+
+
+    width:65px;
+
+    height:65px;
+
+
+    object-fit:contain;
+
+
+    background:white;
+
+
+    border-radius:12px;
+
+
+    padding:5px;
+
+
+}
+
+
+
+
+
+
+
+/* =========================
+ STATUS
+========================= */
+
+
+.status{
+
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+
+}
+
+
+
+.status.pending{
+
+
+    background:#f59e0b;
+
+    color:white;
+
+
+}
+
+
+
+.status.completed{
+
+
+    background:#22c55e;
+
+    color:white;
+
+
+}
+
+
+
+.status.cancelled{
+
+
+    background:#ef4444;
+
+    color:white;
+
+
+}
+
+
+
+
+
+/* =========================
+ EMPTY TABLE
+========================= */
+
+
+td[colspan]{
+
+
+    text-align:center;
+
+    padding:35px;
+
+    color:#888;
+
+
+}
+
+
+
+
+
+
+/* =========================
+ SIDEBAR FIX
+========================= */
+
+
+.dashboard{
+
+
+    display:flex;
+
+    min-height:100vh;
+
+
+}
+
+
+
+.sidebar{
+
+
+    width:260px;
+
+    flex-shrink:0;
+
+
+    background:#161616;
+
+
+    padding:30px 20px;
+
+
+    border-right:
+
+    1px solid #2b2b2b;
+
+
+}
+
+
+
+
+
+.sidebar h2{
+
+
+    color:#00d4ff;
+
+
+    font-size:28px;
+
+
+    text-align:center;
+
+
+    margin-bottom:40px;
+
+
+}
+
+
+
+
+.sidebar ul{
+
+
+    list-style:none;
+
+    padding:0;
+
+    margin:0;
+
+
+}
+
+
+
+
+
+.sidebar li{
+
+
+    margin-bottom:12px;
+
+
+}
+
+
+
+
+
+.sidebar a{
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    gap:14px;
+
+
+    padding:15px;
+
+
+    color:#ddd;
+
+
+    text-decoration:none;
+
+
+    border-radius:14px;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+
+.sidebar a:hover{
+
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #00d4ff,
+    #008cff
+    );
+
+
+    color:white;
+
+
+}
+
+
+
+
+
+.sidebar li.active a{
+
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #00d4ff,
+    #008cff
+    );
+
+
+    color:white;
+
+
+}
+
+
+
+
+
+.sidebar i{
+
+
+    width:22px;
+
+    text-align:center;
+
+
+}
+
+
+
+
+
+
+/* =========================
+ MOBILE
+========================= */
+
+
+@media(max-width:1100px){
+
+
+.stats{
+
+
+grid-template-columns:
+repeat(2,1fr);
+
+
+}
+
+
+
+}
+
+
+
+
+@media(max-width:700px){
+
+
+
+.dashboard{
+
+
+display:block;
+
+
+}
+
+
+
+.sidebar{
+
+
+width:auto;
+
+
+}
+
+
+
+.admin-content{
+
+
+padding:20px;
+
+
+}
+
+
+
+.stats{
+
+
+grid-template-columns:1fr;
+
+
+}
+
+
+}

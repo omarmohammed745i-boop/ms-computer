@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed - MS Computer</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/ms.css">
+
+    <!-- Thank You CSS -->
+    <link rel="stylesheet" href="../css/thank-you.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="ms.html" class="logo">
+            <img src="../photos/logo.png" alt="MS Computer">
+        </a>
+
+        <div class="top-info">🚚 Free Shipping Over 2000 EGP</div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="ms.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+
+        <div class="right-side">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-box" placeholder="Search Products..." autocomplete="off">
+                </div>
+                <div id="search-suggestions"></div>
+            </div>
+
+            <div class="language-selector">
+                <button id="language-btn">
+                    🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div data-lang="en">🇺🇸 English</div>
+                    <div data-lang="ar">🇪🇬 العربية</div>
+                    <div data-lang="fr">🇫🇷 Français</div>
+                    <div data-lang="de">🇩🇪 Deutsch</div>
+                    <div data-lang="es">🇪🇸 Español</div>
+                    <div data-lang="it">🇮🇹 Italiano</div>
+                    <div data-lang="tr">🇹🇷 Türkçe</div>
+                    <div data-lang="ru">🇷🇺 Русский</div>
+                    <div data-lang="zh">🇨🇳 中文</div>
+                    <div data-lang="ja">🇯🇵 日本語</div>
+                </div>
+            </div>
+
+            <div class="wishlist-icon">
+                <a href="wishlist.html">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="wishlist-count">0</span>
+                </a>
+            </div>
+
+            <div class="nav-icons">
+                <a href="cart.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="account-area">
+                <div id="nav-user">
+                    <a href="login.html">Login</a>
+                </div>
+                <div class="user-menu" id="user-menu" style="display:none;">
+                    <div class="user-btn" id="user-btn">
+                        <img id="user-image" src="photos/default-avatar.png" alt="User">
+                        <span>▼</span>
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <a href="account.html">👤 My Account</a>
+                        <a href="#" id="dark-mode">🌙 Night Mode</a>
+                        <a href="#" id="light-mode">☀️ Light Mode</a>
+                        <a href="#" id="logout-btn">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu" id="menuBtn">☰</div>
+        </div>
+    </nav>
+
+    <!-- ========================================= -->
+    <!-- THANK YOU PAGE CONTENT -->
+    <!-- ========================================= -->
+
+    <section class="thank-you-page">
+
+        <div class="thank-you-container">
+
+            <!-- Success Icon -->
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <!-- Title -->
+            <h1 data-lang="thankYouTitle">🎉 Thank You For Your Order!</h1>
+            <p class="subtitle" data-lang="thankYouSubtitle">Your order has been placed successfully and is being processed.</p>
+
+            <!-- Order Details -->
+            <div class="order-details">
+                <div class="detail-item">
+                    <span class="label" data-lang="orderNumber">Order Number</span>
+                    <span class="value" id="order-number">#ORD-2026-0001</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label" data-lang="orderDate">Order Date</span>
+                    <span class="value" id="order-date">January 1, 2026</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label" data-lang="paymentMethod">Payment Method</span>
+                    <span class="value" id="payment-method">Cash on Delivery</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label" data-lang="orderStatus">Order Status</span>
+                    <span class="value status-pending" id="order-status">Pending</span>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary-box">
+                <h3 data-lang="orderSummary">📦 Order Summary</h3>
+                <div id="order-items-summary">
+                    <!-- Items will be loaded here by JS -->
+                </div>
+                <div class="summary-total">
+                    <span data-lang="total">Total</span>
+                    <span id="order-total">0 EGP</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="thank-you-actions">
+                <a href="products.html" class="btn-primary" data-lang="continueShopping">
+                    <i class="fa-solid fa-arrow-left"></i> Continue Shopping
+                </a>
+                <a href="account.html" class="btn-secondary" data-lang="viewOrders">
+                    <i class="fa-solid fa-box"></i> View My Orders
+                </a>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="thank-you-info">
+                <p data-lang="thankYouInfo">
+                    A confirmation email has been sent to your email address. 
+                    You will receive a notification when your order is shipped.
+                </p>
+                <p data-lang="thankYouHelp">
+                    If you have any questions, please <a href="contact.html">contact us</a>.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-box">
+                <h2>MS Computer</h2>
+                <p>A store specialized in selling computer products and gaming accessories at the best prices.</p>
+            </div>
+            <div class="footer-box">
+                <h3>Quick Links</h3>
+                <a href="ms.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="services.html">Services</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-box">
+                <h3>Customer Service</h3>
+                <p>📞 01021451009</p>
+                <p>📧 ms.computer355@gmail.com</p>
+                <p>📍 Alexandria, Egypt</p>
+            </div>
+            <div class="footer-box">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61590888077261&locale=ar_AR"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/ms.computer355/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ms.computer355"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@MSComputer-b2p"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">© 2026 MS Computer. All Rights Reserved.</div>
+    </footer>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== WHATSAPP ===== -->
+    <a href="https://wa.me/201021451009" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/ms.js"></script>
+    <script src="../js/thank-you.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Product - MS Computer</title>
+
+<link rel="stylesheet" href="../css/edit-product.css">
+</head>
+
+
+<body>
+
+
+<div class="edit-container">
+
+
+<h1>Edit Product</h1>
+
+
+
+<div class="edit-box">
+
+
+
+<!-- IMAGES -->
+
+<label>
+Product Images
+</label>
+
+
+<input 
+type="file"
+id="image-file"
+accept="image/*"
+multiple>
+
+
+<div id="images-preview"></div>
+
+
+
+
+
+
+<!-- PRODUCT INFO -->
+
+
+<div class="form-grid">
+
+
+<input 
+id="name"
+placeholder="Product Name">
+
+
+
+<input 
+id="category"
+placeholder="Category">
+
+
+
+<input 
+id="price"
+type="number"
+placeholder="Selling Price">
+
+
+
+<input 
+id="purchasePrice"
+type="number"
+placeholder="Purchase Price">
+
+
+
+<input 
+id="oldPrice"
+type="number"
+placeholder="Old Price">
+
+
+
+<input 
+id="stock"
+type="number"
+placeholder="Stock">
+
+
+
+</div>
+
+
+
+
+
+
+<!-- DESCRIPTION -->
+
+
+<textarea
+id="description"
+placeholder="Short Description">
+</textarea>
+
+
+
+
+<textarea
+id="details"
+placeholder="Product Details">
+</textarea>
+<!-- PRODUCT DETAILS SECTIONS -->
+
+<div class="details-editor">
+
+<label>
+Product Details Sections
+</label>
+
+
+<div id="details-container"></div>
+
+
+<button 
+type="button"
+id="add-detail-btn"
+class="add-detail-btn">
+
++ Add Details Section
+
+</button>
+
+
+</div>
+
+
+
+
+</div>
+
+<button id="save-btn">
+
+Save Changes
+
+</button>
+
+
+<button 
+class="back-btn"
+onclick="history.back()">
+
+Cancel
+
+</button>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<script src="../js/edit-product.js"></script>
+
+</body>
+
+</html>

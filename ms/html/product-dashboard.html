@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Product Dashboard</title>
+
+<link rel="stylesheet" href="E:\Ms Computer - Copy\ms\css\product-dashboard.css">
+
+</head>
+
+<body>
+
+<div class="admin-container">
+
+<h1 id="product-title">
+
+Product Dashboard
+
+</h1>
+
+<!-- ========================= -->
+<!-- TOP STATS -->
+<!-- ========================= -->
+
+<div class="dashboard">
+
+    <div class="dash-card">
+
+        <h3>👁 Visitors</h3>
+
+        <span id="visitors">0</span>
+
+    </div>
+
+    <div class="dash-card">
+
+        <h3>🛒 Added To Cart</h3>
+
+        <span id="cartAdds">0</span>
+
+    </div>
+
+    <div class="dash-card">
+
+        <h3>📦 Orders</h3>
+
+        <span id="orders">0</span>
+
+    </div>
+
+    <div class="dash-card">
+
+        <h3>✔ Sold</h3>
+
+        <span id="sold">0</span>
+
+    </div>
+
+    <div class="dash-card">
+
+        <h3>💰 Profit</h3>
+
+        <span id="profit">0 EGP</span>
+
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- CHART -->
+<!-- ========================= -->
+
+<div class="dashboard-grid">
+
+    <div class="dashboard-card large">
+
+        <h2>📈 Sales Analytics</h2>
+
+        <canvas id="salesChart"></canvas>
+
+    </div>
+
+    <div class="dashboard-card large">
+
+        <h2>🔥 Product Performance</h2>
+
+        <div class="progress-item">
+
+            <label>Visitors</label>
+
+            <progress id="viewsProgress" max="100" value="0"></progress>
+
+        </div>
+
+        <div class="progress-item">
+
+            <label>Added To Cart</label>
+
+            <progress id="cartProgress" max="100" value="0"></progress>
+
+        </div>
+
+        <div class="progress-item">
+
+            <label>Orders</label>
+
+            <progress id="ordersProgress" max="100" value="0"></progress>
+
+        </div>
+
+        <div class="progress-item">
+
+            <label>Sold</label>
+
+            <progress id="soldProgress" max="100" value="0"></progress>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ========================= -->
+<!-- PRODUCT PREVIEW -->
+<!-- ========================= -->
+
+<div class="product-preview">
+
+    <img
+    id="product-image"
+    src=""
+    alt="Product">
+
+    <div class="product-info">
+
+        <h2 id="product-name"></h2>
+
+        <p>
+
+            <strong>Price :</strong>
+
+            <span id="product-price"></span>
+
+        </p>
+
+        <p>
+
+            <strong>Stock :</strong>
+
+            <span id="product-stock"></span>
+
+        </p>
+
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- MINI STATS -->
+<!-- ========================= -->
+
+<div class="mini-stats">
+
+    <div class="mini-card">
+
+        <h3>📦 Stock Value</h3>
+
+        <span id="stockValue">
+
+            0 EGP
+
+        </span>
+
+    </div>
+
+    <div class="mini-card">
+
+        <h3>💰 Expected Profit</h3>
+
+        <span id="expectedProfit">
+
+            0 EGP
+
+        </span>
+
+    </div>
+
+    <div class="mini-card">
+
+        <h3>💵 Product Value</h3>
+
+        <span id="totalValue">
+
+            0 EGP
+
+        </span>
+
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- ANALYTICS -->
+<!-- ========================= -->
+
+<div class="analytics">
+
+    <div class="analytics-card">
+
+        <h3>Today Visitors</h3>
+
+        <span id="todayVisitors">
+
+            0
+
+        </span>
+
+    </div>
+
+    <div class="analytics-card">
+
+        <h3>Conversion Rate</h3>
+
+        <span id="conversionRate">
+
+            0%
+
+        </span>
+
+    </div>
+
+    <div class="analytics-card">
+
+        <h3>Average Order</h3>
+
+        <span id="averageOrder">
+
+            0 EGP
+
+        </span>
+
+    </div>
+
+    <div class="analytics-card">
+
+        <h3>Total Revenue</h3>
+
+        <span id="totalRevenue">
+
+            0 EGP
+
+        </span>
+
+    </div>
+
+</div>
+<!-- ========================= -->
+<!-- LATEST ORDERS -->
+<!-- ========================= -->
+
+<div class="orders-box">
+
+    <h2>
+
+        📦 Latest Orders
+
+    </h2>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>
+
+                    Customer
+
+                </th>
+
+                <th>
+
+                    Product
+
+                </th>
+
+                <th>
+
+                    Quantity
+
+                </th>
+
+                <th>
+
+                    Price
+
+                </th>
+
+                <th>
+
+                    Status
+
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="orders-body">
+
+            <tr>
+
+                <td>
+
+                    No Orders
+
+                </td>
+
+                <td>
+
+                    -
+
+                </td>
+
+                <td>
+
+                    0
+
+                </td>
+
+                <td>
+
+                    0 EGP
+
+                </td>
+
+                <td>
+
+                    Pending
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- ========================= -->
+<!-- FOOTER ACTIONS -->
+<!-- ========================= -->
+
+<div class="dashboard-actions">
+
+    <button
+    onclick="history.back()"
+    class="back-btn">
+
+        ← Back
+
+    </button>
+
+    <button
+    onclick="window.location.href='admin.html'"
+    class="admin-btn">
+
+        Admin Panel
+
+    </button>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="E:\Ms Computer - Copy\ms\js\product-dashboard.js"></script>
+
+</body>
+
+</html>

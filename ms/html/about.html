@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - MS Computer</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/ms.css">
+
+    <!-- About CSS -->
+    <link rel="stylesheet" href="../css/about.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="ms.html" class="logo">
+            <img src="../photos/logo.png" alt="MS Computer">
+        </a>
+
+        <div class="top-info" data-lang="freeShipping">🚚 Free Shipping Over 2000 EGP</div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="ms.html" data-lang="home">Home</a></li>
+            <li><a href="products.html" data-lang="products">Products</a></li>
+            <li><a href="services.html" data-lang="services">Services</a></li>
+            <li><a href="about.html" class="active" data-lang="about">About</a></li>
+            <li><a href="contact.html" data-lang="contact">Contact</a></li>
+        </ul>
+
+        <div class="right-side">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-box" placeholder="Search Products..." autocomplete="off" data-lang="searchPlaceholder">
+                </div>
+                <div id="search-suggestions"></div>
+            </div>
+
+            <div class="language-selector">
+                <button id="language-btn">
+                    🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div data-lang="en">🇺🇸 English</div>
+                    <div data-lang="ar">🇪🇬 العربية</div>
+                    <div data-lang="fr">🇫🇷 Français</div>
+                    <div data-lang="de">🇩🇪 Deutsch</div>
+                    <div data-lang="es">🇪🇸 Español</div>
+                    <div data-lang="it">🇮🇹 Italiano</div>
+                    <div data-lang="tr">🇹🇷 Türkçe</div>
+                    <div data-lang="ru">🇷🇺 Русский</div>
+                    <div data-lang="zh">🇨🇳 中文</div>
+                    <div data-lang="ja">🇯🇵 日本語</div>
+                </div>
+            </div>
+
+            <div class="wishlist-icon">
+                <a href="wishlist.html">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="wishlist-count">0</span>
+                </a>
+            </div>
+
+            <div class="nav-icons">
+                <a href="cart.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="account-area">
+                <div id="nav-user">
+                    <a href="login.html" data-lang="login">Login</a>
+                </div>
+                <div class="user-menu" id="user-menu" style="display:none;">
+                    <div class="user-btn" id="user-btn">
+                        <img id="user-image" src="photos/default-avatar.png" alt="User">
+                        <span>▼</span>
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <a href="account.html" data-lang="myAccount">👤 My Account</a>
+                        <a href="#" id="dark-mode" data-lang="nightMode">🌙 Night Mode</a>
+                        <a href="#" id="light-mode" data-lang="lightMode">☀️ Light Mode</a>
+                        <a href="#" id="logout-btn" data-lang="logout">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu" id="menuBtn">☰</div>
+        </div>
+    </nav>
+
+    <!-- ========================================= -->
+    <!-- ABOUT PAGE CONTENT -->
+    <!-- ========================================= -->
+
+    <section class="about-page">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 data-lang="about">📖 About MS Computer</h1>
+            <p data-lang="aboutSubtitle">Your trusted partner for gaming and computer solutions since 2024</p>
+        </div>
+
+        <!-- Under Construction Banner -->
+        <div class="under-construction">
+            <i class="fa-solid fa-hard-hat"></i>
+            <h2 data-lang="underConstruction">🚧 Under Construction</h2>
+            <p data-lang="comingSoon">We're currently building the ultimate gaming and computer store. Stay tuned for the grand opening!</p>
+        </div>
+
+        <!-- About Section -->
+        <div class="about-grid">
+
+            <div class="about-text hidden">
+                <h2 data-lang="whoWeAre">Who We Are</h2>
+                <p data-lang="aboutText1">
+                    <strong>MS Computer</strong> is a new gaming and computer store based in Alexandria, Egypt.
+                    We're working hard to bring you the best products at the best prices.
+                </p>
+                <p data-lang="aboutText2">
+                    Founded in 2024 by <strong data-lang="founderName">Ahmed Mohamed</strong>, our goal is simple:
+                    to provide high-quality gaming gear, PC components, laptops, and accessories
+                    to gamers and tech enthusiasts across Egypt.
+                </p>
+                <p data-lang="aboutText3">
+                    Our website is currently under development, but soon you'll be able to browse,
+                    compare, and purchase all your favorite tech products with ease.
+                </p>
+
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="2024">0</span>
+                        <span class="stat-label" data-lang="founded">Founded</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="1">0</span>
+                        <span class="stat-label" data-lang="ceo">CEO</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="1">0</span>
+                        <span class="stat-label" data-lang="teamMembers">Team Members</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-image hidden">
+                <img src="photos/about-us.jpg" alt="MS Computer Coming Soon" onerror="this.src='photos/default-about.png'">
+            </div>
+
+        </div>
+
+        <!-- Mission & Vision -->
+        <div class="mission-vision">
+            <div class="mission-card hidden">
+                <div class="icon">🎯</div>
+                <h2 data-lang="ourMission">Our Mission</h2>
+                <p data-lang="missionText">To provide gamers and tech enthusiasts with top-quality products and exceptional service, making technology accessible and enjoyable for everyone.</p>
+            </div>
+            <div class="vision-card hidden">
+                <div class="icon">👁️</div>
+                <h2 data-lang="ourVision">Our Vision</h2>
+                <p data-lang="visionText">To become the go-to destination for gaming and computer products in Egypt and the Middle East, known for quality, reliability, and customer care.</p>
+            </div>
+        </div>
+
+        <!-- Values -->
+        <div class="values">
+            <h2 data-lang="coreValues">⭐ Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-item hidden">
+                    <i class="fa-solid fa-gem"></i>
+                    <h3 data-lang="quality">Quality</h3>
+                    <p data-lang="qualityText">We only sell products from trusted brands with proven reliability.</p>
+                </div>
+                <div class="value-item hidden">
+                    <i class="fa-solid fa-handshake"></i>
+                    <h3 data-lang="integrity">Integrity</h3>
+                    <p data-lang="integrityText">Honest pricing, transparent policies, and genuine products.</p>
+                </div>
+                <div class="value-item hidden">
+                    <i class="fa-solid fa-heart"></i>
+                    <h3 data-lang="customerFirst">Customer First</h3>
+                    <p data-lang="customerFirstText">Your satisfaction is our top priority in everything we do.</p>
+                </div>
+                <div class="value-item hidden">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h3 data-lang="innovation">Innovation</h3>
+                    <p data-lang="innovationText">Staying up-to-date with the latest technology trends.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team (Just the CEO) -->
+        <div class="team">
+            <h2 data-lang="team">👤 Meet The Founder</h2>
+            <div class="team-grid-single">
+                <div class="team-member hidden">
+                    <img src="../photos/ceo.jpg" alt="Omar Mohamed - CEO" onerror="this.src='photos/default-avatar.png'">
+                    <h3 data-lang="founderName">Omar Mohamed</h3>
+                    <p data-lang="founderTitle">Founder & CEO</p>
+                    <p class="team-bio" data-lang="founderBio">Passionate gamer and tech enthusiast with a vision to bring the best gaming products to Egypt.</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-box">
+                <h2 data-lang="brandName">MS Computer</h2>
+                <p data-lang="footerDescription">A store specialized in selling computer products and gaming accessories at the best prices.</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="quickLinks">Quick Links</h3>
+                <a href="ms.html" data-lang="home">Home</a>
+                <a href="products.html" data-lang="products">Products</a>
+                <a href="services.html" data-lang="services">Services</a>
+                <a href="contact.html" data-lang="contact">Contact</a>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="customerService">Customer Service</h3>
+                <p>📞 01021451009</p>
+                <p>📧 ms.computer355@gmail.com</p>
+                <p data-lang="location">📍 Alexandria, Egypt</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="followUs">Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61590888077261&locale=ar_AR"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/ms.computer355/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ms.computer355"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@MSComputer-b2p"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright" data-lang="copyright">© 2026 MS Computer. All Rights Reserved.</div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-text" data-lang="addedToCart">Product Added Successfully</span>
+    </div>
+
+    <!-- ===== MOBILE DOCK ===== -->
+    <nav class="mobile-dock">
+        <a href="ms.html"><i class="fa-solid fa-house"></i></a>
+        <a href="products.html"><i class="fa-solid fa-box"></i></a>
+        <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="account.html"><i class="fa-solid fa-user"></i></a>
+    </nav>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== WHATSAPP ===== -->
+    <a href="https://wa.me/201021451009" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/ms.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/about.js"></script>
+</body>
+
+</html>

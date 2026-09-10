@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - MS Computer</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/ms.css">
+
+    <!-- Services CSS -->
+    <link rel="stylesheet" href="../css/services.css">
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="ms.html" class="logo">
+            <img src="../photos/logo.png" alt="MS Computer">
+        </a>
+
+        <div class="top-info" data-lang="freeShipping">🚚 Free Shipping Over 2000 EGP</div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="ms.html" data-lang="home">Home</a></li>
+            <li><a href="products.html" data-lang="products">Products</a></li>
+            <li><a href="services.html" class="active" data-lang="services">Services</a></li>
+            <li><a href="about.html" data-lang="about">About</a></li>
+            <li><a href="contact.html" data-lang="contact">Contact</a></li>
+        </ul>
+
+        <div class="right-side">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-box" placeholder="Search Products..." autocomplete="off" data-lang="searchPlaceholder">
+                </div>
+                <div id="search-suggestions"></div>
+            </div>
+
+            <div class="language-selector">
+                <button id="language-btn">
+                    🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div data-lang="en">🇺🇸 English</div>
+                    <div data-lang="ar">🇪🇬 العربية</div>
+                    <div data-lang="fr">🇫🇷 Français</div>
+                    <div data-lang="de">🇩🇪 Deutsch</div>
+                    <div data-lang="es">🇪🇸 Español</div>
+                    <div data-lang="it">🇮🇹 Italiano</div>
+                    <div data-lang="tr">🇹🇷 Türkçe</div>
+                    <div data-lang="ru">🇷🇺 Русский</div>
+                    <div data-lang="zh">🇨🇳 中文</div>
+                    <div data-lang="ja">🇯🇵 日本語</div>
+                </div>
+            </div>
+
+            <div class="wishlist-icon">
+                <a href="wishlist.html">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="wishlist-count">0</span>
+                </a>
+            </div>
+
+            <div class="nav-icons">
+                <a href="cart.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="account-area">
+                <div id="nav-user">
+                    <a href="login.html" data-lang="login">Login</a>
+                </div>
+                <div class="user-menu" id="user-menu" style="display:none;">
+                    <div class="user-btn" id="user-btn">
+                        <img id="user-image" src="photos/default-avatar.png" alt="User">
+                        <span>▼</span>
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <a href="account.html" data-lang="myAccount">👤 My Account</a>
+                        <a href="#" id="dark-mode" data-lang="nightMode">🌙 Night Mode</a>
+                        <a href="#" id="light-mode" data-lang="lightMode">☀️ Light Mode</a>
+                        <a href="#" id="logout-btn" data-lang="logout">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu" id="menuBtn">☰</div>
+        </div>
+    </nav>
+
+    <!-- ========================================= -->
+    <!-- SERVICES PAGE CONTENT -->
+    <!-- ========================================= -->
+
+    <section class="services-page">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 data-lang="ourServices">🛠️ Our Services</h1>
+            <p data-lang="servicesText">We provide everything you need for your gaming and computer setup</p>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="services-grid">
+
+            <!-- Service 1: PC Building -->
+            <div class="service-card hidden">
+                <div class="service-icon">🖥️</div>
+                <h2 data-lang="pcBuilding">PC Building</h2>
+                <p data-lang="pcBuildingText">We build custom gaming PCs and workstations tailored to your needs and budget.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="pcFeature1">Custom configuration</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="pcFeature2">Professional assembly</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="pcFeature3">Cable management</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="pcFeature4">Performance testing</span></li>
+                </ul>
+                <a href="contact.html" class="service-btn" data-lang="getQuote">Get a Quote</a>
+            </div>
+
+            <!-- Service 2: Repair & Maintenance -->
+            <div class="service-card hidden">
+                <div class="service-icon">🔧</div>
+                <h2 data-lang="repair">Repair & Maintenance</h2>
+                <p data-lang="repairText">Professional repair and maintenance for all types of computers and gaming devices.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="repairFeature1">Hardware repair</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="repairFeature2">Software troubleshooting</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="repairFeature3">Virus removal</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="repairFeature4">Performance optimization</span></li>
+                </ul>
+                <a href="contact.html" class="service-btn" data-lang="bookNow">Book Now</a>
+            </div>
+
+            <!-- Service 3: Upgrade & Customization -->
+            <div class="service-card hidden">
+                <div class="service-icon">⚡</div>
+                <h2 data-lang="upgrade">Upgrade & Customization</h2>
+                <p data-lang="upgradeText">Upgrade your existing setup with the latest components and custom modifications.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="upgradeFeature1">Component upgrades</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="upgradeFeature2">RGB lighting installation</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="upgradeFeature3">Water cooling setup</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="upgradeFeature4">Case modding</span></li>
+                </ul>
+                <a href="contact.html" class="service-btn" data-lang="customizeNow">Customize Now</a>
+            </div>
+
+            <!-- Service 4: Data Recovery -->
+            <div class="service-card hidden">
+                <div class="service-icon">💾</div>
+                <h2 data-lang="dataRecovery">Data Recovery</h2>
+                <p data-lang="dataRecoveryText">Recover lost or corrupted data from hard drives, SSDs, and other storage devices.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="dataFeature1">HDD & SSD recovery</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="dataFeature2">Deleted file recovery</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="dataFeature3">Corrupted partition repair</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="dataFeature4">Data backup solutions</span></li>
+                </ul>
+                <a href="contact.html" class="service-btn" data-lang="recoverData">Recover Data</a>
+            </div>
+
+            <!-- Service 5: Network Setup -->
+            <div class="service-card hidden">
+                <div class="service-icon">🌐</div>
+                <h2 data-lang="networkSetup">Network Setup</h2>
+                <p data-lang="networkSetupText">Professional network installation and configuration for home and office.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="networkFeature1">Router configuration</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="networkFeature2">Wi-Fi optimization</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="networkFeature3">Network security setup</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="networkFeature4">Troubleshooting</span></li>
+                </ul>
+                <a href="contact.html" class="service-btn" data-lang="setupNetwork">Setup Network</a>
+            </div>
+
+            <!-- Service 6: Gaming Setup -->
+            <div class="service-card hidden">
+                <div class="service-icon">🎮</div>
+                <h2 data-lang="gamingSetup">Gaming Setup</h2>
+                <p data-lang="gamingSetupText">Complete gaming setup design and installation for the ultimate gaming experience.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="gamingFeature1">Gaming desk setup</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="gamingFeature2">Cable management</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="gamingFeature3">Monitor mounting</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="gamingFeature4">Gaming chair setup</span></li>
+                </ul>
+                <a href="contact.html" class="service-btn" data-lang="getSetup">Get Setup</a>
+            </div>
+
+            <!-- Service 7: Software Installation -->
+            <div class="service-card hidden">
+                <div class="service-icon">💻</div>
+                <h2 data-lang="softwareInstall">Software Installation</h2>
+                <p data-lang="softwareInstallText">Installation and configuration of operating systems and software applications.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="softwareFeature1">Windows installation</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="softwareFeature2">Driver updates</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="softwareFeature3">Software configuration</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="softwareFeature4">System optimization</span></li>
+                </ul>
+                <a href="contact.html" class="service-btn" data-lang="installNow">Install Now</a>
+            </div>
+
+            <!-- Service 8: Consultation -->
+            <div class="service-card hidden">
+                <div class="service-icon">🧠</div>
+                <h2 data-lang="consultation">Expert Consultation</h2>
+                <p data-lang="consultationText">Get expert advice on building, upgrading, or troubleshooting your computer.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="consultFeature1">Build recommendations</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="consultFeature2">Performance analysis</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="consultFeature3">Problem diagnosis</span></li>
+                    <li><i class="fa-solid fa-check"></i> <span data-lang="consultFeature4">Future-proof planning</span></li>
+                </ul>
+                <a href="contact.html" class="service-btn" data-lang="consultNow">Consult Now</a>
+            </div>
+
+        </div>
+
+        <!-- Why Choose Us -->
+        <div class="why-choose-us">
+            <h2 data-lang="whyChooseUs">🌟 Why Choose MS Computer?</h2>
+            <div class="why-grid">
+                <div class="why-item">
+                    <i class="fa-solid fa-medal"></i>
+                    <h3 data-lang="expertTech">Expert Technicians</h3>
+                    <p data-lang="expertTechText">Certified professionals with years of experience.</p>
+                </div>
+                <div class="why-item">
+                    <i class="fa-solid fa-clock"></i>
+                    <h3 data-lang="fastService">Fast Service</h3>
+                    <p data-lang="fastServiceText">Quick turnaround time for all services.</p>
+                </div>
+                <div class="why-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3 data-lang="warrantyGuaranteed">Warranty Guaranteed</h3>
+                    <p data-lang="warrantyGuaranteedText">All services come with a satisfaction guarantee.</p>
+                </div>
+                <div class="why-item">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                    <h3 data-lang="customerFirstService">Customer First</h3>
+                    <p data-lang="customerFirstServiceText">Your satisfaction is our top priority.</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-box">
+                <h2 data-lang="brandName">MS Computer</h2>
+                <p data-lang="footerDescription">A store specialized in selling computer products and gaming accessories at the best prices.</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="quickLinks">Quick Links</h3>
+                <a href="ms.html" data-lang="home">Home</a>
+                <a href="products.html" data-lang="products">Products</a>
+                <a href="services.html" data-lang="services">Services</a>
+                <a href="contact.html" data-lang="contact">Contact</a>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="customerService">Customer Service</h3>
+                <p>📞 01021451009</p>
+                <p>📧 ms.computer355@gmail.com</p>
+                <p data-lang="location">📍 Alexandria, Egypt</p>
+            </div>
+            <div class="footer-box">
+                <h3 data-lang="followUs">Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61590888077261&locale=ar_AR"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/ms.computer355/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ms.computer355"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@MSComputer-b2p"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright" data-lang="copyright">© 2026 MS Computer. All Rights Reserved.</div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-text" data-lang="addedToCart">Product Added Successfully</span>
+    </div>
+
+    <!-- ===== MOBILE DOCK ===== -->
+    <nav class="mobile-dock">
+        <a href="ms.html"><i class="fa-solid fa-house"></i></a>
+        <a href="products.html"><i class="fa-solid fa-box"></i></a>
+        <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+        <a href="account.html"><i class="fa-solid fa-user"></i></a>
+    </nav>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== WHATSAPP ===== -->
+    <a href="https://wa.me/201021451009" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/ms.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/services.js"></script>
+</body>
+
+</html>

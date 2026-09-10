@@ -1,0 +1,227 @@
+/* =====================================
+   SERVICES PAGE STYLES
+   ===================================== */
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+    width: 96%;
+    max-width: 1500px;
+    margin: 30px auto 20px;
+    text-align: center;
+}
+
+.page-header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.page-header p {
+    color: var(--text2);
+    font-size: 17px;
+}
+
+/* ===== SERVICES GRID ===== */
+.services-grid {
+    width: 96%;
+    max-width: 1500px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+/* ===== SERVICE CARD ===== */
+.service-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 30px 24px;
+    text-align: center;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-glow), var(--shadow);
+}
+
+.service-icon {
+    font-size: 52px;
+    margin-bottom: 16px;
+    background: rgba(0, 212, 180, 0.10);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.service-card:hover .service-icon {
+    background: rgba(0, 212, 180, 0.20);
+    transform: scale(1.06);
+}
+
+.service-card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.service-card p {
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.service-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    width: 100%;
+    text-align: left;
+}
+
+.service-features li {
+    padding: 6px 0;
+    color: var(--text2);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.service-features li i {
+    color: var(--primary);
+    font-size: 14px;
+    width: 18px;
+}
+
+.service-btn {
+    padding: 12px 28px;
+    border-radius: 30px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    transition: var(--transition);
+    display: inline-block;
+    margin-top: auto;
+}
+
+.service-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 212, 180, 0.3);
+}
+
+/* ===== WHY CHOOSE US ===== */
+.why-choose-us {
+    width: 96%;
+    max-width: 1500px;
+    margin: 50px auto;
+    padding: 50px 30px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.why-choose-us h2 {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.why-item {
+    padding: 20px;
+    transition: var(--transition);
+    border-radius: var(--radius-sm);
+}
+
+.why-item:hover {
+    background: rgba(0, 212, 180, 0.06);
+    transform: translateY(-4px);
+}
+
+.why-item i {
+    font-size: 40px;
+    color: var(--primary);
+    margin-bottom: 12px;
+}
+
+.why-item h3 {
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+.why-item p {
+    color: var(--text2);
+    font-size: 14px;
+}
+
+/* =====================================
+   RESPONSIVE
+   ===================================== */
+
+@media (max-width: 1200px) {
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .why-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+    }
+
+    .why-choose-us h2 {
+        font-size: 26px;
+    }
+
+    .service-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+}

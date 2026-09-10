@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Environment Variables
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build
+dist/
+build/
+# Dependencies
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Environment Variables
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build
+dist/
+build/
+
+# Executables
+*.exe
+
+# back-end/uploads/

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - MS Computer</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/ms.css">
+
+    <!-- Login CSS (same styles) -->
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body>
+
+    <!-- ===== SIGNUP PAGE ===== -->
+    <section class="login-page">
+
+        <div class="login-container">
+
+            <!-- Logo -->
+            <div class="login-logo">
+                <img src="../photos/logo.png" alt="MS Computer">
+                <h1 data-lang="createAccount">Create Account</h1>
+                <p data-lang="registerSubtitle">Join us and start shopping!</p>
+            </div>
+
+            <!-- Signup Form -->
+            <form id="signup-form" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="signup-name" data-lang="fullName">Full Name</label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="signup-name" placeholder="Enter your full name" data-lang="fullNamePlaceholder" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-email" data-lang="emailAddress">Email Address</label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="signup-email" placeholder="Enter your email" data-lang="emailPlaceholder" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-phone" data-lang="phoneNumber">Phone Number</label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="tel" id="signup-phone" placeholder="Enter your phone number" data-lang="phonePlaceholder">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-password" data-lang="password">Password</label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="signup-password" placeholder="Enter your password" data-lang="passwordPlaceholder" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('signup-password', 'signup-password-icon')">
+                            <i class="fa-solid fa-eye" id="signup-password-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-confirm-password" data-lang="confirmPassword">Confirm Password</label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="signup-confirm-password" placeholder="Confirm your password" data-lang="confirmPasswordPlaceholder" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn" data-lang="signup">
+                    <i class="fa-solid fa-user-plus"></i> Sign Up
+                </button>
+
+                <p class="register-link" data-lang="haveAccount">
+                    Already have an account?</p> <div class="register"><a href="login.html" data-lang="login">Login</a></div>
+            </form>
+
+            <!-- Error Message -->
+            <div id="signup-error" class="login-error" style="display:none;">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="error-message" data-lang="fillAllFields">Please fill in all fields</span>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--card);color:var(--text);padding:14px 24px;border-radius:12px;box-shadow:var(--shadow);z-index:9999;display:none;border:1px solid var(--border);">
+        <span id="toast-text">Product Added Successfully</span>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/language.js"></script>
+    <script src="../js/signup.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - MS Computer</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/ms.css">
+
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body>
+
+    <section class="admin-panel">
+
+        <!-- Header -->
+        <div class="admin-header">
+            <div>
+                <h1 data-lang="adminPanel">🛠️ Admin Panel</h1>
+                <p data-lang="adminSubtitle">Manage your products, orders, and inventory</p>
+            </div>
+            <div class="admin-actions">
+                <!-- Language Selector -->
+                <div class="language-selector">
+                    <button id="language-btn">
+                        🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="language-dropdown" id="language-dropdown">
+                        <div data-lang="en">🇺🇸 English</div>
+                        <div data-lang="ar">🇪🇬 العربية</div>
+                        <div data-lang="fr">🇫🇷 Français</div>
+                        <div data-lang="de">🇩🇪 Deutsch</div>
+                        <div data-lang="es">🇪🇸 Español</div>
+                        <div data-lang="it">🇮🇹 Italiano</div>
+                        <div data-lang="tr">🇹🇷 Türkçe</div>
+                        <div data-lang="ru">🇷🇺 Русский</div>
+                        <div data-lang="zh">🇨🇳 中文</div>
+                        <div data-lang="ja">🇯🇵 日本語</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logoutAdmin()" data-lang="logout">
+                    <i class="fa-solid fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Grid -->
+        <div class="admin-grid">
+
+            <!-- Sidebar -->
+            <div class="admin-sidebar">
+                <nav class="admin-nav">
+                    <a href="#" class="active" data-tab="dashboard">
+                        <i class="fa-solid fa-gauge-high"></i> <span data-lang="dashboard">Dashboard</span>
+                    </a>
+                    <a href="#" data-tab="products">
+                        <i class="fa-solid fa-box"></i> <span data-lang="products">Products</span>
+                    </a>
+                    <a href="#" data-tab="add-product">
+                        <i class="fa-solid fa-plus"></i> <span data-lang="addProduct">Add Product</span>
+                    </a>
+                    <a href="#" data-tab="orders">
+                        <i class="fa-solid fa-truck"></i> <span data-lang="orders">Orders</span>
+                    </a>
+                    <a href="#" data-tab="users">
+                        <i class="fa-solid fa-users"></i> <span data-lang="users">Users</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Content -->
+            <div class="admin-content">
+
+                <!-- ===== DASHBOARD TAB ===== -->
+                <div class="tab-content active" id="tab-dashboard">
+                    <h2 data-lang="dashboard">📊 Dashboard</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fa-solid fa-box"></i>
+                            <div>
+                                <span class="stat-number" id="total-products">0</span>
+                                <span class="stat-label" data-lang="totalProducts">Total Products</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fa-solid fa-truck"></i>
+                            <div>
+                                <span class="stat-number" id="total-orders">0</span>
+                                <span class="stat-label" data-lang="totalOrders">Total Orders</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fa-solid fa-users"></i>
+                            <div>
+                                <span class="stat-number" id="total-users">0</span>
+                                <span class="stat-label" data-lang="totalUsers">Total Users</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            <div>
+                                <span class="stat-number" id="total-revenue">0 EGP</span>
+                                <span class="stat-label" data-lang="totalRevenue">Total Revenue</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-orders">
+                        <h3 data-lang="recentOrders">📦 Recent Orders</h3>
+                        <div id="recent-orders-list">
+                            <p style="color:var(--text2);" data-lang="noOrders">No orders yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PRODUCTS TAB ===== -->
+                <div class="tab-content" id="tab-products">
+                    <h2 data-lang="allProducts">📦 All Products</h2>
+                    <div class="products-table-container">
+                        <table class="products-table">
+                            <thead>
+                                <tr>
+                                    <th data-lang="image">Image</th>
+                                    <th data-lang="name">Name</th>
+                                    <th data-lang="price">Price</th>
+                                    <th data-lang="category">Category</th>
+                                    <th data-lang="stock">Stock</th>
+                                    <th data-lang="actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <tr>
+                                    <td colspan="6" style="text-align:center;color:var(--text2);" data-lang="loading">Loading products...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== ADD PRODUCT TAB ===== -->
+                <div class="tab-content" id="tab-add-product">
+                    <h2 data-lang="addProduct">➕ Add New Product</h2>
+                    <form id="add-product-form" onsubmit="addProduct(event)">
+                        <div class="form-group">
+                            <label for="product-name" data-lang="productName">Product Name *</label>
+                            <input type="text" id="product-name" placeholder="Enter product name" data-lang="productNamePlaceholder" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="product-price" data-lang="price">Price (EGP) *</label>
+                                <input type="number" id="product-price" placeholder="Enter price" data-lang="pricePlaceholder" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-old-price" data-lang="oldPrice">Old Price (EGP)</label>
+                                <input type="number" id="product-old-price" placeholder="Enter old price" data-lang="oldPricePlaceholder">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="product-category" data-lang="category">Category *</label>
+                                <select id="product-category" required>
+                                    <option value="Keyboards" data-lang="categoryKeyboards">⌨️ Keyboards</option>
+                                    <option value="Mouses" data-lang="categoryMouses">🖱️ Mouses</option>
+                                    <option value="Headsets" data-lang="categoryHeadsets">🎧 Headsets</option>
+                                    <option value="Mouse Pads" data-lang="categoryMousePads">🟪 Mouse Pads</option>
+                                    <option value="Laptops" data-lang="categoryLaptops">💻 Laptops</option>
+                                    <option value="Monitors" data-lang="categoryMonitors">🖥️ Monitors</option>
+                                    <option value="PC Parts" data-lang="categoryPCParts">⚙️ PC Parts</option>
+                                    <option value="Accessories" data-lang="categoryAccessories">🎮 Accessories</option>
+                                    <option value="PC Cases" data-lang="categoryPCCases">🖥️ PC Cases</option>
+                                    <option value="Cooling" data-lang="categoryCooling">❄️ Cooling</option>
+                                    <option value="Power Supplies" data-lang="categoryPowerSupplies">🔌 Power Supplies</option>
+                                    <option value="RAM" data-lang="categoryRAM">💾 RAM</option>
+                                    <option value="Processors" data-lang="categoryProcessors">🧠 Processors</option>
+                                    <option value="Graphics Cards" data-lang="categoryGraphicsCards">🎞️ Graphics Cards</option>
+                                    <option value="Storage" data-lang="categoryStorage">💽 Storage</option>
+                                    <option value="Microphones" data-lang="categoryMicrophones">🎙️ Microphones</option>
+                                    <option value="Controllers" data-lang="categoryControllers">🎮 Controllers</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-stock" data-lang="stock">Stock *</label>
+                                <input type="number" id="product-stock" placeholder="Enter quantity" data-lang="stockPlaceholder" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label data-lang="productImages">Product Images (Max 10)</label>
+                            <div class="image-upload-wrapper">
+                                <div class="upload-area">
+                                    <button type="button" class="image-upload-btn" onclick="document.getElementById('product-images-input').click()">
+                                        <i class="fa-solid fa-cloud-upload-alt"></i> <span data-lang="chooseImages">Choose Images</span>
+                                    </button>
+                                    <span class="file-name" id="product-file-name" data-lang="noFilesSelected">No files selected (Max 10)</span>
+                                </div>
+                                <input type="file" id="product-images-input" accept="image/*" multiple style="display:none;">
+                                <div id="product-images-preview" class="images-preview"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-description" data-lang="description">Description</label>
+                            <textarea id="product-description" rows="3" placeholder="Enter product description" data-lang="descriptionPlaceholder"></textarea>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="product-sale"> <span data-lang="onSale">On Sale</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="add-product-btn" data-lang="addProduct">
+                            <i class="fa-solid fa-plus"></i> Add Product
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ===== ORDERS TAB ===== -->
+                <div class="tab-content" id="tab-orders">
+                    <h2 data-lang="orders">📦 Orders</h2>
+                    <div id="orders-container">
+                        <p style="color:var(--text2);" data-lang="noOrdersPlaced">No orders placed yet.</p>
+                    </div>
+                </div>
+
+                <!-- ===== USERS TAB ===== -->
+                <div class="tab-content" id="tab-users">
+                    <h2 data-lang="users">👥 Users</h2>
+
+                    <!-- Add Admin Section -->
+                    <div class="add-admin-section">
+                        <h3 data-lang="addAdmin">➕ Make User Admin</h3>
+                        <div class="add-admin-form">
+                            <input type="email" id="admin-email-input" placeholder="Enter user email to make admin" data-lang="adminEmailPlaceholder">
+                            <button onclick="makeAdmin()" class="add-admin-btn" data-lang="makeAdmin">
+                                <i class="fa-solid fa-user-shield"></i> Make Admin
+                            </button>
+                        </div>
+                        <div id="admin-message" class="admin-message"></div>
+                    </div>
+
+                    <!-- Users Table -->
+                    <div class="users-table-container">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th data-lang="image">Image</th>
+                                    <th data-lang="name">Name</th>
+                                    <th data-lang="email">Email</th>
+                                    <th data-lang="role">Role</th>
+                                    <th data-lang="actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <tr>
+                                    <td colspan="5" style="text-align:center;color:var(--text2);" data-lang="loading">Loading users...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ========================================= -->
+    <!-- EDIT PRODUCT MODAL -->
+    <!-- ========================================= -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-lang="editProduct">✏️ Edit Product</h2>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="edit-product-form" onsubmit="updateProduct(event)">
+                <input type="hidden" id="edit-product-id">
+                <div class="form-group">
+                    <label for="edit-product-name" data-lang="productName">Product Name *</label>
+                    <input type="text" id="edit-product-name" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-product-price" data-lang="price">Price (EGP) *</label>
+                        <input type="number" id="edit-product-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-old-price" data-lang="oldPrice">Old Price (EGP)</label>
+                        <input type="number" id="edit-product-old-price">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-product-category" data-lang="category">Category *</label>
+                        <select id="edit-product-category" required>
+                            <option value="Keyboards" data-lang="categoryKeyboards">⌨️ Keyboards</option>
+                            <option value="Mouses" data-lang="categoryMouses">🖱️ Mouses</option>
+                            <option value="Headsets" data-lang="categoryHeadsets">🎧 Headsets</option>
+                            <option value="Mouse Pads" data-lang="categoryMousePads">🟪 Mouse Pads</option>
+                            <option value="Laptops" data-lang="categoryLaptops">💻 Laptops</option>
+                            <option value="Monitors" data-lang="categoryMonitors">🖥️ Monitors</option>
+                            <option value="PC Parts" data-lang="categoryPCParts">⚙️ PC Parts</option>
+                            <option value="Accessories" data-lang="categoryAccessories">🎮 Accessories</option>
+                            <option value="PC Cases" data-lang="categoryPCCases">🖥️ PC Cases</option>
+                            <option value="Cooling" data-lang="categoryCooling">❄️ Cooling</option>
+                            <option value="Power Supplies" data-lang="categoryPowerSupplies">🔌 Power Supplies</option>
+                            <option value="RAM" data-lang="categoryRAM">💾 RAM</option>
+                            <option value="Processors" data-lang="categoryProcessors">🧠 Processors</option>
+                            <option value="Graphics Cards" data-lang="categoryGraphicsCards">🎞️ Graphics Cards</option>
+                            <option value="Storage" data-lang="categoryStorage">💽 Storage</option>
+                            <option value="Microphones" data-lang="categoryMicrophones">🎙️ Microphones</option>
+                            <option value="Controllers" data-lang="categoryControllers">🎮 Controllers</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-stock" data-lang="stock">Stock *</label>
+                        <input type="number" id="edit-product-stock" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-lang="productImages">Product Images (Max 10)</label>
+                    <div class="image-upload-wrapper">
+                        <div class="upload-area">
+                            <button type="button" class="image-upload-btn" onclick="document.getElementById('edit-product-images-input').click()">
+                                <i class="fa-solid fa-cloud-upload-alt"></i> <span data-lang="changeImages">Change Images</span>
+                            </button>
+                            <span class="file-name" id="edit-file-name" data-lang="noFilesSelected">No files selected</span>
+                        </div>
+                        <input type="file" id="edit-product-images-input" accept="image/*" multiple style="display:none;">
+                        <div id="edit-images-preview" class="images-preview"></div>
+                    </div>
+                    <small style="color:var(--text3);" data-lang="keepCurrentImages">Leave empty to keep current images</small>
+                </div>
+                <div class="form-group">
+                    <label for="edit-product-description" data-lang="description">Description</label>
+                    <textarea id="edit-product-description" rows="3"></textarea>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="edit-product-sale"> <span data-lang="onSale">On Sale</span>
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeEditModal()" data-lang="cancel">Cancel</button>
+                    <button type="submit" class="save-btn" data-lang="saveChanges">
+                        <i class="fa-solid fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-text" data-lang="productAdded">Product Added Successfully</span>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/language.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+
+</html>
