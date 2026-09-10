@@ -1,4 +1,6 @@
-const API = "http://localhost:5000/api/products";
+const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
 
 
 const params = new URLSearchParams(window.location.search);

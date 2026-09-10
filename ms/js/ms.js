@@ -168,7 +168,9 @@ let searchProducts = [];
 
 async function loadSearchProducts() {
     try {
-        const response = await fetch("http://localhost:5000/api/products");
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
         if (response.ok) {
             const data = await response.json();
             if (data && data.length > 0) {
@@ -492,7 +494,9 @@ async function loadFeaturedProducts() {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/products');
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
         let products = [];
 
         if (response.ok) {

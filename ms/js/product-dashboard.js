@@ -5,9 +5,9 @@ async function loadProduct() {
 
     try {
 
-        const response = await fetch(
-            "http://localhost:5000/api/products/" + id
-        );
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
 
         if (!response.ok) {
             throw new Error("Product Not Found");

@@ -69,7 +69,9 @@ function getSearchQuery() {
 
 async function loadAllProducts() {
     try {
-        const response = await fetch('http://localhost:5000/api/products');
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
         if (response.ok) {
             const data = await response.json();
             if (data && data.length > 0) {
@@ -254,7 +256,9 @@ function loadMore() {
 
 async function addToCart(productId) {
     try {
-        const response = await fetch('http://localhost:5000/api/products');
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
         if (!response.ok) throw new Error('Failed to fetch products');
         const products = await response.json();
         

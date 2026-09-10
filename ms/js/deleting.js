@@ -11,9 +11,9 @@ async function loadProducts(){
 
     try{
 
-        const response = await fetch(
-            "http://localhost:5000/api/products"
-        );
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
 
         products = await response.json();
 

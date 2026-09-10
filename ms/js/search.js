@@ -224,7 +224,9 @@ function renderSearchResults(products) {
 // =====================================
 async function addToCart(productId) {
     try {
-        const response = await fetch('http://localhost:5000/api/products');
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
         if (!response.ok) throw new Error('Failed to fetch products');
         const products = await response.json();
         const product = products.find(p => (p._id || p.id) == productId);
