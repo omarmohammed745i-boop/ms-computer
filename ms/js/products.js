@@ -5,6 +5,13 @@
 console.log('🛒 Products Page Loaded');
 
 // =====================================
+// API BASE URL
+// =====================================
+const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
+
+// =====================================
 // GET CURRENT LANGUAGE
 // =====================================
 function getCurrentLanguage() {
@@ -69,9 +76,7 @@ function getSearchQuery() {
 
 async function loadAllProducts() {
     try {
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
+        const response = await fetch(`${API_BASE_URL}/products`);
         if (response.ok) {
             const data = await response.json();
             if (data && data.length > 0) {
@@ -103,13 +108,11 @@ function applyFilters() {
     const stock = document.getElementById('stock-filter')?.value || 'all';
     const searchQuery = getSearchQuery().toLowerCase().trim();
     
-    // ✅ جيب الفلتر من الـ URL
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get('category');
     
     console.log('🔍 Category from URL:', categoryParam);
     
-    // ✅ اختار الفلتر: من الـ URL ولا من الـ select
     let selectedCategory = 'all';
     if (categoryParam) {
         selectedCategory = categoryParam;
@@ -256,9 +259,7 @@ function loadMore() {
 
 async function addToCart(productId) {
     try {
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
+        const response = await fetch(`${API_BASE_URL}/products`);
         if (!response.ok) throw new Error('Failed to fetch products');
         const products = await response.json();
         
