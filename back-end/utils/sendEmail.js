@@ -1,44 +1,31 @@
-const nodemailer = require("nodemailer");
+const axios = require("axios");
 
 // =====================================
-// Brevo SMTP Configuration
+// Brevo API Configuration
 // =====================================
-const transporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.BREVO_SMTP_KEY
-    },
-    family: 4,
-    connectionTimeout: 20000,
-    greetingTimeout: 20000,
-    socketTimeout: 20000,
-    tls: {
-        rejectUnauthorized: false
-    }
-});
-
-// ✅ نتأكد من الاتصال
-transporter.verify((error, success) => {
-    if (error) {
-        console.error("❌ SMTP Connection Error:", error);
-    } else {
-        console.log("✅ SMTP Server Ready (Brevo)");
-    }
-});
+const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
+const SENDER_EMAIL = process.env.EMAIL_USER || "omarmohammed745i@gmail.com";
+const SENDER_NAME = "MS Computer";
 
 // =====================================
 // دالة إرسال كود التحقق
 // =====================================
 async function sendVerificationCode(email, code, name) {
     try {
-        const mailOptions = {
-            from: `"MS Computer" <${process.env.EMAIL_USER}>`,
-            to: email,
+        const emailData = {
+            sender: {
+                name: SENDER_NAME,
+                email: SENDER_EMAIL
+            },
+            to: [
+                {
+                    email: email,
+                    name: name
+                }
+            ],
             subject: "🔐 Verification Code - MS Computer",
-            html: `
+            htmlContent: `
                 <!DOCTYPE html>
                 <html>
                 <head>
@@ -127,14 +114,42 @@ async function sendVerificationCode(email, code, name) {
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log("✅ Email sent:", info.messageId);
-        return { success: true, messageId: info.messageId };
+        console.log("📧 Sending email to:", email);
+        console.log("📧 From:", SENDER_EMAIL);
+        console.log("📧 API Key exists:", !!BREVO_API_KEY);
+
+        const response = await axios.post(BREVO_API_URL, emailData, {
+            headers: {
+                "accept": "application/json",
+                "api-key": BREVO_API_KEY,
+                "content-type": "application/json"
+            },
+            timeout: 15000
+        });
+
+        console.log("✅ Email sent:", response.data.messageId);
+        return { success: true, messageId: response.data.messageId };
 
     } catch (err) {
-        console.error("❌ Email error:", err);
-        return { success: false, error: err.message };
+        console.error("❌ Brevo API error:");
+        console.error("Status:", err.response?.status);
+        console.error("Data:", err.response?.data);
+        console.error("Message:", err.message);
+        return { 
+            success: false, 
+            error: err.response?.data?.message || err.message 
+        };
     }
+}
+
+// =====================================
+// ✅ نتأكد من إعدادات Brevo عند البدء
+// =====================================
+if (BREVO_API_KEY) {
+    console.log("✅ Brevo API Key configured");
+    console.log("📧 Sender Email:", SENDER_EMAIL);
+} else {
+    console.error("❌ BREVO_API_KEY is missing in environment variables");
 }
 
 module.exports = { sendVerificationCode };
