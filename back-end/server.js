@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const session = require("express-session");
+const passport = require("passport");
 
 const productRoutes = require("./routes/products");
 const authRoutes = require("./routes/auth");
@@ -14,7 +16,18 @@ const PORT = process.env.PORT || 5000;
 // =======================
 // Middlewares
 // =======================
-app.use(cors());
+app.use(cors({
+    origin: [
+        'https://ms-computer-wheat.vercel.app',
+        'https://ms-computer-93lddlf3y-omarmohammed745i-boops-projects.vercel.app',
+        'http://localhost:3000',
+        'http://localhost:5000',
+        'http://127.0.0.1:5500'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+}));
 
 app.use(express.json({
     limit: "10mb"
@@ -23,6 +36,22 @@ app.use(express.json({
 app.use(express.urlencoded({
     extended: true
 }));
+
+// ✅ Session (محتاجينه لـ Passport)
+app.use(session({
+    secret: process.env.JWT_SECRET || "MSCOMPUTER_SECRET",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    }
+}));
+
+// ✅ Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/uploads", express.static("uploads"));
 
@@ -39,7 +68,6 @@ app.post(
             });
         }
 
-        // ✅ نرجع المسار النسبي (مش localhost)
         res.json({
             image: `/uploads/${req.file.filename}`
         });

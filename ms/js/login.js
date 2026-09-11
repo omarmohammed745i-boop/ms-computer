@@ -1,15 +1,17 @@
 // =====================================
-// LOGIN PAGE JAVASCRIPT
+// LOGIN PAGE JAVASCRIPT (with Google Login)
 // =====================================
 
 console.log('🔐 Login Page Loaded');
 
 // =====================================
-// API BASE URL
+// GET API URL
 // =====================================
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
+function getApiUrl() {
+    return window.location.hostname === 'localhost' 
+        ? 'http://localhost:5000/api' 
+        : 'https://ms-computer-production.up.railway.app/api';
+}
 
 // =====================================
 // GET CURRENT LANGUAGE
@@ -40,7 +42,9 @@ function t(key) {
             loginSuccess: 'Login successful! Redirecting...',
             loginError: 'Login failed. Please try again.',
             fillAllFields: 'Please fill in all fields',
-            validEmail: 'Please enter a valid email address'
+            validEmail: 'Please enter a valid email address',
+            needsVerification: 'Please verify your email first',
+            redirectingToVerify: 'Redirecting to verification page...'
         },
         ar: {
             welcomeBack: 'مرحباً بعودتك!',
@@ -58,7 +62,9 @@ function t(key) {
             loginSuccess: 'تم تسجيل الدخول بنجاح! جاري التحويل...',
             loginError: 'فشل تسجيل الدخول. حاول مرة أخرى.',
             fillAllFields: 'يرجى ملء جميع الحقول',
-            validEmail: 'يرجى إدخال بريد إلكتروني صحيح'
+            validEmail: 'يرجى إدخال بريد إلكتروني صحيح',
+            needsVerification: 'يرجى تفعيل بريدك الإلكتروني أولاً',
+            redirectingToVerify: 'جاري التحويل لصفحة التحقق...'
         }
     };
     return fallback[lang]?.[key] || key;
@@ -113,7 +119,8 @@ async function handleLogin(event) {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        const API_URL = getApiUrl();
+        const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -182,6 +189,16 @@ async function handleLogin(event) {
                 window.location.href = redirectUrl;
             }, 1500);
 
+        } else if (data.needsVerification) {
+            // ✅ المستخدم لسه مش موثق
+            errorMessage.textContent = t('needsVerification');
+            errorDiv.style.display = 'flex';
+            
+            // ✅ نروح لصفحة التحقق بعد 2 ثانية
+            setTimeout(() => {
+                window.location.href = `signup.html?email=${encodeURIComponent(data.email)}&verify=true`;
+            }, 2000);
+
         } else {
             errorMessage.textContent = data.message || t('invalidCredentials');
             errorDiv.style.display = 'flex';
@@ -204,6 +221,30 @@ function checkRememberMe() {
     if (rememberMe === 'true' && rememberedEmail) {
         document.getElementById('login-email').value = rememberedEmail;
         document.getElementById('remember-me').checked = true;
+    }
+}
+
+// =====================================
+// CHECK URL FOR ERRORS
+// =====================================
+function checkUrlErrors() {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get('error');
+
+    if (error === 'google_failed') {
+        const errorDiv = document.getElementById('login-error');
+        const errorMessage = document.getElementById('error-message');
+        if (errorDiv && errorMessage) {
+            errorMessage.textContent = '❌ Google login failed. Please try again.';
+            errorDiv.style.display = 'flex';
+        }
+    } else if (error === 'server_error') {
+        const errorDiv = document.getElementById('login-error');
+        const errorMessage = document.getElementById('error-message');
+        if (errorDiv && errorMessage) {
+            errorMessage.textContent = '❌ Server error. Please try again.';
+            errorDiv.style.display = 'flex';
+        }
     }
 }
 
@@ -251,12 +292,23 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('🔐 Login page initialized');
     translateLoginPage();
     checkRememberMe();
+    checkUrlErrors();
 
-    document.getElementById('login-password').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            document.getElementById('login-form').dispatchEvent(new Event('submit'));
-        }
-    });
+    // ✅ ربط الـ form
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    const passwordInput = document.getElementById('login-password');
+    if (passwordInput) {
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const form = document.getElementById('login-form');
+                if (form) form.dispatchEvent(new Event('submit'));
+            }
+        });
+    }
 });
 
 // =====================================

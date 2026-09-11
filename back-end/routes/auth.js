@@ -1,6 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const upload = require("../middleware/upload");
 const { sendVerificationCode } = require("../utils/sendEmail");
 
@@ -8,6 +10,71 @@ const User = require("../models/user");
 
 const router = express.Router();
 
+// ============================
+// Passport Google Strategy
+// ============================
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || "https://ms-computer-production.up.railway.app/api/auth/google/callback"
+},
+async (accessToken, refreshToken, profile, done) => {
+    try {
+        console.log("🔍 Google Profile:", profile.id, profile.emails?.[0]?.value);
+
+        const email = profile.emails?.[0]?.value?.toLowerCase();
+        const name = profile.displayName || "Google User";
+        const image = profile.photos?.[0]?.value || "/photos/default-avatar.png";
+
+        if (!email) {
+            return done(new Error("No email from Google"), null);
+        }
+
+        // ✅ ندور على المستخدم
+        let user = await User.findOne({ email });
+
+        if (!user) {
+            // ✅ نعمل مستخدم جديد
+            user = new User({
+                name,
+                email,
+                password: "google_" + profile.id, // باسورد وهمي
+                image,
+                isVerified: true, // ✅ Google موثق
+                role: "user"
+            });
+            await user.save();
+            console.log("✅ New user created via Google:", email);
+        } else {
+            // ✅ نحدث الصورة لو مش موجودة
+            if (!user.image || user.image === "/photos/default-avatar.png") {
+                user.image = image;
+                await user.save();
+            }
+            console.log("✅ Existing user logged in via Google:", email);
+        }
+
+        return done(null, user);
+
+    } catch (err) {
+        console.error("❌ Google Strategy Error:", err);
+        return done(err, null);
+    }
+}));
+
+// ✅ Serialize / Deserialize
+passport.serializeUser((user, done) => {
+    done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err, null);
+    }
+});
 
 // ============================
 // Helper: Generate 6-digit code
@@ -16,9 +83,24 @@ function generateCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
+// ============================
+// Generate Token
+// ============================
+function generateToken(user) {
+    return jwt.sign(
+        {
+            id: user._id,
+            role: user.role
+        },
+        process.env.JWT_SECRET || "MSCOMPUTER_SECRET",
+        {
+            expiresIn: "7d"
+        }
+    );
+}
 
 // ============================
-// Register (Send Verification Code)
+// Register
 // ============================
 router.post("/register", async (req, res) => {
     try {
@@ -36,7 +118,6 @@ router.post("/register", async (req, res) => {
 
         const existingUser = await User.findOne({ email });
 
-        // ✅ لو المستخدم موجود وموثق
         if (existingUser && existingUser.isVerified) {
             return res.status(400).json({
                 success: false,
@@ -44,10 +125,9 @@ router.post("/register", async (req, res) => {
             });
         }
 
-        // ✅ لو المستخدم موجود بس مش موثق، نحدث الكود
         const hashedPassword = await bcrypt.hash(password, 10);
         const verificationCode = generateCode();
-        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 دقائق
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
         let user;
         if (existingUser) {
@@ -70,7 +150,6 @@ router.post("/register", async (req, res) => {
             await user.save();
         }
 
-        // ✅ إرسال الكود على الإيميل
         const emailResult = await sendVerificationCode(email, verificationCode, name);
 
         if (!emailResult.success) {
@@ -94,7 +173,6 @@ router.post("/register", async (req, res) => {
         });
     }
 });
-
 
 // ============================
 // Verify Email
@@ -127,7 +205,6 @@ router.post("/verify-email", async (req, res) => {
             });
         }
 
-        // ✅ نتأكد إن الكود صح
         if (user.verificationCode !== code) {
             return res.status(400).json({
                 success: false,
@@ -135,7 +212,6 @@ router.post("/verify-email", async (req, res) => {
             });
         }
 
-        // ✅ نتأكد إن الكود لسه صالح
         if (new Date() > user.verificationCodeExpires) {
             return res.status(400).json({
                 success: false,
@@ -143,36 +219,25 @@ router.post("/verify-email", async (req, res) => {
             });
         }
 
-        // ✅ نفعّل الحساب
-user.isVerified = true;
-user.verificationCode = null;
-user.verificationCodeExpires = null;
-await user.save();
+        user.isVerified = true;
+        user.verificationCode = null;
+        user.verificationCodeExpires = null;
+        await user.save();
 
-// ✅ نعمل token للتسجيل التلقائي
-const token = jwt.sign(
-    {
-        id: user._id,
-        role: user.role
-    },
-    process.env.JWT_SECRET || "MSCOMPUTER_SECRET",
-    {
-        expiresIn: "7d"
-    }
-);
+        const token = generateToken(user);
 
-res.json({
-    success: true,
-    message: "Account verified successfully",
-    token,
-    user: {
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        image: user.image || "/photos/default-avatar.png",
-        role: user.role
-    }
-});
+        res.json({
+            success: true,
+            message: "Account verified successfully",
+            token,
+            user: {
+                id: user._id.toString(),
+                name: user.name,
+                email: user.email,
+                image: user.image || "/photos/default-avatar.png",
+                role: user.role
+            }
+        });
 
     } catch (err) {
         console.log(err);
@@ -182,7 +247,6 @@ res.json({
         });
     }
 });
-
 
 // ============================
 // Resend Code
@@ -244,7 +308,6 @@ router.post("/resend-code", async (req, res) => {
     }
 });
 
-
 // ============================
 // Login
 // ============================
@@ -278,7 +341,6 @@ router.post("/login", async (req, res) => {
             });
         }
 
-        // ✅ لازم يكون موثق
         if (!user.isVerified) {
             return res.status(400).json({
                 success: false,
@@ -288,16 +350,7 @@ router.post("/login", async (req, res) => {
             });
         }
 
-        const token = jwt.sign(
-            {
-                id: user._id,
-                role: user.role
-            },
-            process.env.JWT_SECRET || "MSCOMPUTER_SECRET",
-            {
-                expiresIn: "7d"
-            }
-        );
+        const token = generateToken(user);
 
         res.json({
             success: true,
@@ -320,6 +373,47 @@ router.post("/login", async (req, res) => {
     }
 });
 
+// ============================
+// Google OAuth - Start
+// ============================
+router.get("/google",
+    passport.authenticate("google", {
+        scope: ["profile", "email"]
+    })
+);
+
+// ============================
+// Google OAuth - Callback
+// ============================
+router.get("/google/callback",
+    passport.authenticate("google", {
+        failureRedirect: "https://ms-computer-wheat.vercel.app/login.html?error=google_failed",
+        session: false
+    }),
+    (req, res) => {
+        try {
+            const user = req.user;
+            const token = generateToken(user);
+
+            // ✅ نعمل redirect للـ Frontend مع الـ token
+            const userData = encodeURIComponent(JSON.stringify({
+                id: user._id.toString(),
+                name: user.name,
+                email: user.email,
+                image: user.image || "/photos/default-avatar.png",
+                role: user.role
+            }));
+
+            res.redirect(
+                `https://ms-computer-wheat.vercel.app/google-callback.html?token=${token}&user=${userData}`
+            );
+
+        } catch (err) {
+            console.log(err);
+            res.redirect("https://ms-computer-wheat.vercel.app/login.html?error=server_error");
+        }
+    }
+);
 
 // ============================
 // Upload Avatar
@@ -362,7 +456,6 @@ router.post("/upload-avatar/:id", upload.single("avatar"), async (req, res) => {
         });
     }
 });
-
 
 // ============================
 // Update Profile
@@ -415,7 +508,6 @@ router.put("/update-profile/:id", async (req, res) => {
     }
 });
 
-
 // ============================
 // GET ALL USERS (ADMIN)
 // ============================
@@ -431,6 +523,5 @@ router.get("/users", async (req, res) => {
         });
     }
 });
-
 
 module.exports = router;

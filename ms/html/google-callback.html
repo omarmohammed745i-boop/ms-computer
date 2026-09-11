@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signing in with Google...</title>
+    <style>
+        body {
+            background: #0a0e17;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 212, 180, 0.2);
+            border-top-color: #00d4b4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        h2 {
+            color: #00d4b4;
+            font-size: 22px;
+        }
+        p {
+            color: #a0a0a0;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="spinner"></div>
+    <h2>Signing you in with Google...</h2>
+    <p>Please wait a moment</p>
+
+    <script>
+        // ✅ نقرا الـ token والـ user من الـ URL
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        const userStr = params.get('user');
+        const error = params.get('error');
+
+        if (error) {
+            alert('❌ Google login failed: ' + error);
+            window.location.href = '/login.html';
+        } else if (token && userStr) {
+            try {
+                const user = JSON.parse(decodeURIComponent(userStr));
+
+                // ✅ نحفظ البيانات في localStorage
+                localStorage.setItem('loggedInUser', JSON.stringify(user));
+                localStorage.setItem('userId', user.id);
+                localStorage.setItem('token', token);
+
+                console.log('✅ Google login successful:', user);
+
+                // ✅ نروح للصفحة الرئيسية
+                setTimeout(() => {
+                    const redirectUrl = user.role === 'admin' ? '/admin.html' : '/ms.html';
+                    window.location.href = redirectUrl;
+                }, 1000);
+
+            } catch (err) {
+                console.error('❌ Error parsing user:', err);
+                alert('❌ Error: ' + err.message);
+                window.location.href = '/login.html';
+            }
+        } else {
+            alert('❌ Missing token or user data');
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html>
