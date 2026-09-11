@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 // =====================================
 // Brevo API Configuration
 // =====================================
@@ -118,26 +116,36 @@ async function sendVerificationCode(email, code, name) {
         console.log("📧 From:", SENDER_EMAIL);
         console.log("📧 API Key exists:", !!BREVO_API_KEY);
 
-        const response = await axios.post(BREVO_API_URL, emailData, {
+        const response = await fetch(BREVO_API_URL, {
+            method: "POST",
             headers: {
                 "accept": "application/json",
                 "api-key": BREVO_API_KEY,
                 "content-type": "application/json"
             },
-            timeout: 15000
+            body: JSON.stringify(emailData)
         });
 
-        console.log("✅ Email sent:", response.data.messageId);
-        return { success: true, messageId: response.data.messageId };
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("❌ Brevo API error:");
+            console.error("Status:", response.status);
+            console.error("Data:", data);
+            return { 
+                success: false, 
+                error: data.message || "Failed to send email" 
+            };
+        }
+
+        console.log("✅ Email sent:", data.messageId);
+        return { success: true, messageId: data.messageId };
 
     } catch (err) {
-        console.error("❌ Brevo API error:");
-        console.error("Status:", err.response?.status);
-        console.error("Data:", err.response?.data);
-        console.error("Message:", err.message);
+        console.error("❌ Email error:", err.message);
         return { 
             success: false, 
-            error: err.response?.data?.message || err.message 
+            error: err.message 
         };
     }
 }
