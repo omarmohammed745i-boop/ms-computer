@@ -149,11 +149,11 @@ async function loadProducts() {
         tbody.innerHTML = products.map((product) => {
             const productId = product._id || product.id;
             const inStock = product.stock > 0;
-            const firstImage = product.images && product.images.length > 0 ? product.images[0] : (product.image || 'photos/default-product.png');
+            const firstImage = product.images && product.images.length > 0 ? product.images[0] : (product.image || '/photos/default-product.png');
 
             return `
             <tr>
-                <td><img src="${firstImage}" alt="${product.name}" onerror="this.src='photos/default-product.png'"></td>
+                <td><img src="${firstImage}" alt="${product.name}" onerror="this.src='/photos/default-product.png'"></td>
                 <td><strong>${product.name}</strong></td>
                 <td>${product.price ? product.price.toLocaleString() : '0'} ${egpText}</td>
                 <td>${product.category || 'N/A'}</td>
@@ -206,6 +206,19 @@ async function convertImagesToBase64(files) {
 }
 
 // =====================================
+// PARSE FEATURES FROM TEXTAREA
+// =====================================
+function parseFeatures(textareaId) {
+    const textarea = document.getElementById(textareaId);
+    if (!textarea) return [];
+    
+    return textarea.value
+        .split('\n')
+        .map(f => f.trim())
+        .filter(f => f.length > 0);
+}
+
+// =====================================
 // ADD PRODUCT
 // =====================================
 async function addProduct(event) {
@@ -221,6 +234,9 @@ async function addProduct(event) {
     const description = document.getElementById('product-description')?.value.trim() || '';
     const sale = document.getElementById('product-sale')?.checked || false;
     const imageFiles = document.getElementById('product-images-input')?.files;
+    
+    // ✅ المميزات الجديدة
+    const features = parseFeatures('product-features');
 
     if (!name || !price || !category) {
         showToast('⚠️ ' + t('fillAllFields'));
@@ -248,9 +264,10 @@ async function addProduct(event) {
             stock: stock,
             inStock: stock > 0,
             images: images,
-            image: images[0] || 'photos/default-product.png',
+            image: images[0] || '/photos/default-product.png',
             description,
-            sale
+            sale,
+            features: features  // ✅ نضيف المميزات
         };
 
         const response = await fetch(`${API_BASE_URL}/products`, {
@@ -334,6 +351,12 @@ async function openEditModal(productId) {
         document.getElementById('edit-product-stock').value = product.stock || 0;
         document.getElementById('edit-product-description').value = product.description || '';
         document.getElementById('edit-product-sale').checked = product.sale || false;
+        
+        // ✅ المميزات - كل ميزة في سطر
+        const featuresTextarea = document.getElementById('edit-product-features');
+        if (featuresTextarea) {
+            featuresTextarea.value = (product.features || []).join('\n');
+        }
 
         // عرض الصور الحالية
         const previewContainer = document.getElementById('edit-images-preview');
@@ -387,6 +410,9 @@ async function updateProduct(event) {
     const description = document.getElementById('edit-product-description').value.trim() || '';
     const sale = document.getElementById('edit-product-sale').checked;
     const imageFiles = document.getElementById('edit-product-images-input').files;
+    
+    // ✅ المميزات
+    const features = parseFeatures('edit-product-features');
 
     if (!name || !price || !category) {
         showToast('⚠️ ' + t('fillAllFields'));
@@ -413,7 +439,8 @@ async function updateProduct(event) {
             stock: stock,
             inStock: stock > 0,
             description,
-            sale
+            sale,
+            features: features  // ✅ نضيف المميزات
         };
 
         if (images) {
@@ -532,10 +559,6 @@ function loadOrders() {
 
     const egpText = t('egp');
     const customerText = t('customer');
-    const phoneText = t('phone');
-    const addressText = t('address');
-    const paymentText = t('payment');
-    const notesText = t('notes');
     const itemsText = t('items');
     const totalText = t('total');
     const confirmText = t('confirm');
@@ -694,7 +717,7 @@ function loadUsers() {
 
         return `
             <tr>
-                <td><img src="${user.image || 'photos/default-avatar.png'}" alt="${user.name}" onerror="this.src='photos/default-avatar.png'"></td>
+                <td><img src="${user.image || '/photos/default-avatar.png'}" alt="${user.name}" onerror="this.src='/photos/default-avatar.png'"></td>
                 <td><strong>${user.name}</strong></td>
                 <td>${user.email}</td>
                 <td><span class="role-badge ${roleClass}">${roleText}</span></td>

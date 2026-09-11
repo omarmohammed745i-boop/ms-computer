@@ -6,13 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - MS Computer</title>
 
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-    <!-- Main CSS -->
     <link rel="stylesheet" href="/css/ms.css">
-
-    <!-- Admin CSS -->
     <link rel="stylesheet" href="/css/admin.css">
 </head>
 
@@ -27,7 +22,6 @@
                 <p data-lang="adminSubtitle">Manage your products, orders, and inventory</p>
             </div>
             <div class="admin-actions">
-                <!-- Language Selector -->
                 <div class="language-selector">
                     <button id="language-btn">
                         🌐 <span id="current-language">EN</span> <i class="fa-solid fa-chevron-down"></i>
@@ -203,6 +197,16 @@
                                 <div id="product-images-preview" class="images-preview"></div>
                             </div>
                         </div>
+
+                        <!-- ✅ حقل المميزات -->
+                        <div class="form-group">
+                            <label for="product-features" data-lang="productFeatures">✨ Product Features (one per line)</label>
+                            <textarea id="product-features" rows="5" placeholder="ميزة 1&#10;ميزة 2&#10;ميزة 3" data-lang="productFeaturesPlaceholder"></textarea>
+                            <small style="color:var(--text3);font-size:12px;display:block;margin-top:4px;">
+                                <span data-lang="featuresHint">Each feature on a new line. They will appear as a list on the product page.</span>
+                            </small>
+                        </div>
+
                         <div class="form-group">
                             <label for="product-description" data-lang="description">Description</label>
                             <textarea id="product-description" rows="3" placeholder="Enter product description" data-lang="descriptionPlaceholder"></textarea>
@@ -230,7 +234,6 @@
                 <div class="tab-content" id="tab-users">
                     <h2 data-lang="users">👥 Users</h2>
 
-                    <!-- Add Admin Section -->
                     <div class="add-admin-section">
                         <h3 data-lang="addAdmin">➕ Make User Admin</h3>
                         <div class="add-admin-form">
@@ -242,7 +245,6 @@
                         <div id="admin-message" class="admin-message"></div>
                     </div>
 
-                    <!-- Users Table -->
                     <div class="users-table-container">
                         <table class="users-table">
                             <thead>
@@ -336,6 +338,16 @@
                     </div>
                     <small style="color:var(--text3);" data-lang="keepCurrentImages">Leave empty to keep current images</small>
                 </div>
+
+                <!-- ✅ حقل المميزات (Edit) -->
+                <div class="form-group">
+                    <label for="edit-product-features" data-lang="productFeatures">✨ Product Features (one per line)</label>
+                    <textarea id="edit-product-features" rows="5" placeholder="ميزة 1&#10;ميزة 2&#10;ميزة 3" data-lang="productFeaturesPlaceholder"></textarea>
+                    <small style="color:var(--text3);font-size:12px;display:block;margin-top:4px;">
+                        <span data-lang="featuresHint">Each feature on a new line.</span>
+                    </small>
+                </div>
+
                 <div class="form-group">
                     <label for="edit-product-description" data-lang="description">Description</label>
                     <textarea id="edit-product-description" rows="3"></textarea>
