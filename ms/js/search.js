@@ -71,21 +71,23 @@ async function performSearch(query) {
     const resultsContainer = document.getElementById('search-results');
     const loading = document.getElementById('search-loading');
     const noResults = document.getElementById('no-results');
-    const queryContainer = document.getElementById('search-query-container');
+    const queryEl = document.getElementById('search-query');
 
     console.log('🔍 Query received:', query);
 
+    // ✅ عرض الـ query (بدون كسر HTML)
+    if (queryEl) {
+        queryEl.textContent = query || t('allProducts');
+        console.log('✅ Query text set to:', queryEl.textContent);
+    }
+
+    // ✅ ترجمة الـ "Search results for:"
+    const queryContainer = document.getElementById('search-query-container');
     if (queryContainer) {
-        const lang = getCurrentLanguage();
-        let showingText = '';
-        if (lang === 'ar') {
-            showingText = 'نتائج البحث عن:';
-        } else {
-            showingText = 'Search results for:';
+        const firstChild = queryContainer.firstChild;
+        if (firstChild && firstChild.nodeType === 3) {
+            firstChild.textContent = t('showingResultsFor') + ' ';
         }
-        const queryText = query || t('allProducts');
-        queryContainer.innerHTML = `${showingText} "<span id="search-query">${queryText}</span>"`;
-        console.log('✅ Query text set to:', queryText);
     }
 
     const h1 = document.querySelector('.page-header h1');
@@ -97,7 +99,6 @@ async function performSearch(query) {
     if (resultsContainer) resultsContainer.innerHTML = '';
 
     try {
-        // ✅ استخدم API_BASE_URL بدل localhost
         const response = await fetch(`${API_BASE_URL}/products`);
         let products = [];
 
@@ -137,13 +138,25 @@ async function performSearch(query) {
             }
         }
 
+        // ✅ بحث ذكي
         const searchTerm = query.toLowerCase().trim();
         let filtered = products;
+
         if (searchTerm) {
-            filtered = products.filter(p => 
-                p.name.toLowerCase().includes(searchTerm) || 
-                (p.category && p.category.toLowerCase().includes(searchTerm))
-            );
+            const searchWords = searchTerm.split(/\s+/).filter(w => w.length > 0);
+            
+            filtered = products.filter(p => {
+                const name = (p.name || '').toLowerCase();
+                const category = (p.category || '').toLowerCase();
+                const description = (p.description || '').toLowerCase();
+                
+                return searchWords.every(word => 
+                    name.includes(word) || 
+                    category.includes(word) || 
+                    description.includes(word)
+                );
+            });
+            
             console.log(`🔍 Found ${filtered.length} results for "${searchTerm}"`);
         } else {
             console.log('📦 Showing all products');
@@ -230,7 +243,6 @@ function renderSearchResults(products) {
 // =====================================
 async function addToCart(productId) {
     try {
-        // ✅ ضفنا سطر fetch
         const response = await fetch(`${API_BASE_URL}/products`);
         if (!response.ok) throw new Error('Failed to fetch products');
         const products = await response.json();

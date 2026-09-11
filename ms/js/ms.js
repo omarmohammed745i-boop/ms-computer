@@ -236,10 +236,20 @@ if (searchBox && searchSuggestions) {
             return;
         }
 
-        let results = searchProducts.filter(product =>
-            product.name.toLowerCase().includes(value) ||
-            (product.category && product.category.toLowerCase().includes(value))
-        );
+        // ✅ بحث ذكي - يقسم الكلمات
+const searchWords = value.split(/\s+/).filter(w => w.length > 0);
+
+let results = searchProducts.filter(product => {
+    const name = (product.name || '').toLowerCase();
+    const category = (product.category || '').toLowerCase();
+    const description = (product.description || '').toLowerCase();
+    
+    return searchWords.every(word => 
+        name.includes(word) || 
+        category.includes(word) || 
+        description.includes(word)
+    );
+});
 
         results.slice(0, 8).forEach(product => {
             let div = document.createElement("div");
