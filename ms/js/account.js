@@ -5,13 +5,6 @@
 console.log('👤 Account Page Loaded');
 
 // =====================================
-// API BASE URL
-// =====================================
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
-
-// =====================================
 // GET USER ID
 // =====================================
 function getUserId() {
