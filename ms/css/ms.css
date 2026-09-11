@@ -1102,62 +1102,6 @@ footer {
 }
 
 /* =====================================
-   MOBILE DOCK
-   ===================================== */
-.mobile-dock {
-    display: none;
-}
-@media (max-width: 768px) {
-    .mobile-dock {
-        display: flex;
-        position: fixed;
-        left: 50%;
-        bottom: 16px;
-        transform: translateX(-50%);
-        width: 92%;
-        max-width: 400px;
-        height: 66px;
-        justify-content: space-around;
-        align-items: center;
-        border-radius: 40px;
-        background: rgba(255, 255, 255, 0.10);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-        z-index: 99999;
-    }
-    body.light-mode .mobile-dock {
-        background: rgba(255, 255, 255, 0.85);
-        border-color: rgba(0, 0, 0, 0.06);
-    }
-    .mobile-dock a {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        color: var(--text);
-        font-size: 20px;
-        transition: var(--transition);
-    }
-    .mobile-dock a:hover {
-        transform: translateY(-4px);
-    }
-    .mobile-dock a.active {
-        background: rgba(0, 212, 180, 0.2);
-        color: var(--primary);
-        transform: translateY(-6px);
-        box-shadow: 0 0 20px rgba(0, 212, 180, 0.15);
-    }
-    body {
-        padding-bottom: 80px;
-    }
-}
-
-/* =====================================
    BACK TO TOP
    ===================================== */
 .back-to-top {
