@@ -31,7 +31,7 @@
             </div>
 
             <!-- ===== STEP 1: Signup Form ===== -->
-            <form id="signup-form" onsubmit="handleSignup(event)">
+            <form id="signup-form">
                 <div class="form-group">
                     <label for="signup-name" data-lang="fullName">Full Name</label>
                     <div class="input-group">
@@ -80,12 +80,11 @@
                 </button>
 
                 <p class="register-link" data-lang="haveAccount">
-                    Already have an account? <a href="login.html" data-lang="login">Login</a>
-                </p>
+                    Already have an account?</p> <div class="register"><a href="login.html" data-lang="login">Login</a></div>
             </form>
 
             <!-- ===== STEP 2: Verification Code ===== -->
-            <form id="verify-form" onsubmit="handleVerify(event)" style="display:none;">
+            <form id="verify-form" style="display:none;">
                 <div class="verify-header" style="text-align:center; margin-bottom:20px;">
                     <div style="font-size:60px; margin-bottom:15px;">📧</div>
                     <h2 data-lang="verifyEmail" style="color:var(--text); margin-bottom:10px;">Verify Your Email</h2>

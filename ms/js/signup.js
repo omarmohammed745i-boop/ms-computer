@@ -340,6 +340,17 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('📝 Signup page initialized');
     translateSignupPage();
 
+    // ✅ ربط الـ forms بالـ functions
+    const signupForm = document.getElementById('signup-form');
+    const verifyForm = document.getElementById('verify-form');
+
+    if (signupForm) {
+        signupForm.addEventListener('submit', handleSignup);
+    }
+    if (verifyForm) {
+        verifyForm.addEventListener('submit', handleVerify);
+    }
+
     document.getElementById('signup-confirm-password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             document.getElementById('signup-form').dispatchEvent(new Event('submit'));
