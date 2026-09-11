@@ -79,18 +79,40 @@ document.querySelectorAll('.admin-nav a[data-tab]').forEach(tab => {
 // =====================================
 async function loadDashboardStats() {
     try {
-        const response = await fetch(`${API_BASE_URL}/products`);
-        if (response.ok) {
-            const products = await response.json();
+        // Products
+        const productsRes = await fetch(`${API_BASE_URL}/products`);
+        if (productsRes.ok) {
+            const products = await productsRes.json();
             document.getElementById('total-products').textContent = products.length;
         }
 
-        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+        // ✅ Orders من الـ API
+        let orders = [];
+        try {
+            const ordersRes = await fetch(`${API_BASE_URL}/orders`);
+            if (ordersRes.ok) {
+                orders = await ordersRes.json();
+            }
+        } catch (err) {
+            console.log('⚠️ Orders API error, using localStorage:', err.message);
+            orders = JSON.parse(localStorage.getItem('orders')) || [];
+        }
         document.getElementById('total-orders').textContent = orders.length;
 
-        const users = JSON.parse(localStorage.getItem('users')) || [];
+        // Users من الـ API
+        let users = [];
+        try {
+            const usersRes = await fetch(`${API_BASE_URL}/auth/users`);
+            if (usersRes.ok) {
+                users = await usersRes.json();
+            }
+        } catch (err) {
+            console.log('⚠️ Users API error, using localStorage:', err.message);
+            users = JSON.parse(localStorage.getItem('users')) || [];
+        }
         document.getElementById('total-users').textContent = users.length;
 
+        // Revenue
         const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
         const egpText = t('egp');
         document.getElementById('total-revenue').textContent = totalRevenue.toLocaleString() + ' ' + egpText;
@@ -114,7 +136,7 @@ function renderRecentOrders(orders) {
     }
 
     const egpText = t('egp');
-    const recent = orders.slice(-5).reverse();
+    const recent = orders.slice(0, 5);
     container.innerHTML = recent.map(order => `
         <div class="order-item-preview">
             <span class="order-id">#${order.id || 'N/A'}</span>
@@ -235,7 +257,6 @@ async function addProduct(event) {
     const sale = document.getElementById('product-sale')?.checked || false;
     const imageFiles = document.getElementById('product-images-input')?.files;
     
-    // ✅ المميزات الجديدة
     const features = parseFeatures('product-features');
 
     if (!name || !price || !category) {
@@ -267,7 +288,7 @@ async function addProduct(event) {
             image: images[0] || '/photos/default-product.png',
             description,
             sale,
-            features: features  // ✅ نضيف المميزات
+            features: features
         };
 
         const response = await fetch(`${API_BASE_URL}/products`, {
@@ -352,13 +373,11 @@ async function openEditModal(productId) {
         document.getElementById('edit-product-description').value = product.description || '';
         document.getElementById('edit-product-sale').checked = product.sale || false;
         
-        // ✅ المميزات - كل ميزة في سطر
         const featuresTextarea = document.getElementById('edit-product-features');
         if (featuresTextarea) {
             featuresTextarea.value = (product.features || []).join('\n');
         }
 
-        // عرض الصور الحالية
         const previewContainer = document.getElementById('edit-images-preview');
         previewContainer.innerHTML = '';
 
@@ -411,7 +430,6 @@ async function updateProduct(event) {
     const sale = document.getElementById('edit-product-sale').checked;
     const imageFiles = document.getElementById('edit-product-images-input').files;
     
-    // ✅ المميزات
     const features = parseFeatures('edit-product-features');
 
     if (!name || !price || !category) {
@@ -440,7 +458,7 @@ async function updateProduct(event) {
             inStock: stock > 0,
             description,
             sale,
-            features: features  // ✅ نضيف المميزات
+            features: features
         };
 
         if (images) {
@@ -543,16 +561,25 @@ document.getElementById('edit-product-images-input')?.addEventListener('change',
 });
 
 // =====================================
-// LOAD ORDERS
+// LOAD ORDERS (من API)
 // =====================================
-function loadOrders() {
+async function loadOrders() {
     const container = document.getElementById('orders-container');
     if (!container) return;
 
-    const orders = JSON.parse(localStorage.getItem('orders')) || [];
-    console.log('📦 Orders loaded:', orders.length);
+    let orders = [];
+    try {
+        const response = await fetch(`${API_BASE_URL}/orders`);
+        if (response.ok) {
+            orders = await response.json();
+            console.log('📦 Orders loaded from API:', orders.length);
+        }
+    } catch (err) {
+        console.log('⚠️ Orders API error, using localStorage');
+        orders = JSON.parse(localStorage.getItem('orders')) || [];
+    }
 
-    if (orders.length === 0) {
+    if (!orders || orders.length === 0) {
         container.innerHTML = `<p style="color:var(--text2); text-align:center; padding:40px;">${t('noOrdersPlaced')}</p>`;
         return;
     }
@@ -576,8 +603,9 @@ function loadOrders() {
         cancelled: t('cancelled')
     };
 
-    container.innerHTML = orders.map((order, index) => {
-        const statusClass = order.status || 'pending';
+    container.innerHTML = orders.map((order) => {
+        const orderId = order.id || order._id;
+        const statusClass = (order.status || 'pending').toLowerCase();
         const total = order.total || 0;
         const items = order.items || [];
         const isCancelled = statusClass === 'cancelled';
@@ -587,7 +615,7 @@ function loadOrders() {
         return `
             <div class="order-card">
                 <div class="order-header">
-                    <span class="order-id">#${order.id || 'ORD-' + (index + 1)}</span>
+                    <span class="order-id">#${orderId}</span>
                     <span class="order-date">${new Date(order.createdAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
@@ -624,10 +652,10 @@ function loadOrders() {
                     <span class="order-total">${totalText}: ${total.toLocaleString()} ${egpText}</span>
                     <div class="order-actions">
                         ${!isCancelled && !isDelivered ? `
-                            <button class="status-btn" onclick="updateOrderStatus(${index}, 'confirmed')">✅ ${confirmText}</button>
-                            <button class="status-btn" onclick="updateOrderStatus(${index}, 'shipped')">🚚 ${shipText}</button>
-                            <button class="status-btn" onclick="updateOrderStatus(${index}, 'delivered')">📦 ${deliverText}</button>
-                            <button class="delete-btn" onclick="deleteOrder(${index})">🗑️ ${deleteText}</button>
+                            <button class="status-btn" onclick="updateOrderStatus('${orderId}', 'confirmed')">✅ ${confirmText}</button>
+                            <button class="status-btn" onclick="updateOrderStatus('${orderId}', 'shipped')">🚚 ${shipText}</button>
+                            <button class="status-btn" onclick="updateOrderStatus('${orderId}', 'delivered')">📦 ${deliverText}</button>
+                            <button class="delete-btn" onclick="deleteOrder('${orderId}')">🗑️ ${deleteText}</button>
                         ` : ''}
                         ${isCancelled ? `
                             <span style="color:#ef4444;font-weight:700;padding:8px 16px;background:rgba(239,68,68,0.1);border-radius:8px;display:inline-block;">
@@ -647,71 +675,93 @@ function loadOrders() {
 }
 
 // =====================================
-// UPDATE ORDER STATUS
+// UPDATE ORDER STATUS (API)
 // =====================================
-function updateOrderStatus(index, newStatus) {
-    const orders = JSON.parse(localStorage.getItem('orders')) || [];
-    if (!orders[index]) return;
+async function updateOrderStatus(orderId, newStatus) {
+    if (!orderId) return;
 
-    if (orders[index].status === 'cancelled') {
-        showToast('⚠️ ' + t('orderCancelledWarning'));
-        return;
+    try {
+        const response = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
+
+        if (!response.ok) throw new Error('Failed to update order status');
+
+        const statusMap = {
+            pending: t('pending'),
+            confirmed: t('confirmed'),
+            shipped: t('shipped'),
+            delivered: t('delivered')
+        };
+        showToast(`✅ ${t('orderStatusUpdated')} ${statusMap[newStatus] || newStatus}`);
+        loadOrders();
+        loadDashboardStats();
+
+    } catch (err) {
+        console.error('❌ Error updating order status:', err);
+        showToast('❌ ' + (err.message || 'Failed to update'));
     }
-
-    orders[index].status = newStatus;
-    localStorage.setItem('orders', JSON.stringify(orders));
-
-    const statusMap = {
-        pending: t('pending'),
-        confirmed: t('confirmed'),
-        shipped: t('shipped'),
-        delivered: t('delivered')
-    };
-    showToast(`✅ ${t('orderStatusUpdated')} ${statusMap[newStatus] || newStatus}`);
-    loadOrders();
-    loadDashboardStats();
 }
 
 // =====================================
-// DELETE ORDER
+// DELETE ORDER (API)
 // =====================================
-function deleteOrder(index) {
-    const orders = JSON.parse(localStorage.getItem('orders')) || [];
-    if (!orders[index]) return;
-
-    if (orders[index].status === 'cancelled') {
-        showToast('⚠️ ' + t('orderCancelledWarning'));
-        return;
-    }
+async function deleteOrder(orderId) {
+    if (!orderId) return;
 
     if (!confirm(t('confirmDeleteOrder'))) return;
 
-    orders.splice(index, 1);
-    localStorage.setItem('orders', JSON.stringify(orders));
+    try {
+        const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+            method: 'DELETE'
+        });
 
-    showToast('🗑️ ' + t('orderDeleted'));
-    loadOrders();
-    loadDashboardStats();
+        if (!response.ok) throw new Error('Failed to delete order');
+
+        showToast('🗑️ ' + t('orderDeleted'));
+        loadOrders();
+        loadDashboardStats();
+
+    } catch (err) {
+        console.error('❌ Error deleting order:', err);
+        showToast('❌ ' + (err.message || 'Failed to delete'));
+    }
 }
 
 // =====================================
-// LOAD USERS
+// LOAD USERS (من API)
 // =====================================
-function loadUsers() {
+async function loadUsers() {
     const tbody = document.getElementById('users-table-body');
     if (!tbody) return;
 
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    let users = [];
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/users`);
+        if (response.ok) {
+            users = await response.json();
+            console.log('👥 Users loaded from API:', users.length);
+        }
+    } catch (err) {
+        console.log('⚠️ Users API error, using localStorage');
+        users = JSON.parse(localStorage.getItem('users')) || [];
+    }
 
-    if (users.length === 0) {
+    const loggedInUserData = JSON.parse(localStorage.getItem('loggedInUser'));
+
+    if (!users || users.length === 0) {
         tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text2);">${t('noUsers')}</td></tr>`;
         return;
     }
 
-    tbody.innerHTML = users.map((user, index) => {
+    tbody.innerHTML = users.map((user) => {
+        const userId = user._id || user.id;
         const isAdmin = user.role === 'admin';
-        const isCurrentUser = loggedInUser && loggedInUser.email === user.email;
+        const isCurrentUser = loggedInUserData && loggedInUserData.email === user.email;
         const roleText = isAdmin ? t('admin') : t('user');
         const roleClass = isAdmin ? 'admin' : 'user';
 
@@ -723,12 +773,12 @@ function loadUsers() {
                 <td><span class="role-badge ${roleClass}">${roleText}</span></td>
                 <td>
                     ${!isAdmin ? `
-                        <button class="action-btn make-admin-btn" onclick="makeAdminByIndex(${index})">
+                        <button class="action-btn make-admin-btn" onclick="makeAdminByIndex('${userId}')">
                             <i class="fa-solid fa-user-shield"></i> ${t('makeAdmin')}
                         </button>
                     ` : `
                         ${!isCurrentUser ? `
-                            <button class="action-btn remove-admin-btn" onclick="removeAdminByIndex(${index})">
+                            <button class="action-btn remove-admin-btn" onclick="removeAdminByIndex('${userId}')">
                                 <i class="fa-solid fa-user-slash"></i> ${t('removeAdmin')}
                             </button>
                         ` : `
@@ -736,7 +786,7 @@ function loadUsers() {
                         `}
                     `}
                     ${!isCurrentUser ? `
-                        <button class="action-btn delete-user-btn" onclick="deleteUser(${index})">
+                        <button class="action-btn delete-user-btn" onclick="deleteUser('${userId}')">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     ` : ''}
@@ -747,9 +797,86 @@ function loadUsers() {
 }
 
 // =====================================
+// MAKE ADMIN BY ID
+// =====================================
+async function makeAdminByIndex(userId) {
+    if (!confirm(t('confirmMakeAdmin'))) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ role: 'admin' })
+        });
+
+        if (!response.ok) throw new Error('Failed to update user');
+
+        showToast('✅ ' + t('makeAdminSuccess'));
+        loadUsers();
+        loadDashboardStats();
+
+    } catch (err) {
+        console.error('❌ Error making admin:', err);
+        showToast('❌ ' + (err.message || 'Failed'));
+    }
+}
+
+// =====================================
+// REMOVE ADMIN BY ID
+// =====================================
+async function removeAdminByIndex(userId) {
+    if (!confirm(t('confirmRemoveAdmin'))) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ role: 'user' })
+        });
+
+        if (!response.ok) throw new Error('Failed to update user');
+
+        showToast('✅ ' + t('removeAdminSuccess'));
+        loadUsers();
+        loadDashboardStats();
+
+    } catch (err) {
+        console.error('❌ Error removing admin:', err);
+        showToast('❌ ' + (err.message || 'Failed'));
+    }
+}
+
+// =====================================
+// DELETE USER BY ID
+// =====================================
+async function deleteUser(userId) {
+    if (!confirm(t('confirmDeleteUser'))) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/users/${userId}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) throw new Error('Failed to delete user');
+
+        showToast('🗑️ ' + t('deleteUserSuccess'));
+        loadUsers();
+        loadDashboardStats();
+
+    } catch (err) {
+        console.error('❌ Error deleting user:', err);
+        showToast('❌ ' + (err.message || 'Failed'));
+    }
+}
+
+// =====================================
 // MAKE ADMIN (من الفورم)
 // =====================================
-function makeAdmin() {
+async function makeAdmin() {
     const emailInput = document.getElementById('admin-email-input');
     const messageDiv = document.getElementById('admin-message');
     const email = emailInput.value.trim();
@@ -761,110 +888,53 @@ function makeAdmin() {
         return;
     }
 
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userIndex = users.findIndex(u => u.email === email);
+    try {
+        const usersRes = await fetch(`${API_BASE_URL}/auth/users`);
+        const users = await usersRes.json();
+        const user = users.find(u => u.email === email);
 
-    if (userIndex === -1) {
-        messageDiv.className = 'admin-message error';
-        messageDiv.textContent = '❌ ' + t('userNotFound');
+        if (!user) {
+            messageDiv.className = 'admin-message error';
+            messageDiv.textContent = '❌ ' + t('userNotFound');
+            messageDiv.style.display = 'block';
+            return;
+        }
+
+        if (user.role === 'admin') {
+            messageDiv.className = 'admin-message error';
+            messageDiv.textContent = '⚠️ ' + t('alreadyAdmin');
+            messageDiv.style.display = 'block';
+            return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/auth/users/${user._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ role: 'admin' })
+        });
+
+        if (!response.ok) throw new Error('Failed to update user');
+
+        messageDiv.className = 'admin-message success';
+        messageDiv.textContent = `✅ ${user.name || email} ${t('makeAdminSuccess')}`;
         messageDiv.style.display = 'block';
-        return;
-    }
+        emailInput.value = '';
 
-    if (users[userIndex].role === 'admin') {
+        loadUsers();
+        loadDashboardStats();
+
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 4000);
+
+    } catch (err) {
+        console.error('❌ Error:', err);
         messageDiv.className = 'admin-message error';
-        messageDiv.textContent = '⚠️ ' + t('alreadyAdmin');
+        messageDiv.textContent = '❌ ' + (err.message || 'Failed');
         messageDiv.style.display = 'block';
-        return;
     }
-
-    users[userIndex].role = 'admin';
-    localStorage.setItem('users', JSON.stringify(users));
-
-    messageDiv.className = 'admin-message success';
-    messageDiv.textContent = `✅ ${users[userIndex].name || email} ${t('makeAdminSuccess')}`;
-    messageDiv.style.display = 'block';
-    emailInput.value = '';
-
-    loadUsers();
-    loadDashboardStats();
-
-    setTimeout(() => {
-        messageDiv.style.display = 'none';
-    }, 4000);
-}
-
-// =====================================
-// MAKE ADMIN BY INDEX (من الجدول)
-// =====================================
-function makeAdminByIndex(index) {
-    if (!confirm(t('confirmMakeAdmin'))) return;
-
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    if (!users[index]) {
-        showToast('❌ ' + t('userNotFound'));
-        return;
-    }
-
-    users[index].role = 'admin';
-    localStorage.setItem('users', JSON.stringify(users));
-
-    showToast(`✅ ${users[index].name || users[index].email} ${t('makeAdminSuccess')}`);
-    loadUsers();
-    loadDashboardStats();
-}
-
-// =====================================
-// REMOVE ADMIN BY INDEX
-// =====================================
-function removeAdminByIndex(index) {
-    if (!confirm(t('confirmRemoveAdmin'))) return;
-
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    if (!users[index]) {
-        showToast('❌ ' + t('userNotFound'));
-        return;
-    }
-
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    if (users[index].email === loggedInUser.email) {
-        showToast('⚠️ ' + t('cannotRemoveSelf'));
-        return;
-    }
-
-    users[index].role = 'user';
-    localStorage.setItem('users', JSON.stringify(users));
-
-    showToast(`✅ ${t('removeAdminSuccess')} ${users[index].name || users[index].email}`);
-    loadUsers();
-    loadDashboardStats();
-}
-
-// =====================================
-// DELETE USER
-// =====================================
-function deleteUser(index) {
-    if (!confirm(t('confirmDeleteUser'))) return;
-
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    if (!users[index]) {
-        showToast('❌ ' + t('userNotFound'));
-        return;
-    }
-
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    if (users[index].email === loggedInUser.email) {
-        showToast('⚠️ ' + t('cannotDeleteSelf'));
-        return;
-    }
-
-    const userName = users[index].name || users[index].email;
-    users.splice(index, 1);
-    localStorage.setItem('users', JSON.stringify(users));
-
-    showToast(`🗑️ ${userName} ${t('deleteUserSuccess')}`);
-    loadUsers();
-    loadDashboardStats();
 }
 
 // =====================================

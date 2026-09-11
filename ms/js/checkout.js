@@ -1,6 +1,16 @@
 // =====================================
 // CHECKOUT PAGE JAVASCRIPT
 // =====================================
+
+// =====================================
+// GET API URL
+// =====================================
+function getApiUrl() {
+    return window.location.hostname === 'localhost' 
+        ? 'http://localhost:5000/api' 
+        : 'https://ms-computer-production.up.railway.app/api';
+}
+
 // =====================================
 // CHECK LOGIN
 // =====================================
@@ -28,7 +38,7 @@ function getCart() {
 }
 
 // =====================================
-// ORDERS (بـ userId)
+// ORDERS (Fallback - localStorage)
 // =====================================
 function getOrders() {
     const userId = getUserId();
@@ -100,7 +110,7 @@ function loadOrderItems() {
         const total = item.price * quantity;
         return `
             <div class="order-item">
-                <img src="${item.image || 'photos/default-product.png'}" alt="${item.name}" onerror="this.src='photos/default-product.png'">
+                <img src="${item.image || '/photos/default-product.png'}" alt="${item.name}" onerror="this.src='/photos/default-product.png'">
                 <div class="order-item-info">
                     <h4>${item.name}</h4>
                     <div class="item-meta">
@@ -226,8 +236,10 @@ async function handleCheckout(event) {
     }
     let total = subtotal + shipping - discount;
 
+    // ✅ بيانات الأوردر
     const orderData = {
         id: 'ORD-' + Date.now(),
+        user: loggedInUser.id || loggedInUser._id,
         customer: {
             name: fullName,
             phone: phone,
@@ -238,7 +250,7 @@ async function handleCheckout(event) {
             notes: notes
         },
         items: cart.map(item => ({
-            id: item.id,
+            id: item.id || item._id,
             name: item.name,
             price: item.price,
             quantity: item.quantity || 1,
@@ -262,13 +274,30 @@ async function handleCheckout(event) {
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
     }
 
-    setTimeout(() => {
-        // ✅ حفظ الطلب بـ userId
+    try {
+        // ✅ نرفع الأوردر على MongoDB
+        const API_URL = getApiUrl();
+        const response = await fetch(`${API_URL}/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        });
+
+        const data = await response.json();
+        console.log('📡 Order response:', data);
+
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to place order');
+        }
+
+        // ✅ كمان نحفظ في localStorage (للـ Fallback)
         const orders = getOrders();
         orders.push(orderData);
         saveOrders(orders);
 
-        // ✅ مسح السلة (بتاع المستخدم الحالي)
+        // ✅ نمسح السلة
         localStorage.removeItem(`cart_${getUserId()}`);
         localStorage.removeItem('promo_code');
 
@@ -286,7 +315,15 @@ async function handleCheckout(event) {
             window.location.href = 'thank-you.html';
         }, 1500);
 
-    }, 2000);
+    } catch (err) {
+        console.error('❌ Error placing order:', err);
+        showToast('❌ ' + (err.message || 'Failed to place order'));
+
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Place Order';
+        }
+    }
 }
 
 // =====================================
@@ -314,7 +351,6 @@ function updateCartCount() {
     }
 }
 
-// =====================================
 function updateWishlistCount() {
     const wishlist = JSON.parse(localStorage.getItem(`wishlist_${getUserId()}`)) || [];
     const wishlistEl = document.getElementById('wishlist-count');
@@ -338,4 +374,3 @@ document.addEventListener('DOMContentLoaded', function() {
 // =====================================
 window.handleCheckout = handleCheckout;
 window.showToast = showToast;
-window.showPaymentDetails = showPaymentDetails;

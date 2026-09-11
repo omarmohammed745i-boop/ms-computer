@@ -30,23 +30,20 @@ async (accessToken, refreshToken, profile, done) => {
             return done(new Error("No email from Google"), null);
         }
 
-        // ✅ ندور على المستخدم
         let user = await User.findOne({ email });
 
         if (!user) {
-            // ✅ نعمل مستخدم جديد
             user = new User({
                 name,
                 email,
-                password: "google_" + profile.id, // باسورد وهمي
+                password: "google_" + profile.id,
                 image,
-                isVerified: true, // ✅ Google موثق
+                isVerified: true,
                 role: "user"
             });
             await user.save();
             console.log("✅ New user created via Google:", email);
         } else {
-            // ✅ نحدث الصورة لو مش موجودة
             if (!user.image || user.image === "/photos/default-avatar.png") {
                 user.image = image;
                 await user.save();
@@ -62,7 +59,6 @@ async (accessToken, refreshToken, profile, done) => {
     }
 }));
 
-// ✅ Serialize / Deserialize
 passport.serializeUser((user, done) => {
     done(null, user._id);
 });
@@ -395,7 +391,6 @@ router.get("/google/callback",
             const user = req.user;
             const token = generateToken(user);
 
-            // ✅ نعمل redirect للـ Frontend مع الـ token
             const userData = encodeURIComponent(JSON.stringify({
                 id: user._id.toString(),
                 name: user.name,
@@ -515,6 +510,76 @@ router.get("/users", async (req, res) => {
     try {
         const users = await User.find().select("-password -verificationCode");
         res.json(users);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        });
+    }
+});
+
+// ============================
+// ✅ UPDATE USER ROLE (ADMIN)
+// ============================
+router.put("/users/:id", async (req, res) => {
+    try {
+        const { role } = req.body;
+
+        if (!role || !["user", "admin"].includes(role)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid role"
+            });
+        }
+
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { role },
+            { new: true }
+        ).select("-password -verificationCode");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "User role updated successfully",
+            user
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        });
+    }
+});
+
+// ============================
+// ✅ DELETE USER (ADMIN)
+// ============================
+router.delete("/users/:id", async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "User deleted successfully"
+        });
+
     } catch (err) {
         console.log(err);
         res.status(500).json({
