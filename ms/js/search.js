@@ -5,6 +5,13 @@
 console.log('🔍 Search Page Loaded');
 
 // =====================================
+// API BASE URL
+// =====================================
+const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
+
+// =====================================
 // GET CURRENT LANGUAGE
 // =====================================
 function getCurrentLanguage() {
@@ -68,7 +75,6 @@ async function performSearch(query) {
 
     console.log('🔍 Query received:', query);
 
-    // ✅ ترجمة "نتائج البحث عن:" أو "Search results for:"
     if (queryContainer) {
         const lang = getCurrentLanguage();
         let showingText = '';
@@ -82,7 +88,6 @@ async function performSearch(query) {
         console.log('✅ Query text set to:', queryText);
     }
 
-    // ✅ ترجمة الـ h1
     const h1 = document.querySelector('.page-header h1');
     if (h1) {
         h1.textContent = t('searchResults');
@@ -92,7 +97,8 @@ async function performSearch(query) {
     if (resultsContainer) resultsContainer.innerHTML = '';
 
     try {
-        const response = await fetch('http://localhost:5000/api/products');
+        // ✅ استخدم API_BASE_URL بدل localhost
+        const response = await fetch(`${API_BASE_URL}/products`);
         let products = [];
 
         if (response.ok) {
@@ -189,14 +195,14 @@ function renderSearchResults(products) {
     container.innerHTML = products.map(product => {
         const inStock = product.stock > 0;
         const productId = product._id || product.id;
-        const image = (product.images && product.images.length > 0) ? product.images[0] : (product.image || 'photos/default-product.png');
+        const image = (product.images && product.images.length > 0) ? product.images[0] : (product.image || '/photos/default-product.png');
 
         return `
             <div class="card" onclick="window.location.href='product.html?id=${productId}'" style="cursor:pointer;">
                 ${product.sale ? `<span class="sale-badge">🔥 ${saleText}</span>` : ''}
                 ${!inStock ? `<span class="stock-badge out-stock">${outOfStockText}</span>` : ''}
                 ${product.oldPrice ? `<span class="discount-badge">${Math.round((1 - product.price / product.oldPrice) * 100)}%</span>` : ''}
-                <img src="${image}" alt="${product.name}" loading="lazy" onerror="this.src='photos/default-product.png'">
+                <img src="${image}" alt="${product.name}" loading="lazy" onerror="this.src='/photos/default-product.png'">
                 <h3>${product.name}</h3>
                 <div class="price">
                     <span class="new-price">${product.price.toLocaleString()} ${egpText}</span>
@@ -224,9 +230,8 @@ function renderSearchResults(products) {
 // =====================================
 async function addToCart(productId) {
     try {
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
+        // ✅ ضفنا سطر fetch
+        const response = await fetch(`${API_BASE_URL}/products`);
         if (!response.ok) throw new Error('Failed to fetch products');
         const products = await response.json();
         const product = products.find(p => (p._id || p.id) == productId);
@@ -238,7 +243,7 @@ async function addToCart(productId) {
         if (existing) {
             existing.quantity += 1;
         } else {
-            const image = (product.images && product.images.length > 0) ? product.images[0] : (product.image || 'photos/default-product.png');
+            const image = (product.images && product.images.length > 0) ? product.images[0] : (product.image || '/photos/default-product.png');
             cart.push({ id: product._id || product.id, name: product.name, price: product.price, image: image, quantity: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(cart));
