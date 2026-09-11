@@ -1,14 +1,17 @@
 const nodemailer = require("nodemailer");
 
+// =====================================
+// Brevo SMTP Configuration
+// =====================================
 const transporter = nodemailer.createTransport({
     host: "smtp-relay.brevo.com",
     port: 587,
-    secure: false,
+    secure: false, // true for 465, false for 587
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.BREVO_SMTP_KEY
+        user: process.env.EMAIL_USER,        // omarmohammed745i@gmail.com
+        pass: process.env.BREVO_SMTP_KEY     // الـ SMTP Key من Brevo
     },
-    family: 4,
+    family: 4, // ✅ IPv4
     connectionTimeout: 15000,
     greetingTimeout: 15000,
     socketTimeout: 15000,
@@ -17,6 +20,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// ✅ نتأكد من الاتصال
 transporter.verify((error, success) => {
     if (error) {
         console.error("❌ SMTP Connection Error:", error);
@@ -25,6 +29,9 @@ transporter.verify((error, success) => {
     }
 });
 
+// =====================================
+// دالة إرسال كود التحقق
+// =====================================
 async function sendVerificationCode(email, code, name) {
     try {
         const mailOptions = {
