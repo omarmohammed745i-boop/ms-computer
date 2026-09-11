@@ -234,15 +234,20 @@ function displayUserData(user) {
     if (emailEl) emailEl.textContent = user.email || 'user@example.com';
 
     if (avatarEl) {
-        // ✅ جيب الصورة من loggedInUser
         let imageUrl = user.image || '/photos/default-avatar.png';
         
-        // ✅ لو الصورة مسار نسبي، ضيف الـ API URL
+        // ✅ لو الصورة مسار نسبي (uploads)، ضيف الـ API URL
         if (imageUrl.startsWith('/uploads/')) {
             imageUrl = `https://ms-computer-production.up.railway.app${imageUrl}`;
         }
         
         avatarEl.src = imageUrl;
+        
+        // ✅ لو الصورة فشلت، استخدم صورة افتراضية من النت
+        avatarEl.onerror = function() {
+            this.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name || 'User') + '&background=00d4b4&color=fff&size=128';
+        };
+        
         console.log('🖼️ Avatar URL:', imageUrl);
     }
 
@@ -621,7 +626,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                // ✅ رفع الصورة على السيرفر
                 const formData = new FormData();
                 formData.append('avatar', file);
 
@@ -634,11 +638,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('📡 Upload response:', data);
 
                 if (response.ok && data.success) {
-                    // ✅ حفظ مسار الصورة في localStorage
                     loggedInUser.image = data.image;
                     localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
 
-                    // ✅ تحديث الواجهة
                     const fullImageUrl = `https://ms-computer-production.up.railway.app${data.image}`;
                     document.getElementById('profile-avatar').src = fullImageUrl;
 
