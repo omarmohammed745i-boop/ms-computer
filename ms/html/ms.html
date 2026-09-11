@@ -21,7 +21,7 @@
 
         <ul class="nav-links" id="navLinks">
             <li><a href="ms.html" data-lang="home">Home</a></li>
-            <li><a href="products" data-lang="products">Products</a></li>
+            <li><a href="products.html" data-lang="products">Products</a></li>
             <li><a href="services.html" data-lang="services">Services</a></li>
             <li><a href="about.html" data-lang="about">About</a></li>
             <li><a href="contact.html" data-lang="contact">Contact</a></li>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="user-menu" id="user-menu" style="display:none;">
                     <div class="user-btn" id="user-btn">
-                        <img id="user-image" src="../photos/default-avatar.png" alt="User">
+                        <img id="user-image" src="/photos/default-avatar.png" alt="User">
                         <span>▼</span>
                     </div>
                     <div class="dropdown" id="dropdown">
@@ -85,7 +85,9 @@
                 </div>
             </div>
 
-            <div class="menu" id="menuBtn">☰</div>
+            <div class="menu" id="menuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </div>
         </div>
     </nav>
 
@@ -95,7 +97,7 @@
             <h1 data-lang="heroTitle">Build Your Dream Gaming Setup</h1>
             <p data-lang="heroText">Gaming Keyboards • Mouse • Headsets • Accessories</p>
             <div class="hero-buttons">
-                <a href="products" class="shop-btn" data-lang="shopNow">Shop Now</a>
+                <a href="products.html" class="shop-btn" data-lang="shopNow">Shop Now</a>
                 <a href="services.html" class="service-btn" data-lang="ourServices">Our Services</a>
             </div>
         </div>
@@ -115,74 +117,72 @@
         </div>
 
         <div class="category-container">
-            <!-- ✅ كل الكاتيجوريز بـ products?category= -->
-            <a href="products?category=Keyboards" class="category-card">
+            <a href="products.html?category=Keyboards" class="category-card">
                 <div class="category-icon">⌨️</div>
                 <span data-lang="categoryKeyboards">Keyboards</span>
             </a>
-            <a href="products?category=Mouses" class="category-card">
+            <a href="products.html?category=Mouses" class="category-card">
                 <div class="category-icon">🖱️</div>
                 <span data-lang="categoryMouses">Mouses</span>
             </a>
-            <a href="products?category=Headsets" class="category-card">
+            <a href="products.html?category=Headsets" class="category-card">
                 <div class="category-icon">🎧</div>
                 <span data-lang="categoryHeadsets">Headsets</span>
             </a>
-            <a href="products?category=Mouse Pads" class="category-card">
+            <a href="products.html?category=Mouse Pads" class="category-card">
                 <div class="category-icon">🟪</div>
                 <span data-lang="categoryMousePads">Mouse Pads</span>
             </a>
-            <a href="products?category=Laptops" class="category-card">
+            <a href="products.html?category=Laptops" class="category-card">
                 <div class="category-icon">💻</div>
                 <span data-lang="categoryLaptops">Laptops</span>
             </a>
 
-            <!-- Hidden Categories -->
-            <a href="products?category=Monitors" class="category-card hidden-category">
+            <a href="products.html?category=Monitors" class="category-card hidden-category">
                 <div class="category-icon">🖥️</div>
                 <span data-lang="categoryMonitors">Monitors</span>
             </a>
-            <a href="products?category=PC Parts" class="category-card hidden-category">
+            <a href="products.html?category=PC Parts" class="category-card hidden-category">
                 <div class="category-icon">⚙️</div>
                 <span data-lang="categoryPCParts">PC Parts</span>
             </a>
-            <a href="products?category=Accessories" class="category-card hidden-category">
+            <a href="products.html?category=Accessories" class="category-card hidden-category">
                 <div class="category-icon">🎮</div>
                 <span data-lang="categoryAccessories">Accessories</span>
             </a>
-            <a href="products?category=PC Cases" class="category-card hidden-category">
+            <a href="products.html?category=PC Cases" class="category-card hidden-category">
                 <div class="category-icon">🖥️</div>
                 <span data-lang="categoryPCCases">PC Cases</span>
             </a>
-            <a href="products?category=Cooling" class="category-card hidden-category">
+            <a href="products.html?category=Cooling" class="category-card hidden-category">
                 <div class="category-icon">❄️</div>
                 <span data-lang="categoryCooling">Cooling</span>
             </a>
-            <a href="products?category=Power Supplies" class="category-card hidden-category">
+            <a href="products.html?category=Power Supplies" class="category-card hidden-category">
                 <div class="category-icon">🔌</div>
                 <span data-lang="categoryPowerSupplies">Power Supplies</span>
             </a>
-            <a href="products?category=RAM" class="category-card hidden-category">
+            <a href="products.html?category=RAM" class="category-card hidden-category">
                 <div class="category-icon">💾</div>
                 <span data-lang="categoryRAM">RAM</span>
             </a>
-            <a href="products?category=Processors" class="category-card hidden-category">
+            <a href="products.html?category=Processors" class="category-card hidden-category">
                 <div class="category-icon">🧠</div>
                 <span data-lang="categoryProcessors">Processors</span>
             </a>
-            <a href="products?category=Graphics Cards" class="category-card hidden-category">
+            <a href="products.html?category=Graphics Cards" class="category-card hidden-category">
                 <div class="category-icon">🎞️</div>
                 <span data-lang="categoryGraphicsCards">Graphics Cards</span>
             </a>
-            <a href="products?category=Storage" class="category-card hidden-category">
+            <a href="products.html?category=Storage" class="category-card hidden-category">
                 <div class="category-icon">💽</div>
                 <span data-lang="categoryStorage">Storage</span>
             </a>
-            <a href="products?category=Microphones" class="category-card hidden-category">
+            <a href="products.html?category=Microphones" class="category-card hidden-category">
                 <div class="category-icon">🎙️</div>
                 <span data-lang="categoryMicrophones">Microphones</span>
             </a>
-            <a href="products?category=Controllers" class="category-card hidden-category">
+            <a href="products.html?category=Controllers" class="category-card hidden-category">
                 <div class="category-icon">🎮</div>
                 <span data-lang="categoryControllers">Controllers</span>
             </a>
@@ -200,17 +200,17 @@
         <div class="special-box">
             <h2 data-lang="hotDeals">🔥 Hot Deals</h2>
             <p data-lang="hotDealsText">Best deals and discounts on gaming products.</p>
-            <a href="products" data-lang="viewDeals">View Deals</a>
+            <a href="products.html" data-lang="viewDeals">View Deals</a>
         </div>
         <div class="special-box">
             <h2 data-lang="bestSellers">⭐ Best Sellers</h2>
             <p data-lang="bestSellersText">Most requested products from our customers.</p>
-            <a href="products" data-lang="viewProducts">View Products</a>
+            <a href="products.html" data-lang="viewProducts">View Products</a>
         </div>
         <div class="special-box">
             <h2 data-lang="newArrivals">🆕 New Arrivals</h2>
             <p data-lang="newArrivalsText">Latest products available at MS Computer.</p>
-            <a href="products" data-lang="exploreNow">Explore Now</a>
+            <a href="products.html" data-lang="exploreNow">Explore Now</a>
         </div>
     </section>
 
@@ -243,7 +243,7 @@
             <div class="footer-box">
                 <h3 data-lang="quickLinks">Quick Links</h3>
                 <a href="ms.html" data-lang="home">Home</a>
-                <a href="products" data-lang="products">Products</a>
+                <a href="products.html" data-lang="products">Products</a>
                 <a href="services.html" data-lang="services">Services</a>
                 <a href="contact.html" data-lang="contact">Contact</a>
             </div>
@@ -272,10 +272,108 @@
         <span id="toast-text" data-lang="addedToCart">Product Added Successfully</span>
     </div>
 
+    <!-- ===== MOBILE DRAWER ===== -->
+    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay"></div>
+
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <a href="ms.html" class="drawer-logo">
+                <img src="/photos/logo.png" alt="MS Computer">
+            </a>
+            <button class="drawer-close" id="drawerClose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="drawer-user" id="drawerUser">
+            <a href="login.html" class="drawer-login-btn" data-lang="login">
+                <i class="fa-solid fa-user"></i> Login
+            </a>
+        </div>
+
+        <div class="drawer-user-info" id="drawerUserInfo" style="display:none;">
+            <img id="drawer-user-image" src="/photos/default-avatar.png" alt="User">
+            <div class="drawer-user-text">
+                <h3 id="drawer-user-name">User</h3>
+                <p id="drawer-user-email">user@example.com</p>
+            </div>
+        </div>
+
+        <div class="drawer-section">
+            <a href="ms.html" class="drawer-link">
+                <i class="fa-solid fa-house"></i> <span data-lang="home">Home</span>
+            </a>
+            <a href="products.html" class="drawer-link">
+                <i class="fa-solid fa-box"></i> <span data-lang="products">Products</span>
+            </a>
+            <a href="services.html" class="drawer-link">
+                <i class="fa-solid fa-wrench"></i> <span data-lang="services">Services</span>
+            </a>
+            <a href="about.html" class="drawer-link">
+                <i class="fa-solid fa-circle-info"></i> <span data-lang="about">About</span>
+            </a>
+            <a href="contact.html" class="drawer-link">
+                <i class="fa-solid fa-envelope"></i> <span data-lang="contact">Contact</span>
+            </a>
+        </div>
+
+        <div class="drawer-section" id="drawerAccountLinks" style="display:none;">
+            <a href="account.html" class="drawer-link">
+                <i class="fa-solid fa-user"></i> <span data-lang="myAccount">My Account</span>
+            </a>
+            <a href="wishlist.html" class="drawer-link">
+                <i class="fa-solid fa-heart"></i> <span data-lang="wishlist">Wishlist</span>
+                <span class="drawer-badge" id="drawer-wishlist-count">0</span>
+            </a>
+            <a href="cart.html" class="drawer-link">
+                <i class="fa-solid fa-cart-shopping"></i> <span data-lang="cart">Cart</span>
+                <span class="drawer-badge" id="drawer-cart-count">0</span>
+            </a>
+        </div>
+
+        <div class="drawer-section">
+            <div class="drawer-section-title" data-lang="settings">Settings</div>
+            
+            <div class="drawer-lang">
+                <button class="drawer-link" id="drawer-lang-btn">
+                    <i class="fa-solid fa-globe"></i> 
+                    <span data-lang="language">Language</span>
+                    <span class="drawer-lang-current" id="drawer-lang-current">EN</span>
+                    <i class="fa-solid fa-chevron-down drawer-arrow"></i>
+                </button>
+                <div class="drawer-lang-dropdown" id="drawer-lang-dropdown">
+                    <div data-lang="en">🇺🇸 English</div>
+                    <div data-lang="ar">🇪🇬 العربية</div>
+                    <div data-lang="fr">🇫🇷 Français</div>
+                    <div data-lang="de">🇩🇪 Deutsch</div>
+                    <div data-lang="es">🇪🇸 Español</div>
+                    <div data-lang="it">🇮🇹 Italiano</div>
+                    <div data-lang="tr">🇹🇷 Türkçe</div>
+                    <div data-lang="ru">🇷🇺 Русский</div>
+                    <div data-lang="zh">🇨🇳 中文</div>
+                    <div data-lang="ja">🇯🇵 日本語</div>
+                </div>
+            </div>
+
+            <button class="drawer-link" id="drawer-dark-mode">
+                <i class="fa-solid fa-moon"></i> <span data-lang="nightMode">Night Mode</span>
+            </button>
+            <button class="drawer-link" id="drawer-light-mode">
+                <i class="fa-solid fa-sun"></i> <span data-lang="lightMode">Light Mode</span>
+            </button>
+        </div>
+
+        <div class="drawer-section" id="drawerLogoutSection" style="display:none;">
+            <button class="drawer-link drawer-logout" id="drawer-logout-btn">
+                <i class="fa-solid fa-sign-out-alt"></i> <span data-lang="logout">Logout</span>
+            </button>
+        </div>
+    </div>
+
     <!-- ===== MOBILE DOCK ===== -->
     <nav class="mobile-dock">
         <a href="ms.html" class="active"><i class="fa-solid fa-house"></i></a>
-        <a href="products"><i class="fa-solid fa-box"></i></a>
+        <a href="products.html"><i class="fa-solid fa-box"></i></a>
         <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i></a>
         <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
         <a href="account.html"><i class="fa-solid fa-user"></i></a>

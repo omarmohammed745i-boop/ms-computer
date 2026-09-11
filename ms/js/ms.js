@@ -130,14 +130,12 @@ function updateUserUI() {
         if (userImage) {
             let imageUrl = loggedInUser.image || "/photos/default-avatar.png";
             
-            // ✅ لو الصورة مسار نسبي (uploads)، ضيف الـ API URL
             if (imageUrl.startsWith('/uploads/')) {
                 imageUrl = `https://ms-computer-production.up.railway.app${imageUrl}`;
             }
             
             userImage.src = imageUrl;
             
-            // ✅ لو الصورة فشلت، استخدم صورة افتراضية
             userImage.onerror = function() {
                 this.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(loggedInUser.name || 'User') + '&background=00d4b4&color=fff&size=128';
             };
@@ -236,20 +234,19 @@ if (searchBox && searchSuggestions) {
             return;
         }
 
-        // ✅ بحث ذكي - يقسم الكلمات
-const searchWords = value.split(/\s+/).filter(w => w.length > 0);
+        const searchWords = value.split(/\s+/).filter(w => w.length > 0);
 
-let results = searchProducts.filter(product => {
-    const name = (product.name || '').toLowerCase();
-    const category = (product.category || '').toLowerCase();
-    const description = (product.description || '').toLowerCase();
-    
-    return searchWords.every(word => 
-        name.includes(word) || 
-        category.includes(word) || 
-        description.includes(word)
-    );
-});
+        let results = searchProducts.filter(product => {
+            const name = (product.name || '').toLowerCase();
+            const category = (product.category || '').toLowerCase();
+            const description = (product.description || '').toLowerCase();
+            
+            return searchWords.every(word => 
+                name.includes(word) || 
+                category.includes(word) || 
+                description.includes(word)
+            );
+        });
 
         results.slice(0, 8).forEach(product => {
             let div = document.createElement("div");
@@ -301,16 +298,10 @@ if (lightMode) {
 }
 
 // =========================
-// MOBILE MENU
+// MOBILE MENU (Legacy)
 // =========================
-const menuBtn = document.getElementById("menuBtn");
+const menuBtnLegacy = document.getElementById("menuBtn");
 const navLinks = document.getElementById("navLinks");
-
-if (menuBtn && navLinks) {
-    menuBtn.onclick = () => {
-        navLinks.classList.toggle("active");
-    };
-}
 
 // =========================
 // TOAST
@@ -394,7 +385,7 @@ if (searchBox && searchSuggestions) {
 // =========================
 document.querySelectorAll("img").forEach(img => {
     img.onerror = function() {
-        this.src = "default-product.png";
+        this.src = "/photos/default-product.png";
     };
 });
 
@@ -611,6 +602,140 @@ document.addEventListener('languageChanged', function() {
     if (document.getElementById('products-container')) {
         loadFeaturedProducts();
     }
+});
+
+// =====================================
+// MOBILE DRAWER
+// =====================================
+document.addEventListener('DOMContentLoaded', function() {
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('mobileDrawer');
+    const overlay = document.getElementById('mobileDrawerOverlay');
+    const closeBtn = document.getElementById('drawerClose');
+    const langBtn = document.getElementById('drawer-lang-btn');
+    const langDropdown = document.getElementById('drawer-lang-dropdown');
+
+    if (menuBtn && drawer) {
+        menuBtn.addEventListener('click', function() {
+            drawer.classList.add('show');
+            if (overlay) overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            updateDrawerUser();
+        });
+    }
+
+    function closeDrawer() {
+        if (drawer) drawer.classList.remove('show');
+        if (overlay) overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    if (overlay) overlay.addEventListener('click', closeDrawer);
+
+    if (langBtn && langDropdown) {
+        langBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            langDropdown.classList.toggle('show');
+            const arrow = langBtn.querySelector('.drawer-arrow');
+            if (arrow) arrow.classList.toggle('open');
+        });
+    }
+
+    if (langDropdown) {
+        langDropdown.querySelectorAll('div').forEach(item => {
+            item.addEventListener('click', function() {
+                const lang = this.dataset.lang;
+                if (lang && typeof setLanguage === 'function') {
+                    setLanguage(lang);
+                }
+                const currentLangEl = document.getElementById('drawer-lang-current');
+                if (currentLangEl) currentLangEl.textContent = lang.toUpperCase();
+                langDropdown.classList.remove('show');
+                const arrow = langBtn?.querySelector('.drawer-arrow');
+                if (arrow) arrow.classList.remove('open');
+            });
+        });
+    }
+
+    const drawerDarkMode = document.getElementById('drawer-dark-mode');
+    if (drawerDarkMode) {
+        drawerDarkMode.addEventListener('click', function() {
+            document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+            closeDrawer();
+        });
+    }
+
+    const drawerLightMode = document.getElementById('drawer-light-mode');
+    if (drawerLightMode) {
+        drawerLightMode.addEventListener('click', function() {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+            closeDrawer();
+        });
+    }
+
+    const drawerLogout = document.getElementById('drawer-logout-btn');
+    if (drawerLogout) {
+        drawerLogout.addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('loggedInUser');
+                localStorage.removeItem('userId');
+                localStorage.removeItem('token');
+                window.location.href = 'login.html';
+            }
+        });
+    }
+
+    function updateDrawerUser() {
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        const drawerUser = document.getElementById('drawerUser');
+        const drawerUserInfo = document.getElementById('drawerUserInfo');
+        const drawerAccountLinks = document.getElementById('drawerAccountLinks');
+        const drawerLogoutSection = document.getElementById('drawerLogoutSection');
+
+        if (loggedInUser) {
+            if (drawerUser) drawerUser.style.display = 'none';
+            if (drawerUserInfo) {
+                drawerUserInfo.style.display = 'flex';
+                const img = document.getElementById('drawer-user-image');
+                const nameEl = document.getElementById('drawer-user-name');
+                const emailEl = document.getElementById('drawer-user-email');
+                if (img) {
+                    let imageUrl = loggedInUser.image || '/photos/default-avatar.png';
+                    if (imageUrl.startsWith('/uploads/')) {
+                        imageUrl = `https://ms-computer-production.up.railway.app${imageUrl}`;
+                    }
+                    img.src = imageUrl;
+                }
+                if (nameEl) nameEl.textContent = loggedInUser.name || 'User';
+                if (emailEl) emailEl.textContent = loggedInUser.email || '';
+            }
+            if (drawerAccountLinks) drawerAccountLinks.style.display = 'block';
+            if (drawerLogoutSection) drawerLogoutSection.style.display = 'block';
+
+            const cartCount = getCart().reduce((sum, item) => sum + (item.quantity || 0), 0);
+            const wishlistCount = getWishlist().length;
+            const drawerCartEl = document.getElementById('drawer-cart-count');
+            const drawerWishlistEl = document.getElementById('drawer-wishlist-count');
+            if (drawerCartEl) drawerCartEl.textContent = cartCount;
+            if (drawerWishlistEl) drawerWishlistEl.textContent = wishlistCount;
+        } else {
+            if (drawerUser) drawerUser.style.display = 'block';
+            if (drawerUserInfo) drawerUserInfo.style.display = 'none';
+            if (drawerAccountLinks) drawerAccountLinks.style.display = 'none';
+            if (drawerLogoutSection) drawerLogoutSection.style.display = 'none';
+        }
+
+        const currentLangEl = document.getElementById('drawer-lang-current');
+        if (currentLangEl) {
+            const lang = localStorage.getItem('language') || 'en';
+            currentLangEl.textContent = lang.toUpperCase();
+        }
+    }
+
+    updateDrawerUser();
 });
 
 // =====================================
