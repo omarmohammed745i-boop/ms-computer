@@ -128,7 +128,19 @@ function updateUserUI() {
         if (navUser) navUser.style.display = "none";
         if (userMenu) userMenu.style.display = "block";
         if (userImage) {
-            userImage.src = loggedInUser.image || "/photos/default-avatar.png";
+            let imageUrl = loggedInUser.image || "/photos/default-avatar.png";
+            
+            // ✅ لو الصورة مسار نسبي (uploads)، ضيف الـ API URL
+            if (imageUrl.startsWith('/uploads/')) {
+                imageUrl = `https://ms-computer-production.up.railway.app${imageUrl}`;
+            }
+            
+            userImage.src = imageUrl;
+            
+            // ✅ لو الصورة فشلت، استخدم صورة افتراضية
+            userImage.onerror = function() {
+                this.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(loggedInUser.name || 'User') + '&background=00d4b4&color=fff&size=128';
+            };
         }
     } else {
         if (navUser) navUser.style.display = "block";
