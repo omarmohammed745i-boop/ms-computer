@@ -1,29 +1,12 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-// إعدادات الإيميل
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    // ✅ نجبر الاتصال يستخدم IPv4
-    family: 4,
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000,
-    tls: {
-        rejectUnauthorized: false
-    }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // ✅ دالة إرسال كود التحقق
 async function sendVerificationCode(email, code, name) {
     try {
-        const mailOptions = {
-            from: `"MS Computer" <${process.env.EMAIL_USER}>`,
+        const { data, error } = await resend.emails.send({
+            from: "MS Computer <onboarding@resend.dev>",
             to: email,
             subject: "🔐 Verification Code - MS Computer",
             html: `
@@ -113,11 +96,15 @@ async function sendVerificationCode(email, code, name) {
                 </body>
                 </html>
             `
-        };
+        });
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log("✅ Email sent:", info.messageId);
-        return { success: true, messageId: info.messageId };
+        if (error) {
+            console.error("❌ Resend error:", error);
+            return { success: false, error: error.message };
+        }
+
+        console.log("✅ Email sent:", data.id);
+        return { success: true, messageId: data.id };
 
     } catch (err) {
         console.error("❌ Email error:", err);
