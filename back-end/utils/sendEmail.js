@@ -5,16 +5,16 @@ const nodemailer = require("nodemailer");
 // =====================================
 const transporter = nodemailer.createTransport({
     host: "smtp-relay.brevo.com",
-    port: 587,
-    secure: false, // true for 465, false for 587
+    port: 465,
+    secure: true,
     auth: {
-        user: process.env.EMAIL_USER,        // omarmohammed745i@gmail.com
-        pass: process.env.BREVO_SMTP_KEY     // الـ SMTP Key من Brevo
+        user: process.env.EMAIL_USER,
+        pass: process.env.BREVO_SMTP_KEY
     },
-    family: 4, // ✅ IPv4
-    connectionTimeout: 15000,
-    greetingTimeout: 15000,
-    socketTimeout: 15000,
+    family: 4,
+    connectionTimeout: 20000,
+    greetingTimeout: 20000,
+    socketTimeout: 20000,
     tls: {
         rejectUnauthorized: false
     }
