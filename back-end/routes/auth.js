@@ -1,8 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const multer = require("multer");
-const path = require("path");
+const upload = require("../middleware/upload");
+const { sendVerificationCode } = require("../utils/sendEmail");
 
 const User = require("../models/user");
 
@@ -10,38 +10,22 @@ const router = express.Router();
 
 
 // ============================
-// Multer Setup for Avatar Upload
+// Helper: Generate 6-digit code
 // ============================
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-    }
-});
-
-const upload = multer({
-    storage,
-    limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype.startsWith("image/")) {
-            cb(null, true);
-        } else {
-            cb(new Error("Only images allowed"), false);
-        }
-    }
-});
+function generateCode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
 
 // ============================
-// Register
+// Register (Send Verification Code)
 // ============================
 router.post("/register", async (req, res) => {
     try {
         const name = req.body.name?.trim();
         const email = req.body.email?.trim().toLowerCase();
         const password = req.body.password?.trim();
+        const phone = req.body.phone?.trim() || "";
 
         if (!name || !email || !password) {
             return res.status(400).json({
@@ -52,26 +36,183 @@ router.post("/register", async (req, res) => {
 
         const existingUser = await User.findOne({ email });
 
-        if (existingUser) {
+        // ✅ لو المستخدم موجود وموثق
+        if (existingUser && existingUser.isVerified) {
             return res.status(400).json({
                 success: false,
                 message: "Email already exists"
             });
         }
 
+        // ✅ لو المستخدم موجود بس مش موثق، نحدث الكود
         const hashedPassword = await bcrypt.hash(password, 10);
+        const verificationCode = generateCode();
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 دقائق
 
-        const user = new User({
-            name,
-            email,
-            password: hashedPassword
-        });
+        let user;
+        if (existingUser) {
+            existingUser.name = name;
+            existingUser.password = hashedPassword;
+            existingUser.phone = phone;
+            existingUser.verificationCode = verificationCode;
+            existingUser.verificationCodeExpires = expiresAt;
+            user = await existingUser.save();
+        } else {
+            user = new User({
+                name,
+                email,
+                password: hashedPassword,
+                phone,
+                isVerified: false,
+                verificationCode,
+                verificationCodeExpires: expiresAt
+            });
+            await user.save();
+        }
 
-        await user.save();
+        // ✅ إرسال الكود على الإيميل
+        const emailResult = await sendVerificationCode(email, verificationCode, name);
+
+        if (!emailResult.success) {
+            return res.status(500).json({
+                success: false,
+                message: "Failed to send verification code. Please try again."
+            });
+        }
 
         res.status(201).json({
             success: true,
-            message: "Account Created Successfully"
+            message: "Verification code sent to your email",
+            email: email
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        });
+    }
+});
+
+
+// ============================
+// Verify Email
+// ============================
+router.post("/verify-email", async (req, res) => {
+    try {
+        const email = req.body.email?.trim().toLowerCase();
+        const code = req.body.code?.trim();
+
+        if (!email || !code) {
+            return res.status(400).json({
+                success: false,
+                message: "Email and code are required"
+            });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        if (user.isVerified) {
+            return res.status(400).json({
+                success: false,
+                message: "Email already verified"
+            });
+        }
+
+        // ✅ نتأكد إن الكود صح
+        if (user.verificationCode !== code) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid verification code"
+            });
+        }
+
+        // ✅ نتأكد إن الكود لسه صالح
+        if (new Date() > user.verificationCodeExpires) {
+            return res.status(400).json({
+                success: false,
+                message: "Verification code expired"
+            });
+        }
+
+        // ✅ نفعّل الحساب
+        user.isVerified = true;
+        user.verificationCode = null;
+        user.verificationCodeExpires = null;
+        await user.save();
+
+        res.json({
+            success: true,
+            message: "Account verified successfully"
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        });
+    }
+});
+
+
+// ============================
+// Resend Code
+// ============================
+router.post("/resend-code", async (req, res) => {
+    try {
+        const email = req.body.email?.trim().toLowerCase();
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: "Email is required"
+            });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        if (user.isVerified) {
+            return res.status(400).json({
+                success: false,
+                message: "Email already verified"
+            });
+        }
+
+        const verificationCode = generateCode();
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+        user.verificationCode = verificationCode;
+        user.verificationCodeExpires = expiresAt;
+        await user.save();
+
+        const emailResult = await sendVerificationCode(email, verificationCode, user.name);
+
+        if (!emailResult.success) {
+            return res.status(500).json({
+                success: false,
+                message: "Failed to send verification code"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Verification code resent"
         });
 
     } catch (err) {
@@ -114,6 +255,16 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Invalid Email or Password"
+            });
+        }
+
+        // ✅ لازم يكون موثق
+        if (!user.isVerified) {
+            return res.status(400).json({
+                success: false,
+                message: "Please verify your email first",
+                needsVerification: true,
+                email: email
             });
         }
 
@@ -250,7 +401,7 @@ router.put("/update-profile/:id", async (req, res) => {
 // ============================
 router.get("/users", async (req, res) => {
     try {
-        const users = await User.find().select("-password");
+        const users = await User.find().select("-password -verificationCode");
         res.json(users);
     } catch (err) {
         console.log(err);

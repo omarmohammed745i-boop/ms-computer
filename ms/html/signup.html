@@ -12,7 +12,7 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="/css/ms.css">
 
-    <!-- Login CSS (same styles) -->
+    <!-- Login CSS -->
     <link rel="stylesheet" href="/css/login.css">
 </head>
 
@@ -30,7 +30,7 @@
                 <p data-lang="registerSubtitle">Join us and start shopping!</p>
             </div>
 
-            <!-- Signup Form -->
+            <!-- ===== STEP 1: Signup Form ===== -->
             <form id="signup-form" onsubmit="handleSignup(event)">
                 <div class="form-group">
                     <label for="signup-name" data-lang="fullName">Full Name</label>
@@ -80,7 +80,44 @@
                 </button>
 
                 <p class="register-link" data-lang="haveAccount">
-                    Already have an account?</p> <div class="register"><a href="login.html" data-lang="login">Login</a></div>
+                    Already have an account? <a href="login.html" data-lang="login">Login</a>
+                </p>
+            </form>
+
+            <!-- ===== STEP 2: Verification Code ===== -->
+            <form id="verify-form" onsubmit="handleVerify(event)" style="display:none;">
+                <div class="verify-header" style="text-align:center; margin-bottom:20px;">
+                    <div style="font-size:60px; margin-bottom:15px;">📧</div>
+                    <h2 data-lang="verifyEmail" style="color:var(--text); margin-bottom:10px;">Verify Your Email</h2>
+                    <p data-lang="verifyEmailText" style="color:var(--text2); font-size:14px; line-height:1.6;">
+                        We sent a 6-digit verification code to your email.
+                        Please enter it below to activate your account.
+                    </p>
+                    <p style="color:var(--primary); font-weight:600; margin-top:10px;" id="verify-email-display"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="verify-code" data-lang="verificationCode">Verification Code</label>
+                    <div class="input-group">
+                        <i class="fa-solid fa-key"></i>
+                        <input type="text" id="verify-code" placeholder="Enter 6-digit code" maxlength="6" pattern="[0-9]{6}" style="letter-spacing:8px; text-align:center; font-size:20px; font-weight:bold;" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn" data-lang="verifyAccount">
+                    <i class="fa-solid fa-check-circle"></i> Verify Account
+                </button>
+
+                <p class="register-link" style="text-align:center; margin-top:15px;">
+                    <span data-lang="didntReceiveCode">Didn't receive the code?</span>
+                    <a href="#" onclick="resendCode(event)" data-lang="resendCode" style="color:var(--primary); font-weight:600;">Resend Code</a>
+                </p>
+
+                <p class="register-link" style="text-align:center; margin-top:10px;">
+                    <a href="#" onclick="backToSignup(event)" style="color:var(--text3); font-size:14px;">
+                        <i class="fa-solid fa-arrow-left"></i> <span data-lang="backToSignup">Back to Sign Up</span>
+                    </a>
+                </p>
             </form>
 
             <!-- Error Message -->
