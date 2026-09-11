@@ -1,7 +1,15 @@
 // =====================================
 // CHECKOUT PAGE JAVASCRIPT
 // =====================================
+// =====================================
+// CHECK LOGIN
+// =====================================
+const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
+if (!loggedInUser) {
+    alert('You must be logged in to checkout');
+    window.location.href = 'login.html';
+}
 console.log('💳 Checkout Page Loaded');
 
 // =====================================

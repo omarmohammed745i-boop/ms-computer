@@ -83,14 +83,7 @@ function togglePassword() {
 }
 
 // =====================================
-// GET USERS FROM LOCALSTORAGE (Fallback)
-// =====================================
-function getLocalUsers() {
-    return JSON.parse(localStorage.getItem('users')) || [];
-}
-
-// =====================================
-// HANDLE LOGIN (مع API)
+// HANDLE LOGIN (API ONLY)
 // =====================================
 async function handleLogin(event) {
     event.preventDefault();
@@ -101,10 +94,9 @@ async function handleLogin(event) {
     const errorDiv = document.getElementById('login-error');
     const errorMessage = document.getElementById('error-message');
 
-    // ✅ إخفاء أي رسائل سابقة
+    // إخفاء أي رسائل سابقة
     errorDiv.style.display = 'none';
     
-    // ✅ مسح أي رسائل toast سابقة
     const toast = document.getElementById('toast');
     if (toast) toast.style.display = 'none';
 
@@ -121,7 +113,6 @@ async function handleLogin(event) {
     }
 
     try {
-        // ✅ محاولة تسجيل الدخول عبر API
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
             headers: {
@@ -136,12 +127,12 @@ async function handleLogin(event) {
         if (response.ok && data.success) {
             const user = data.user;
 
-            // ✅ حفظ بيانات المستخدم في localStorage
+            // حفظ بيانات المستخدم في localStorage
             const loginData = {
                 id: user.id || user._id,
                 name: user.name,
                 email: user.email,
-                image: user.image || 'photos/default-avatar.png',
+                image: user.image || '/photos/default-avatar.png',
                 role: user.role || 'user'
             };
 
@@ -152,7 +143,7 @@ async function handleLogin(event) {
                 localStorage.setItem('token', data.token);
             }
 
-            // ✅ نقل بيانات الزائر
+            // نقل بيانات الزائر
             const guestCart = JSON.parse(localStorage.getItem('cart_guest')) || [];
             const guestWishlist = JSON.parse(localStorage.getItem('wishlist_guest')) || [];
             const guestOrders = JSON.parse(localStorage.getItem('orders_guest')) || [];
@@ -180,7 +171,6 @@ async function handleLogin(event) {
                 localStorage.removeItem('rememberedEmail');
             }
 
-            // ✅ رسالة نجاح
             const loginBtn = document.querySelector('.login-btn');
             loginBtn.disabled = true;
             loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + t('loginSuccess');
@@ -193,93 +183,14 @@ async function handleLogin(event) {
             }, 1500);
 
         } else {
-            // ❌ API فشل، جرب localStorage
-            console.log('⚠️ API login failed, trying localStorage...');
-            const localUsers = getLocalUsers();
-            const localUser = localUsers.find(u => u.email === email && u.password === password);
-
-            if (localUser) {
-                const loginData = {
-                    id: localUser.id || Date.now(),
-                    name: localUser.name,
-                    email: localUser.email,
-                    image: localUser.image || 'photos/default-avatar.png',
-                    role: localUser.role || 'user'
-                };
-
-                localStorage.setItem('loggedInUser', JSON.stringify(loginData));
-                localStorage.setItem('userId', localUser.id || Date.now());
-
-                if (rememberMe) {
-                    localStorage.setItem('rememberMe', 'true');
-                    localStorage.setItem('rememberedEmail', email);
-                } else {
-                    localStorage.removeItem('rememberMe');
-                    localStorage.removeItem('rememberedEmail');
-                }
-
-                const loginBtn = document.querySelector('.login-btn');
-                loginBtn.disabled = true;
-                loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + t('loginSuccess');
-
-                showToast('✅ ' + t('loginSuccess'));
-
-                setTimeout(() => {
-                    const redirectUrl = localUser.role === 'admin' ? 'admin.html' : 'ms.html';
-                    window.location.href = redirectUrl;
-                }, 1500);
-            } else {
-                errorMessage.textContent = data.message || t('invalidCredentials');
-                errorDiv.style.display = 'flex';
-            }
+            errorMessage.textContent = data.message || t('invalidCredentials');
+            errorDiv.style.display = 'flex';
         }
 
     } catch (err) {
         console.error('❌ Login error:', err);
-
-        // ✅ لو API مش شغال، جرب localStorage
-        try {
-            const localUsers = getLocalUsers();
-            const localUser = localUsers.find(u => u.email === email && u.password === password);
-
-            if (localUser) {
-                const loginData = {
-                    id: localUser.id || Date.now(),
-                    name: localUser.name,
-                    email: localUser.email,
-                    image: localUser.image || 'photos/default-avatar.png',
-                    role: localUser.role || 'user'
-                };
-
-                localStorage.setItem('loggedInUser', JSON.stringify(loginData));
-                localStorage.setItem('userId', localUser.id || Date.now());
-
-                if (rememberMe) {
-                    localStorage.setItem('rememberMe', 'true');
-                    localStorage.setItem('rememberedEmail', email);
-                } else {
-                    localStorage.removeItem('rememberMe');
-                    localStorage.removeItem('rememberedEmail');
-                }
-
-                const loginBtn = document.querySelector('.login-btn');
-                loginBtn.disabled = true;
-                loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + t('loginSuccess');
-
-                showToast('✅ ' + t('loginSuccess'));
-
-                setTimeout(() => {
-                    const redirectUrl = localUser.role === 'admin' ? 'admin.html' : 'ms.html';
-                    window.location.href = redirectUrl;
-                }, 1500);
-            } else {
-                errorMessage.textContent = t('invalidCredentials');
-                errorDiv.style.display = 'flex';
-            }
-        } catch (localErr) {
-            errorMessage.textContent = t('loginError');
-            errorDiv.style.display = 'flex';
-        }
+        errorMessage.textContent = t('loginError');
+        errorDiv.style.display = 'flex';
     }
 }
 

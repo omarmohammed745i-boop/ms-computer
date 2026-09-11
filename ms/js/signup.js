@@ -97,18 +97,7 @@ function togglePassword(inputId, iconId) {
 }
 
 // =====================================
-// GET LOCAL USERS (Fallback)
-// =====================================
-function getLocalUsers() {
-    return JSON.parse(localStorage.getItem('users')) || [];
-}
-
-function saveLocalUsers(users) {
-    localStorage.setItem('users', JSON.stringify(users));
-}
-
-// =====================================
-// SHOW TOAST (في signup)
+// SHOW TOAST
 // =====================================
 function showToast(message) {
     const toast = document.getElementById('toast');
@@ -125,7 +114,7 @@ function showToast(message) {
 }
 
 // =====================================
-// HANDLE SIGNUP (مع API)
+// HANDLE SIGNUP (API ONLY)
 // =====================================
 async function handleSignup(event) {
     event.preventDefault();
@@ -138,14 +127,13 @@ async function handleSignup(event) {
     const errorDiv = document.getElementById('signup-error');
     const errorMessage = document.getElementById('error-message');
 
-    // ✅ إخفاء أي رسائل سابقة
+    // إخفاء أي رسائل سابقة
     errorDiv.style.display = 'none';
     
-    // ✅ مسح أي رسائل toast سابقة
     const toast = document.getElementById('toast');
     if (toast) toast.style.display = 'none';
 
-    // ✅ التحقق من الحقول
+    // التحقق من الحقول
     if (!name || !email || !password || !confirmPassword) {
         errorMessage.textContent = t('fillAllFields');
         errorDiv.style.display = 'flex';
@@ -171,7 +159,6 @@ async function handleSignup(event) {
     }
 
     try {
-        // ✅ محاولة التسجيل عبر API
         const response = await fetch(`${API_BASE_URL}/auth/register`, {
             method: 'POST',
             headers: {
@@ -184,7 +171,6 @@ async function handleSignup(event) {
         console.log('📡 Signup response:', data);
 
         if (response.ok && data.success) {
-            // ✅ تسجيل ناجح
             const signupBtn = document.querySelector('.login-btn');
             signupBtn.disabled = true;
             signupBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + t('signupSuccess');
@@ -196,55 +182,14 @@ async function handleSignup(event) {
             }, 2000);
 
         } else {
-            // ❌ فشل التسجيل
             errorMessage.textContent = data.message || t('signupError');
             errorDiv.style.display = 'flex';
         }
 
     } catch (err) {
         console.error('❌ Signup error:', err);
-
-        // ✅ لو API مش شغال، جرب localStorage
-        try {
-            const localUsers = getLocalUsers();
-
-            if (localUsers.some(u => u.email === email)) {
-                errorMessage.textContent = t('emailExists');
-                errorDiv.style.display = 'flex';
-                return;
-            }
-
-            const isFirstUser = localUsers.length === 0;
-            const role = isFirstUser ? 'admin' : 'user';
-
-            const newUser = {
-                id: Date.now(),
-                name: name,
-                email: email,
-                phone: phone || '',
-                password: password,
-                image: 'photos/default-avatar.png',
-                role: role,
-                createdAt: new Date().toISOString()
-            };
-
-            localUsers.push(newUser);
-            saveLocalUsers(localUsers);
-
-            const signupBtn = document.querySelector('.login-btn');
-            signupBtn.disabled = true;
-            signupBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + t('signupSuccess');
-
-            showToast('✅ ' + t('signupSuccess'));
-
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
-
-        } catch (localErr) {
-            errorMessage.textContent = t('serverError');
-            errorDiv.style.display = 'flex';
-        }
+        errorMessage.textContent = t('serverError');
+        errorDiv.style.display = 'flex';
     }
 }
 
