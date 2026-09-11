@@ -144,15 +144,35 @@ router.post("/verify-email", async (req, res) => {
         }
 
         // ✅ نفعّل الحساب
-        user.isVerified = true;
-        user.verificationCode = null;
-        user.verificationCodeExpires = null;
-        await user.save();
+user.isVerified = true;
+user.verificationCode = null;
+user.verificationCodeExpires = null;
+await user.save();
 
-        res.json({
-            success: true,
-            message: "Account verified successfully"
-        });
+// ✅ نعمل token للتسجيل التلقائي
+const token = jwt.sign(
+    {
+        id: user._id,
+        role: user.role
+    },
+    process.env.JWT_SECRET || "MSCOMPUTER_SECRET",
+    {
+        expiresIn: "7d"
+    }
+);
+
+res.json({
+    success: true,
+    message: "Account verified successfully",
+    token,
+    user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        image: user.image || "/photos/default-avatar.png",
+        role: user.role
+    }
+});
 
     } catch (err) {
         console.log(err);

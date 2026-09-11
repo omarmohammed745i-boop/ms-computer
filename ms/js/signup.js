@@ -1,5 +1,5 @@
 // =====================================
-// SIGNUP PAGE JAVASCRIPT (with Email Verification)
+// SIGNUP PAGE JAVASCRIPT (with Email Verification + Auto-Login)
 // =====================================
 
 console.log('📝 Signup Page Loaded');
@@ -58,7 +58,7 @@ function t(key) {
             resendCode: 'Resend Code',
             backToSignup: 'Back to Sign Up',
             invalidCode: 'Invalid or expired code',
-            verifySuccess: 'Account verified! Redirecting to login...',
+            verifySuccess: 'Account verified! Welcome to MS Computer!',
             codeSent: 'Code sent successfully!',
             pleaseEnterCode: 'Please enter the 6-digit code'
         },
@@ -94,7 +94,7 @@ function t(key) {
             resendCode: 'إعادة إرسال الكود',
             backToSignup: 'العودة للتسجيل',
             invalidCode: 'كود غير صحيح أو منتهي الصلاحية',
-            verifySuccess: 'تم تفعيل الحساب! جاري التحويل لتسجيل الدخول...',
+            verifySuccess: 'تم تفعيل الحساب! أهلاً بك في MS Computer!',
             codeSent: 'تم إرسال الكود بنجاح!',
             pleaseEnterCode: 'يرجى إدخال الكود المكون من 6 أرقام'
         }
@@ -219,7 +219,7 @@ async function handleSignup(event) {
 }
 
 // =====================================
-// HANDLE VERIFY (Step 2)
+// HANDLE VERIFY (Step 2) - with Auto-Login
 // =====================================
 async function handleVerify(event) {
     event.preventDefault();
@@ -256,9 +256,33 @@ async function handleVerify(event) {
 
             showToast('✅ ' + t('verifySuccess'));
 
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
+            // ✅ Auto-Login
+            if (data.token && data.user) {
+                const loginData = {
+                    id: data.user.id || data.user._id,
+                    name: data.user.name,
+                    email: data.user.email,
+                    image: data.user.image || '/photos/default-avatar.png',
+                    role: data.user.role || 'user'
+                };
+
+                localStorage.setItem('loggedInUser', JSON.stringify(loginData));
+                localStorage.setItem('userId', data.user.id || data.user._id);
+                localStorage.setItem('token', data.token);
+
+                console.log('✅ Auto-login successful');
+
+                // ✅ نروح للصفحة الرئيسية
+                setTimeout(() => {
+                    const redirectUrl = data.user.role === 'admin' ? 'admin.html' : 'ms.html';
+                    window.location.href = redirectUrl;
+                }, 1500);
+            } else {
+                // لو مفيش token، نروح Login
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            }
 
         } else {
             errorMessage.textContent = data.message || t('invalidCode');
