@@ -2,9 +2,63 @@
 // PRODUCT PAGE
 // =========================
 
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
+console.log('🛍️ Product Page Loaded');
+
+// =========================
+// GET API URL (محلي - بدون Conflict)
+// =========================
+function getApiUrl() {
+    return window.location.hostname === 'localhost' 
+        ? 'http://localhost:5000/api' 
+        : 'https://ms-computer-production.up.railway.app/api';
+}
+
+// =========================
+// GET CURRENT LANGUAGE
+// =========================
+function getCurrentLanguage() {
+    return localStorage.getItem('language') || 'en';
+}
+
+function t(key) {
+    const lang = getCurrentLanguage();
+    if (typeof dictionary !== 'undefined' && dictionary[lang] && dictionary[lang][key]) {
+        return dictionary[lang][key];
+    }
+    const fallback = {
+        en: {
+            outOfStock: 'Out of Stock',
+            addToCart: 'Add to Cart',
+            buyNow: 'Buy Now',
+            egp: 'EGP',
+            sale: 'SALE',
+            inStock: 'In Stock',
+            lowStock: 'Hurry! Only',
+            itemsLeft: 'items left',
+            productDetails: 'Product Details',
+            specifications: 'Specifications',
+            noDescription: 'No description available.',
+            productNotFound: 'Product Not Found',
+            loading: 'Loading...'
+        },
+        ar: {
+            outOfStock: 'غير متوفر',
+            addToCart: 'أضف للسلة',
+            buyNow: 'اشتر الآن',
+            egp: 'ج.م',
+            sale: 'تخفيض',
+            inStock: 'متوفر',
+            lowStock: 'اسرع! متبقي فقط',
+            itemsLeft: 'منتج',
+            productDetails: 'تفاصيل المنتج',
+            specifications: 'المواصفات',
+            noDescription: 'لا يوجد وصف متاح.',
+            productNotFound: 'المنتج غير موجود',
+            loading: 'جاري التحميل...'
+        }
+    };
+    return fallback[lang]?.[key] || key;
+}
 
 // =========================
 // GET PRODUCT ID
@@ -26,10 +80,9 @@ if (!productId) {
     productId = localStorage.getItem('lastProductId');
 }
 
-// ✅ لو الـ ID مش ObjectId (مش 24 حرف هيكسا)، جيب من localStorage
+// ✅ لو الـ ID مش ObjectId، جيب من localStorage
 if (productId && !/^[0-9a-fA-F]{24}$/.test(productId)) {
     console.log("⚠️ Not a valid ObjectId, trying to find by custom id");
-    // جيب كل المنتجات وابحث بالـ custom id
     const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
     const found = storedProducts.find(p => (p.id || p._id) == productId);
     if (found && found._id) {
@@ -43,7 +96,6 @@ if (!productId) {
 }
 
 console.log("🔍 Final Product ID:", productId);
-console.log("🔍 Full URL:", window.location.href);
 
 // =========================
 // DOM ELEMENTS
@@ -69,9 +121,9 @@ let currentImageIndex = 0;
 // FALLBACK PRODUCTS
 // =========================
 const fallbackProducts = [
-    { id: 1, name: 'Gaming Keyboard RGB', price: 1200, oldPrice: 1500, image: 'photos/keyboard.jpg', category: 'Keyboards', stock: 10, sale: true, description: 'High quality gaming keyboard with RGB lighting.' },
-    { id: 2, name: 'Wireless Gaming Mouse', price: 800, oldPrice: 1000, image: 'photos/mouse.jpg', category: 'Mouses', stock: 5, sale: false, description: 'Wireless gaming mouse with high precision sensor.' },
-    { id: 3, name: 'Gaming Headset 7.1', price: 1500, oldPrice: 2000, image: 'photos/headset.jpg', category: 'Headsets', stock: 3, sale: true, description: '7.1 surround sound gaming headset.' },
+    { id: 1, name: 'Gaming Keyboard RGB', price: 1200, oldPrice: 1500, image: '/photos/keyboard.jpg', category: 'Keyboards', stock: 10, sale: true, description: 'High quality gaming keyboard with RGB lighting.' },
+    { id: 2, name: 'Wireless Gaming Mouse', price: 800, oldPrice: 1000, image: '/photos/mouse.jpg', category: 'Mouses', stock: 5, sale: false, description: 'Wireless gaming mouse with high precision sensor.' },
+    { id: 3, name: 'Gaming Headset 7.1', price: 1500, oldPrice: 2000, image: '/photos/headset.jpg', category: 'Headsets', stock: 3, sale: true, description: '7.1 surround sound gaming headset.' },
 ];
 
 // =========================
@@ -116,7 +168,7 @@ function displayProduct(product) {
     } else if (product.image) {
         productImages.push(product.image);
     } else {
-        productImages.push('photos/default-product.png');
+        productImages.push('/photos/default-product.png');
     }
 
     if (productImages.length) {
@@ -125,12 +177,16 @@ function displayProduct(product) {
     }
 
     if (productName) productName.textContent = product.name || "Product";
-    if (productPrice) productPrice.textContent = (product.price || 0) + " EGP";
+
+    // ✅ استخدام الترجمة
+    const egpText = t('egp');
+
+    if (productPrice) productPrice.textContent = (product.price || 0).toLocaleString() + " " + egpText;
     if (productOldPrice) {
-        productOldPrice.textContent = product.oldPrice > 0 ? product.oldPrice + " EGP" : "";
+        productOldPrice.textContent = product.oldPrice > 0 ? product.oldPrice.toLocaleString() + " " + egpText : "";
     }
     if (productDescription) {
-        productDescription.textContent = product.description || "No description available.";
+        productDescription.textContent = product.description || t('noDescription');
     }
 
     // Details
@@ -169,7 +225,7 @@ function displayProduct(product) {
         if (specsHTML) {
             productDetails.innerHTML += `
                 <div class="specifications-box">
-                    <h3>Specifications</h3>
+                    <h3>${t('specifications')}</h3>
                     ${specsHTML}
                 </div>
             `;
@@ -180,22 +236,26 @@ function displayProduct(product) {
     if (stockWarning) {
         const stock = product.stock || 0;
         if (stock <= 0) {
-            stockWarning.innerHTML = "❌ Out Of Stock";
+            stockWarning.innerHTML = "❌ " + t('outOfStock');
             stockWarning.className = "out-stock";
             if (addCartBtn) addCartBtn.disabled = true;
             if (buyNowBtn) buyNowBtn.disabled = true;
         } else if (stock <= 5) {
-            stockWarning.innerHTML = `⚠️ Hurry! Only ${stock} items left`;
+            stockWarning.innerHTML = `⚠️ ${t('lowStock')} ${stock} ${t('itemsLeft')}`;
             stockWarning.className = "low-stock";
             if (addCartBtn) addCartBtn.disabled = false;
             if (buyNowBtn) buyNowBtn.disabled = false;
         } else {
-            stockWarning.innerHTML = "✅ In Stock";
+            stockWarning.innerHTML = "✅ " + t('inStock');
             stockWarning.className = "in-stock";
             if (addCartBtn) addCartBtn.disabled = false;
             if (buyNowBtn) buyNowBtn.disabled = false;
         }
     }
+
+    // ✅ تحديث أزرار
+    if (addCartBtn) addCartBtn.innerHTML = `🛒 ${t('addToCart')}`;
+    if (buyNowBtn) buyNowBtn.innerHTML = `⚡ ${t('buyNow')}`;
 
     localStorage.setItem('lastProductId', product.id || product._id);
     console.log("✅ Product displayed successfully!");
@@ -208,7 +268,7 @@ async function loadProduct() {
     try {
         if (!productId) {
             console.error("❌ No product ID provided");
-            if (productName) productName.textContent = "Product Not Found";
+            if (productName) productName.textContent = t('productNotFound');
             if (productDescription) productDescription.textContent = "No product ID provided.";
             if (stockWarning) {
                 stockWarning.innerHTML = "❌ Invalid Product ID";
@@ -221,18 +281,16 @@ async function loadProduct() {
 
         console.log("🔍 Loading product with ID:", productId);
 
-        // Try API first
         let product = null;
 
         try {
-            const response = await fetch(`${API}/products/${productId}`);
+            const API_URL = getApiUrl();
+            const response = await fetch(`${API_URL}/products/${productId}`);
             console.log("📡 Response status:", response.status);
 
             if (response.ok) {
                 product = await response.json();
                 console.log("📦 Product from API:", product);
-            } else if (response.status === 500) {
-                console.log("⚠️ API 500 error - ID might be invalid");
             }
         } catch (err) {
             console.log("⚠️ API fetch error:", err.message);
@@ -241,7 +299,6 @@ async function loadProduct() {
         // If API failed, try localStorage
         if (!product) {
             const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
-            // البحث بالـ custom id
             product = storedProducts.find(p => (p.id || p._id) == productId);
             if (product) {
                 console.log("📦 Product from localStorage:", product);
@@ -264,12 +321,12 @@ async function loadProduct() {
 
     } catch (error) {
         console.error("❌ LOAD PRODUCT ERROR:", error);
-        if (productName) productName.textContent = "Product Not Found";
+        if (productName) productName.textContent = t('productNotFound');
         if (productDescription) {
             productDescription.textContent = "Sorry, we couldn't find this product.";
         }
         if (stockWarning) {
-            stockWarning.innerHTML = "❌ Product Not Found";
+            stockWarning.innerHTML = "❌ " + t('productNotFound');
             stockWarning.className = "out-stock";
         }
         if (addCartBtn) addCartBtn.disabled = true;
@@ -297,18 +354,18 @@ if (addCartBtn) {
             return;
         }
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const productId = currentProduct.id || currentProduct._id;
-        const existing = cart.find(item => (item.id || item._id) == productId);
+        const pid = currentProduct.id || currentProduct._id;
+        const existing = cart.find(item => (item.id || item._id) == pid);
         if (existing) {
             existing.quantity++;
         } else {
             cart.push({
-                id: productId,
-                _id: productId,
+                id: pid,
+                _id: pid,
                 name: currentProduct.name,
                 price: Number(currentProduct.price),
                 oldPrice: Number(currentProduct.oldPrice || 0),
-                image: productImages[0] || currentProduct.image || "photos/default-product.png",
+                image: productImages[0] || currentProduct.image || "/photos/default-product.png",
                 quantity: 1
             });
         }
@@ -331,14 +388,14 @@ if (buyNowBtn) {
             showToast("❌ Product not loaded");
             return;
         }
-        const productId = currentProduct.id || currentProduct._id;
+        const pid = currentProduct.id || currentProduct._id;
         localStorage.setItem("cart", JSON.stringify([{
-            id: productId,
-            _id: productId,
+            id: pid,
+            _id: pid,
             name: currentProduct.name,
             price: Number(currentProduct.price),
             oldPrice: Number(currentProduct.oldPrice || 0),
-            image: productImages[0] || currentProduct.image || "photos/default-product.png",
+            image: productImages[0] || currentProduct.image || "/photos/default-product.png",
             quantity: 1
         }]));
         const countEl = document.getElementById('cart-count');
@@ -373,17 +430,4 @@ function showToast(message) {
     toast._timeout = setTimeout(() => {
         toast.classList.remove('show');
     }, 2500);
-}
-// ✅ استخدم الترجمة
-const egpText = t('egp');
-
-// ✅ في عرض السعر
-if (productPrice)
-    productPrice.textContent = (product.price || 0) + ' ' + egpText;
-
-if (productOldPrice) {
-    productOldPrice.textContent =
-        product.oldPrice > 0
-            ? product.oldPrice + ' ' + egpText
-            : "";
 }
