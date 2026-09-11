@@ -1,12 +1,34 @@
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.BREVO_SMTP_KEY
+    },
+    family: 4,
+    connectionTimeout: 15000,
+    greetingTimeout: 15000,
+    socketTimeout: 15000,
+    tls: {
+        rejectUnauthorized: false
+    }
+});
 
-// ✅ دالة إرسال كود التحقق
+transporter.verify((error, success) => {
+    if (error) {
+        console.error("❌ SMTP Connection Error:", error);
+    } else {
+        console.log("✅ SMTP Server Ready (Brevo)");
+    }
+});
+
 async function sendVerificationCode(email, code, name) {
     try {
-        const { data, error } = await resend.emails.send({
-            from: "MS Computer <onboarding@resend.dev>",
+        const mailOptions = {
+            from: `"MS Computer" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: "🔐 Verification Code - MS Computer",
             html: `
@@ -96,15 +118,11 @@ async function sendVerificationCode(email, code, name) {
                 </body>
                 </html>
             `
-        });
+        };
 
-        if (error) {
-            console.error("❌ Resend error:", error);
-            return { success: false, error: error.message };
-        }
-
-        console.log("✅ Email sent:", data.id);
-        return { success: true, messageId: data.id };
+        const info = await transporter.sendMail(mailOptions);
+        console.log("✅ Email sent:", info.messageId);
+        return { success: true, messageId: info.messageId };
 
     } catch (err) {
         console.error("❌ Email error:", err);
