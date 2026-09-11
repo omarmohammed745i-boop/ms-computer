@@ -5,6 +5,13 @@
 console.log('👤 Account Page Loaded');
 
 // =====================================
+// API BASE URL
+// =====================================
+const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://ms-computer-production.up.railway.app/api';
+
+// =====================================
 // GET USER ID
 // =====================================
 function getUserId() {
@@ -227,22 +234,16 @@ function displayUserData(user) {
     if (emailEl) emailEl.textContent = user.email || 'user@example.com';
 
     if (avatarEl) {
-        // ✅ جيب الصورة من loggedInUser أو من users
-        let imageUrl = user.image || 'photos/default-avatar.png';
+        // ✅ جيب الصورة من loggedInUser
+        let imageUrl = user.image || '/photos/default-avatar.png';
         
-        // ✅ لو الصورة مش موجودة في loggedInUser، جيبها من users
-        if (!user.image || user.image === 'photos/default-avatar.png') {
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            const foundUser = users.find(u => u.email === user.email);
-            if (foundUser && foundUser.image) {
-                imageUrl = foundUser.image;
-                // ✅ حفظ الصورة في loggedInUser عشان تستخدمها بعدين
-                user.image = foundUser.image;
-                localStorage.setItem('loggedInUser', JSON.stringify(user));
-            }
+        // ✅ لو الصورة مسار نسبي، ضيف الـ API URL
+        if (imageUrl.startsWith('/uploads/')) {
+            imageUrl = `https://ms-computer-production.up.railway.app${imageUrl}`;
         }
         
         avatarEl.src = imageUrl;
+        console.log('🖼️ Avatar URL:', imageUrl);
     }
 
     if (formName) formName.value = user.name || '';
@@ -591,12 +592,12 @@ function updateProfile(event) {
 }
 
 // =====================================
-// ✅ UPLOAD PROFILE IMAGE (محسّن)
+// ✅ UPLOAD PROFILE IMAGE (API)
 // =====================================
 document.addEventListener('DOMContentLoaded', function() {
     const imageInput = document.getElementById('profile-image-input');
     if (imageInput) {
-        imageInput.addEventListener('change', function(e) {
+        imageInput.addEventListener('change', async function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
@@ -613,50 +614,46 @@ document.addEventListener('DOMContentLoaded', function() {
             const spinner = document.getElementById('imageLoadingSpinner');
             if (spinner) spinner.style.display = 'flex';
 
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const base64 = event.target.result;
-                const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!loggedInUser) {
+                if (spinner) spinner.style.display = 'none';
+                return;
+            }
 
-                if (loggedInUser) {
-                    // ✅ 1. حفظ في loggedInUser
-                    loggedInUser.image = base64;
+            try {
+                // ✅ رفع الصورة على السيرفر
+                const formData = new FormData();
+                formData.append('avatar', file);
+
+                const response = await fetch(`${API_BASE_URL}/auth/upload-avatar/${loggedInUser.id}`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                console.log('📡 Upload response:', data);
+
+                if (response.ok && data.success) {
+                    // ✅ حفظ مسار الصورة في localStorage
+                    loggedInUser.image = data.image;
                     localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
 
-                    // ✅ 2. حفظ في users array
-                    const users = JSON.parse(localStorage.getItem('users')) || [];
-                    const userIndex = users.findIndex(u => u.email === loggedInUser.email);
-                    if (userIndex !== -1) {
-                        users[userIndex].image = base64;
-                        localStorage.setItem('users', JSON.stringify(users));
-                        console.log('✅ Image saved to users array');
-                    } else {
-                        console.log('⚠️ User not found in users array, adding...');
-                        // لو مش موجود، ضيفه
-                        users.push({
-                            id: loggedInUser.id,
-                            name: loggedInUser.name,
-                            email: loggedInUser.email,
-                            image: base64,
-                            role: loggedInUser.role || 'user'
-                        });
-                        localStorage.setItem('users', JSON.stringify(users));
-                    }
-
-                    // ✅ 3. تحديث الواجهة
-                    document.getElementById('profile-avatar').src = base64;
+                    // ✅ تحديث الواجهة
+                    const fullImageUrl = `https://ms-computer-production.up.railway.app${data.image}`;
+                    document.getElementById('profile-avatar').src = fullImageUrl;
 
                     if (spinner) spinner.style.display = 'none';
                     showToast('✅ ' + t('profileUpdated'));
                 } else {
                     if (spinner) spinner.style.display = 'none';
+                    showToast('❌ ' + (data.message || 'Upload failed'));
                 }
-            };
-            reader.onerror = function() {
+
+            } catch (err) {
+                console.error('❌ Upload error:', err);
                 if (spinner) spinner.style.display = 'none';
-                showToast('❌ Error reading image');
-            };
-            reader.readAsDataURL(file);
+                showToast('❌ Upload failed');
+            }
         });
     }
 

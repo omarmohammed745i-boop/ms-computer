@@ -1,10 +1,37 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const path = require("path");
 
 const User = require("../models/user");
 
 const router = express.Router();
+
+
+// ============================
+// Multer Setup for Avatar Upload
+// ============================
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + "-" + file.originalname);
+    }
+});
+
+const upload = multer({
+    storage,
+    limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith("image/")) {
+            cb(null, true);
+        } else {
+            cb(new Error("Only images allowed"), false);
+        }
+    }
+});
 
 
 // ============================
@@ -108,9 +135,52 @@ router.post("/login", async (req, res) => {
                 id: user._id.toString(),
                 name: user.name,
                 email: user.email,
-                image: user.image || "default-avatar.png",
+                image: user.image || "/photos/default-avatar.png",
                 role: user.role
             }
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        });
+    }
+});
+
+
+// ============================
+// Upload Avatar
+// ============================
+router.post("/upload-avatar/:id", upload.single("avatar"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "No file uploaded"
+            });
+        }
+
+        const imageUrl = `/uploads/${req.file.filename}`;
+
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { image: imageUrl },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Avatar uploaded successfully",
+            image: imageUrl
         });
 
     } catch (err) {
@@ -141,7 +211,7 @@ router.put("/update-profile/:id", async (req, res) => {
             req.params.id,
             {
                 name: name.trim(),
-                image: image || "default-avatar.png"
+                image: image || "/photos/default-avatar.png"
             },
             { new: true }
         );
@@ -160,7 +230,7 @@ router.put("/update-profile/:id", async (req, res) => {
                 id: user._id.toString(),
                 name: user.name,
                 email: user.email,
-                image: user.image || "default-avatar.png",
+                image: user.image || "/photos/default-avatar.png",
                 role: user.role
             }
         });
