@@ -538,3 +538,54 @@ MOBILE
         padding: 10px 0;
     }
 }
+/* =========================
+FEATURES LIST (داخل Product Details)
+========================= */
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features-list li {
+    padding: 12px 0;
+    padding-right: 35px;
+    color: var(--text2);
+    font-size: 17px;
+    line-height: 1.8;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    transition: .3s;
+}
+
+.features-list li:last-child {
+    border-bottom: none;
+}
+
+.features-list li:hover {
+    color: var(--primary);
+    padding-right: 45px;
+}
+
+.features-list li::before {
+    content: '✅';
+    position: absolute;
+    right: 0;
+    top: 12px;
+    font-size: 18px;
+}
+
+/* Specifications */
+.specifications-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+@media (max-width: 768px) {
+    .features-list li {
+        font-size: 15px;
+        padding: 10px 0;
+        padding-right: 30px;
+    }
+}

@@ -190,48 +190,80 @@ function displayProduct(product) {
     }
 
     // Details
-    if (productDetails) {
-        productDetails.innerHTML = "";
-        if (Array.isArray(product.detailsSections) && product.detailsSections.length) {
-            product.detailsSections.forEach(section => {
-                productDetails.innerHTML += `
-                    <div class="details-section">
-                        <h3>${section.title}</h3>
-                        <p>${section.content}</p>
-                    </div>
-                `;
-            });
-        }
-        let specsHTML = "";
-        const specs = product.specifications || {};
-        function addSpec(title, item) {
-            if (item && item.enabled && item.value) {
-                specsHTML += `
-                    <div class="spec-row">
-                        <strong>${title}</strong>
-                        <span>${item.value}</span>
-                    </div>
-                `;
-            }
-        }
-        addSpec("Color", specs.color);
-        addSpec("Switch Color", specs.switchColor);
-        addSpec("Material", specs.material);
-        addSpec("Weight", specs.weight);
-        addSpec("Size", specs.size);
-        addSpec("Cable Length", specs.cableLength);
-        addSpec("Connection", specs.connection);
-        addSpec("Compatible With", specs.compatible);
-        if (specsHTML) {
+if (productDetails) {
+    productDetails.innerHTML = "";
+
+    // ✅ 1. عرض الوصف
+    if (product.description) {
+        productDetails.innerHTML += `
+            <div class="details-section">
+                <h3>📝 Description</h3>
+                <p>${product.description}</p>
+            </div>
+        `;
+    }
+
+    // ✅ 2. عرض المميزات (Features)
+    if (product.features && product.features.length > 0) {
+        let featuresHTML = `
+            <div class="details-section">
+                <h3>✨ Features</h3>
+                <ul class="features-list">
+        `;
+        product.features.forEach(feature => {
+            featuresHTML += `<li>${feature}</li>`;
+        });
+        featuresHTML += `</ul></div>`;
+        productDetails.innerHTML += featuresHTML;
+    }
+
+    // ✅ 3. عرض الـ detailsSections
+    if (Array.isArray(product.detailsSections) && product.detailsSections.length) {
+        product.detailsSections.forEach(section => {
             productDetails.innerHTML += `
-                <div class="specifications-box">
-                    <h3>${t('specifications')}</h3>
-                    ${specsHTML}
+                <div class="details-section">
+                    <h3>${section.title}</h3>
+                    <p>${section.content}</p>
+                </div>
+            `;
+        });
+    }
+
+    // ✅ 4. عرض المواصفات (Specifications)
+    let specsHTML = "";
+    const specs = product.specifications || {};
+
+    function addSpec(title, item) {
+        if (item && item.enabled && item.value) {
+            specsHTML += `
+                <div class="spec-row">
+                    <strong>${title}</strong>
+                    <span>${item.value}</span>
                 </div>
             `;
         }
     }
 
+    addSpec("Color", specs.color);
+    addSpec("Switch Color", specs.switchColor);
+    addSpec("Material", specs.material);
+    addSpec("Weight", specs.weight);
+    addSpec("Size", specs.size);
+    addSpec("Cable Length", specs.cableLength);
+    addSpec("Connection", specs.connection);
+    addSpec("Compatible With", specs.compatible);
+
+    if (specsHTML) {
+        productDetails.innerHTML += `
+            <div class="details-section">
+                <h3>⚙️ Specifications</h3>
+                <div class="specifications-content">
+                    ${specsHTML}
+                </div>
+            </div>
+        `;
+    }
+}
     // Stock
     if (stockWarning) {
         const stock = product.stock || 0;
