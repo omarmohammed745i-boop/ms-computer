@@ -5,11 +5,13 @@
 console.log('🔍 Search Page Loaded');
 
 // =====================================
-// API BASE URL
+// GET API URL (local - no conflict)
 // =====================================
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
+function getApiUrl() {
+    return window.location.hostname === 'localhost' 
+        ? 'http://localhost:5000/api' 
+        : 'https://ms-computer-production.up.railway.app/api';
+}
 
 // =====================================
 // GET CURRENT LANGUAGE
@@ -75,13 +77,12 @@ async function performSearch(query) {
 
     console.log('🔍 Query received:', query);
 
-    // ✅ عرض الـ query (بدون كسر HTML)
+    // ✅ عرض الـ query
     if (queryEl) {
         queryEl.textContent = query || t('allProducts');
-        console.log('✅ Query text set to:', queryEl.textContent);
     }
 
-    // ✅ ترجمة الـ "Search results for:"
+    // ✅ ترجمة "Search results for:"
     const queryContainer = document.getElementById('search-query-container');
     if (queryContainer) {
         const firstChild = queryContainer.firstChild;
@@ -99,43 +100,30 @@ async function performSearch(query) {
     if (resultsContainer) resultsContainer.innerHTML = '';
 
     try {
-        const response = await fetch(`${API_BASE_URL}/products`);
-        let products = [];
+        const API_URL = getApiUrl();
+        console.log('🔍 Fetching from:', `${API_URL}/products`);
+        
+        const response = await fetch(`${API_URL}/products`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-        if (response.ok) {
-            const data = await response.json();
-            if (data && data.length > 0) {
-                products = data;
-                console.log('✅ Products loaded:', products.length);
-            } else {
-                console.log('⚠️ No products');
-                if (loading) loading.style.display = 'none';
-                if (noResults) {
-                    noResults.style.display = 'block';
-                    noResults.querySelector('h2').textContent = t('noProductsFound');
-                    noResults.querySelector('p').textContent = t('noProductsFoundText');
-                    const btn = noResults.querySelector('.shop-btn');
-                    if (btn) btn.textContent = t('browseProducts');
-                }
-                return;
+        const data = await response.json();
+        let products = data || [];
+        
+        console.log('✅ Products loaded:', products.length);
+
+        if (products.length === 0) {
+            if (loading) loading.style.display = 'none';
+            if (noResults) {
+                noResults.style.display = 'block';
+                noResults.querySelector('h2').textContent = t('noProductsFound');
+                noResults.querySelector('p').textContent = t('noProductsFoundText');
+                const btn = noResults.querySelector('.shop-btn');
+                if (btn) btn.textContent = t('browseProducts');
             }
-        } else {
-            const localProducts = JSON.parse(localStorage.getItem('products')) || [];
-            if (localProducts.length > 0) {
-                products = localProducts;
-                console.log('📦 Products from localStorage:', products.length);
-            } else {
-                console.error('❌ API Error:', response.status);
-                if (loading) loading.style.display = 'none';
-                if (noResults) {
-                    noResults.style.display = 'block';
-                    noResults.querySelector('h2').textContent = t('noProductsFound');
-                    noResults.querySelector('p').textContent = 'Server error.';
-                    const btn = noResults.querySelector('.shop-btn');
-                    if (btn) btn.textContent = t('browseProducts');
-                }
-                return;
-            }
+            return;
         }
 
         // ✅ بحث ذكي
@@ -158,8 +146,6 @@ async function performSearch(query) {
             });
             
             console.log(`🔍 Found ${filtered.length} results for "${searchTerm}"`);
-        } else {
-            console.log('📦 Showing all products');
         }
 
         if (loading) loading.style.display = 'none';
@@ -186,7 +172,7 @@ async function performSearch(query) {
         if (noResults) {
             noResults.style.display = 'block';
             noResults.querySelector('h2').textContent = t('noProductsFound');
-            noResults.querySelector('p').textContent = 'Error loading products.';
+            noResults.querySelector('p').textContent = 'Error loading products: ' + err.message;
             const btn = noResults.querySelector('.shop-btn');
             if (btn) btn.textContent = t('browseProducts');
         }
@@ -243,7 +229,8 @@ function renderSearchResults(products) {
 // =====================================
 async function addToCart(productId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/products`);
+        const API_URL = getApiUrl();
+        const response = await fetch(`${API_URL}/products`);
         if (!response.ok) throw new Error('Failed to fetch products');
         const products = await response.json();
         const product = products.find(p => (p._id || p.id) == productId);

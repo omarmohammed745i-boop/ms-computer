@@ -220,7 +220,7 @@ if (searchBox) {
             let value = searchBox.value.trim();
             if (value) {
                 console.log("🔍 Searching for:", value);
-                window.location.href = "search?q=" + encodeURIComponent(value);
+                window.location.href = "/search.html?q=" + encodeURIComponent(value);
             }
         }
     });
