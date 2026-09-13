@@ -416,7 +416,7 @@ async function deleteProduct(productId) {
 }
 
 // =====================================
-// OPEN EDIT MODAL
+// ✅ OPEN EDIT MODAL (with all images fix)
 // =====================================
 async function openEditModal(productId) {
     console.log('📝 Opening edit modal for ID:', productId);
@@ -447,19 +447,37 @@ async function openEditModal(productId) {
             featuresTextarea.value = (product.features || []).join('\n');
         }
 
+        // ✅ عرض كل الصور
         const previewContainer = document.getElementById('edit-images-preview');
-        previewContainer.innerHTML = '';
+        if (previewContainer) {
+            previewContainer.innerHTML = '';
+            
+            let images = [];
+            if (Array.isArray(product.images) && product.images.length > 0) {
+                images = product.images;
+            } else if (product.image) {
+                images = [product.image];
+            }
+            
+            console.log('🖼️ Images to display in Edit Modal:', images.length);
+            
+            images.forEach((img, index) => {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.innerHTML = `
+                    <img src="${img}" alt="Image ${index + 1}" onerror="this.src='/photos/default-product.png'">
+                    <span class="index-badge">${index + 1}</span>
+                `;
+                previewContainer.appendChild(div);
+            });
+        }
 
-        const images = product.images || (product.image ? [product.image] : []);
-        images.forEach((img, index) => {
-            const div = document.createElement('div');
-            div.className = 'preview-item';
-            div.innerHTML = `
-                <img src="${img}" alt="Image ${index + 1}">
-                <span class="index-badge">${index + 1}</span>
-            `;
-            previewContainer.appendChild(div);
-        });
+        // ✅ تصفير الـ File Input
+        const editImageInput = document.getElementById('edit-product-images-input');
+        if (editImageInput) editImageInput.value = '';
+        
+        const editFileName = document.getElementById('edit-file-name');
+        if (editFileName) editFileName.textContent = t('noFilesSelected');
 
         document.getElementById('editModal').classList.add('active');
 
@@ -606,6 +624,9 @@ document.getElementById('edit-product-images-input')?.addEventListener('change',
         fileNameSpan.textContent = t('noFilesSelected');
         return;
     }
+
+    // ✅ نعرض الصور الجديدة بدل القديمة
+    previewContainer.innerHTML = '';
 
     const maxImages = 10;
     const filesToShow = Array.from(files).slice(0, maxImages);
@@ -1034,25 +1055,4 @@ function showToast(message) {
 
 // =====================================
 // INITIALIZE
-// =====================================
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Admin Panel Initialized');
-    loadDashboardStats();
-    loadProducts();
-    loadOrders();
-    loadUsers();
-});
-
-// Close modal on outside click
-document.getElementById('editModal')?.addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeEditModal();
-    }
-});
-
-// Close modal on Escape key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeEditModal();
-    }
-});
+// =
