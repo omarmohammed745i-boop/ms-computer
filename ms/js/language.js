@@ -435,7 +435,8 @@ const dictionary = {
         passwordMismatch: 'Passwords do not match',
         passwordLength: 'Password must be at least 6 characters',
         confirmPassword: 'Confirm Password',
-        confirmPasswordPlaceholder: 'Confirm your password'
+        confirmPasswordPlaceholder: 'Confirm your password',
+        cartSubtitle: 'Review your items and proceed to checkout'
     },
     ar: {
         // Navbar
@@ -864,7 +865,8 @@ const dictionary = {
         passwordMismatch: 'كلمة المرور غير متطابقة',
         passwordLength: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
         confirmPassword: 'تأكيد كلمة المرور',
-        confirmPasswordPlaceholder: 'أكد كلمة المرور'
+        confirmPasswordPlaceholder: 'أكد كلمة المرور',
+        cartSubtitle: 'راجع منتجاتك وتابع إلى الدفع'
     },
         fr: {
         // Navbar
