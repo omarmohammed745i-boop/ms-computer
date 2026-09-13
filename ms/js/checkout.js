@@ -82,6 +82,11 @@ function t(key) {
 }
 
 // =====================================
+// CURRENT PAYMENT METHOD
+// =====================================
+let currentPaymentMethod = 'cash'; // default
+
+// =====================================
 // LOAD ORDER ITEMS
 // =====================================
 function loadOrderItems() {
@@ -147,7 +152,14 @@ function updateCheckoutSummary() {
     const freeText = t('free');
 
     let subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
-    let shipping = subtotal >= 2000 ? 0 : 50;
+
+    // ✅ الشحن الأساسي
+    let baseShipping = subtotal >= 2000 ? 0 : 50;
+
+    // ✅ رسوم الدفع عند الاستلام (15 ج)
+    let codFee = (currentPaymentMethod === 'cash') ? 15 : 0;
+
+    let shipping = baseShipping + codFee;
     let discount = 0;
 
     const promoApplied = localStorage.getItem('promo_code');
@@ -158,7 +170,16 @@ function updateCheckoutSummary() {
     let total = subtotal + shipping - discount;
 
     subtotalEl.textContent = subtotal.toLocaleString() + ' ' + egpText;
-    shippingEl.textContent = shipping === 0 ? freeText : shipping + ' ' + egpText;
+
+    // ✅ نعرض الشحن + رسوم الدفع عند الاستلام
+    if (codFee > 0) {
+        const shippingText = baseShipping === 0 
+            ? `+15 ${egpText} (COD)` 
+            : `${baseShipping} + 15 ${egpText} (COD)`;
+        shippingEl.textContent = shippingText;
+    } else {
+        shippingEl.textContent = baseShipping === 0 ? freeText : baseShipping + ' ' + egpText;
+    }
 
     if (discount > 0) {
         discountRow.style.display = 'flex';
@@ -168,6 +189,88 @@ function updateCheckoutSummary() {
     }
 
     totalEl.textContent = total.toLocaleString() + ' ' + egpText;
+}
+
+// =====================================
+// SHOW PAYMENT DETAILS
+// =====================================
+function showPaymentDetails(method) {
+    const detailsContainer = document.getElementById('payment-details');
+    const infoContainer = document.getElementById('payment-info');
+    const screenshotUpload = document.getElementById('screenshot-upload');
+
+    if (!detailsContainer || !infoContainer) return;
+
+    // ✅ نحفظ طريقة الدفع الحالية
+    currentPaymentMethod = method;
+
+    // ✅ نحدث الـ Summary عشان نضيف/نشيل رسوم الدفع عند الاستلام
+    updateCheckoutSummary();
+
+    const lang = getCurrentLanguage();
+
+    if (method === 'cash') {
+        // 💵 Cash on Delivery - نخفي التفاصيل
+        detailsContainer.style.display = 'none';
+        if (screenshotUpload) screenshotUpload.style.display = 'none';
+        return;
+    }
+
+    // نظهر الـ container
+    detailsContainer.style.display = 'block';
+
+    if (method === 'vodafone') {
+        // 📱 Vodafone Cash
+        const vfNumber = '01021451009';
+        infoContainer.innerHTML = `
+            <h4>📱 ${lang === 'ar' ? 'فودافون كاش' : 'Vodafone Cash'}</h4>
+            <p><strong>${lang === 'ar' ? 'رقم المحفظة' : 'Wallet Number'}:</strong> ${vfNumber}</p>
+            <p><strong>${lang === 'ar' ? 'المبلغ' : 'Amount'}:</strong> ${document.getElementById('checkout-total')?.textContent || ''}</p>
+            <p class="payment-note">${lang === 'ar' 
+                ? '⚠️ يرجى تحويل المبلغ على الرقم أعلاه ثم رفع صورة التحويل.' 
+                : '⚠️ Please transfer the amount to the number above then upload the transfer screenshot.'}</p>
+        `;
+        if (screenshotUpload) screenshotUpload.style.display = 'block';
+
+    } else if (method === 'instapay') {
+        // 🏦 InstaPay
+        const instapayAddress = 'ms.computer355@gmail.com';
+        infoContainer.innerHTML = `
+            <h4>🏦 ${lang === 'ar' ? 'إنستا باي' : 'InstaPay'}</h4>
+            <p><strong>${lang === 'ar' ? 'العنوان' : 'Address'}:</strong> ${instapayAddress}</p>
+            <p><strong>${lang === 'ar' ? 'المبلغ' : 'Amount'}:</strong> ${document.getElementById('checkout-total')?.textContent || ''}</p>
+            <p class="payment-note">${lang === 'ar' 
+                ? '⚠️ يرجى تحويل المبلغ على العنوان أعلاه ثم رفع صورة التحويل.' 
+                : '⚠️ Please transfer the amount to the address above then upload the transfer screenshot.'}</p>
+        `;
+        if (screenshotUpload) screenshotUpload.style.display = 'block';
+    }
+}
+
+// =====================================
+// SCREENSHOT PREVIEW
+// =====================================
+function initScreenshotPreview() {
+    const screenshotInput = document.getElementById('transfer-screenshot');
+    const previewContainer = document.getElementById('screenshot-preview');
+    const previewImg = document.getElementById('screenshot-preview-img');
+
+    if (!screenshotInput || !previewContainer || !previewImg) return;
+
+    screenshotInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                previewImg.src = event.target.result;
+                previewContainer.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewContainer.style.display = 'none';
+            previewImg.src = '#';
+        }
+    });
 }
 
 // =====================================
@@ -228,7 +331,14 @@ async function handleCheckout(event) {
     }
 
     let subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
-    let shipping = subtotal >= 2000 ? 0 : 50;
+
+    // ✅ الشحن الأساسي
+    let baseShipping = subtotal >= 2000 ? 0 : 50;
+
+    // ✅ رسوم الدفع عند الاستلام (15 ج)
+    let codFee = (payment === 'cash') ? 15 : 0;
+
+    let shipping = baseShipping + codFee;
     let discount = 0;
     const promoApplied = localStorage.getItem('promo_code');
     if (promoApplied === 'SAVE10') {
@@ -259,7 +369,8 @@ async function handleCheckout(event) {
         payment: payment,
         screenshot: screenshotBase64,
         subtotal: subtotal,
-        shipping: shipping,
+        shipping: baseShipping,      // ✅ الشحن الأساسي
+        codFee: codFee,              // ✅ رسوم الدفع عند الاستلام
         discount: discount,
         total: total,
         status: 'pending',
@@ -367,6 +478,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadOrderItems();
     updateCartCount();
     updateWishlistCount();
+    initScreenshotPreview();
 });
 
 // =====================================
@@ -374,3 +486,4 @@ document.addEventListener('DOMContentLoaded', function() {
 // =====================================
 window.handleCheckout = handleCheckout;
 window.showToast = showToast;
+window.showPaymentDetails = showPaymentDetails;
