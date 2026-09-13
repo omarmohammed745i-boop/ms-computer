@@ -1276,10 +1276,12 @@ const dictionary = {
         confirmPassword: 'Confirmer le mot de passe',
         confirmPasswordPlaceholder: 'Confirmez votre mot de passe',
         fullName: 'Nom complet',
-        fullNamePlaceholder: 'Entrez votre nom complet'
+        fullNamePlaceholder: 'Entrez votre nom complet',
+        cartSubtitle: 'Vérifiez vos articles et procédez au paiement'
     },
     de: {
         // Navbar
+        cartSubtitle: 'Überprüfen Sie Ihre Artikel und gehen Sie zur Kasse',
         home: 'Startseite',
         products: 'Produkte',
         services: 'Dienstleistungen',
@@ -2096,10 +2098,12 @@ const dictionary = {
         confirmPassword: 'Confirmar contraseña',
         confirmPasswordPlaceholder: 'Confirma tu contraseña',
         fullName: 'Nombre completo',
-        fullNamePlaceholder: 'Introduce tu nombre completo'
+        fullNamePlaceholder: 'Introduce tu nombre completo',
+        cartSubtitle: 'Revisa tus artículos y procede al pago'
     },
     it: {
         // Navbar
+        cartSubtitle: 'Controlla i tuoi articoli e procedi al pagamento',
         home: 'Home',
         products: 'Prodotti',
         services: 'Servizi',
@@ -2916,10 +2920,12 @@ const dictionary = {
         confirmPassword: 'Şifreyi Onayla',
         confirmPasswordPlaceholder: 'Şifrenizi onaylayın',
         fullName: 'Tam Ad',
-        fullNamePlaceholder: 'Tam adınızı girin'
+        fullNamePlaceholder: 'Tam adınızı girin',
+        cartSubtitle: 'Ürünlerinizi inceleyin ve ödemeye geçin'
     },
     ru: {
         // Navbar
+        cartSubtitle: 'Проверьте товары и перейдите к оплате',
         home: 'Главная',
         products: 'Товары',
         services: 'Услуги',
@@ -3330,6 +3336,7 @@ const dictionary = {
     },
     zh: {
         // Navbar
+        cartSubtitle: '查看您的商品并继续结算',
         home: '首页',
         products: '产品',
         services: '服务',
@@ -3740,6 +3747,7 @@ const dictionary = {
     },
     ja: {
         // Navbar
+        cartSubtitle: '商品を確認してチェックアウトに進む',
         home: 'ホーム',
         products: '製品',
         services: 'サービス',
