@@ -22,17 +22,58 @@ function t(key) {
             addToCart: 'Add to Cart',
             egp: 'EGP',
             sale: 'SALE',
-            free: 'Free 🎉'
+            free: 'Free 🎉',
+            inStock: 'In Stock'
         },
         ar: {
             outOfStock: 'غير متوفر',
             addToCart: 'أضف للسلة',
             egp: 'ج.م',
             sale: 'تخفيض',
-            free: 'مجاناً 🎉'
+            free: 'مجاناً 🎉',
+            inStock: 'متوفر'
         }
     };
     return fallback[lang]?.[key] || key;
+}
+
+// =====================================
+// GET CATEGORY TRANSLATION KEY
+// =====================================
+function getCategoryKey(category) {
+    if (!category) return null;
+    
+    const map = {
+        'Keyboards': 'categoryKeyboards',
+        'Mouses': 'categoryMouses',
+        'Headsets': 'categoryHeadsets',
+        'Mouse Pads': 'categoryMousePads',
+        'Laptops': 'categoryLaptops',
+        'Monitors': 'categoryMonitors',
+        'PC Parts': 'categoryPCParts',
+        'Accessories': 'categoryAccessories',
+        'PC Cases': 'categoryPCCases',
+        'Cooling': 'categoryCooling',
+        'Power Supplies': 'categoryPowerSupplies',
+        'RAM': 'categoryRAM',
+        'Processors': 'categoryProcessors',
+        'Graphics Cards': 'categoryGraphicsCards',
+        'Storage': 'categoryStorage',
+        'Microphones': 'categoryMicrophones',
+        'Controllers': 'categoryControllers'
+    };
+    
+    return map[category] || null;
+}
+
+// =====================================
+// TRANSLATE CATEGORY
+// =====================================
+function translateCategory(category) {
+    if (!category) return 'N/A';
+    const key = getCategoryKey(category);
+    if (!key) return category;
+    return t(key);
 }
 
 // =====================================
@@ -79,14 +120,12 @@ document.querySelectorAll('.admin-nav a[data-tab]').forEach(tab => {
 // =====================================
 async function loadDashboardStats() {
     try {
-        // Products
         const productsRes = await fetch(`${API_BASE_URL}/products`);
         if (productsRes.ok) {
             const products = await productsRes.json();
             document.getElementById('total-products').textContent = products.length;
         }
 
-        // ✅ Orders من الـ API
         let orders = [];
         try {
             const ordersRes = await fetch(`${API_BASE_URL}/orders`);
@@ -99,7 +138,6 @@ async function loadDashboardStats() {
         }
         document.getElementById('total-orders').textContent = orders.length;
 
-        // Users من الـ API
         let users = [];
         try {
             const usersRes = await fetch(`${API_BASE_URL}/auth/users`);
@@ -112,7 +150,6 @@ async function loadDashboardStats() {
         }
         document.getElementById('total-users').textContent = users.length;
 
-        // Revenue
         const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
         const egpText = t('egp');
         document.getElementById('total-revenue').textContent = totalRevenue.toLocaleString() + ' ' + egpText;
@@ -172,13 +209,14 @@ async function loadProducts() {
             const productId = product._id || product.id;
             const inStock = product.stock > 0;
             const firstImage = product.images && product.images.length > 0 ? product.images[0] : (product.image || '/photos/default-product.png');
+            const categoryText = translateCategory(product.category);
 
             return `
             <tr>
                 <td><img src="${firstImage}" alt="${product.name}" onerror="this.src='/photos/default-product.png'"></td>
                 <td><strong>${product.name}</strong></td>
                 <td>${product.price ? product.price.toLocaleString() : '0'} ${egpText}</td>
-                <td>${product.category || 'N/A'}</td>
+                <td>${categoryText}</td>
                 <td>${inStock ? '✅ ' + inStockText : '❌ ' + outOfStockText}</td>
                 <td>
                     <button class="action-btn edit-btn" onclick="openEditModal('${productId}')">
@@ -198,13 +236,44 @@ async function loadProducts() {
 }
 
 // =====================================
-// CONVERT IMAGE TO BASE64
+// ✅ CONVERT IMAGE TO BASE64 (with compression)
 // =====================================
 function convertToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 800;
+                const MAX_HEIGHT = 800;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                resolve(compressedBase64);
+            };
+            img.onerror = reject;
+        };
         reader.onerror = error => reject(error);
     });
 }
@@ -561,7 +630,7 @@ document.getElementById('edit-product-images-input')?.addEventListener('change',
 });
 
 // =====================================
-// LOAD ORDERS (من API)
+// LOAD ORDERS
 // =====================================
 async function loadOrders() {
     const container = document.getElementById('orders-container');
@@ -675,7 +744,7 @@ async function loadOrders() {
 }
 
 // =====================================
-// UPDATE ORDER STATUS (API)
+// UPDATE ORDER STATUS
 // =====================================
 async function updateOrderStatus(orderId, newStatus) {
     if (!orderId) return;
@@ -708,7 +777,7 @@ async function updateOrderStatus(orderId, newStatus) {
 }
 
 // =====================================
-// DELETE ORDER (API)
+// DELETE ORDER
 // =====================================
 async function deleteOrder(orderId) {
     if (!orderId) return;
@@ -733,7 +802,7 @@ async function deleteOrder(orderId) {
 }
 
 // =====================================
-// LOAD USERS (من API)
+// LOAD USERS
 // =====================================
 async function loadUsers() {
     const tbody = document.getElementById('users-table-body');
