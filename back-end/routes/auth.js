@@ -383,7 +383,7 @@ router.get("/google",
 // ============================
 router.get("/google/callback",
     passport.authenticate("google", {
-        failureRedirect: "https://ms-computer-wheat.vercel.app/login.html?error=google_failed",
+        failureRedirect: "https://ms-computer-g5rs4rz8n-omarmohammed745i-boop.vercel.app/login.html?error=google_failed",
         session: false
     }),
     (req, res) => {
@@ -400,12 +400,12 @@ router.get("/google/callback",
             }));
 
             res.redirect(
-                `https://ms-computer-wheat.vercel.app/google-callback.html?token=${token}&user=${userData}`
+                `https://ms-computer-g5rs4rz8n-omarmohammed745i-boop.vercel.app/google-callback.html?token=${token}&user=${userData}`
             );
 
         } catch (err) {
             console.log(err);
-            res.redirect("https://ms-computer-wheat.vercel.app/login.html?error=server_error");
+            res.redirect("https://ms-computer-g5rs4rz8n-omarmohammed745i-boop.vercel.app/login.html?error=server_error");
         }
     }
 );
