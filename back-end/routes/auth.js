@@ -146,7 +146,7 @@ router.post("/register", async (req, res) => {
             await user.save();
         }
 
-        const emailResult = await sendVerificationCode(email, verificationCode, name);
+        // const emailResult = await sendVerificationCode(email, verificationCode, name);
 
         if (!emailResult.success) {
             return res.status(500).json({
