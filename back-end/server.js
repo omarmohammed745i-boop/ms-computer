@@ -18,8 +18,7 @@ const PORT = process.env.PORT || 5000;
 // =======================
 app.use(cors({
     origin: [
-        'https://ms-computer-wheat.vercel.app',
-        'https://ms-computer-93lddlf3y-omarmohammed745i-boops-projects.vercel.app',
+        'https://ms-computer-g5rs4rz8n-omarmohammed745i-boop.vercel.app', // ✅ رابط Vercel بتاعك
         'http://localhost:3000',
         'http://localhost:5000',
         'http://127.0.0.1:5500'
@@ -114,8 +113,9 @@ const startServer = async () => {
 
         console.log("✅ MongoDB Connected Successfully");
 
-        app.listen(PORT, () => {
-            console.log(`🚀 Server running on http://localhost:${PORT}`);
+        // ✅ التعديل المهم لـ Railway: الاستماع على 0.0.0.0
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`🚀 Server running on port ${PORT}`);
         });
 
     } catch (err) {
