@@ -6,10 +6,7 @@ const form = document.getElementById("add-product-form");
 const imageInput = document.getElementById("product-images");
 const previewImage = document.getElementById("preview-image");
 
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000/api' 
-    : 'https://ms-computer-production.up.railway.app/api';
-// =========================
+const API_BASE_URL = 'https://ms-computer-production-a3b81140.up.railway.app/api';
 // IMAGE PREVIEW
 // =========================
 
