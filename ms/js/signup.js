@@ -10,7 +10,7 @@ console.log('📝 Signup Page Loaded');
 function getApiUrl() {
     return window.location.hostname === 'localhost' 
         ? 'http://localhost:5000/api' 
-        : 'https://ms-computer-production.up.railway.app/api';
+        : 'https://ms-computer-production-a3b81140.up.railway.app/api';
 }
 
 // =====================================
